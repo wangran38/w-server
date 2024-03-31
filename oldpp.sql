@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 22/03/2024 11:19:53
+ Date: 31/03/2024 17:07:44
 */
 
 SET NAMES utf8mb4;
@@ -3820,6 +3820,53 @@ INSERT INTO `area` VALUES (3747, 3738, '路环岛', '路环岛', '中国,澳门�
 INSERT INTO `area` VALUES (3748, 3747, '圣方济各堂区', '圣方济各堂区', '中国,澳门特别行政区,路环岛,圣方济各堂区', 3, 'stfrancisxavier\'sparish', '00853', '999078', 'S', '113.559954', '22.123486');
 
 -- ----------------------------
+-- Table structure for assessors
+-- ----------------------------
+DROP TABLE IF EXISTS `assessors`;
+CREATE TABLE `assessors`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `username` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `nickname` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `phone` varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `email` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `salt` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `age` int(2) NULL DEFAULT NULL,
+  `avatar` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `loginfailure` int(10) NULL DEFAULT NULL,
+  `logintime` int(10) NULL DEFAULT NULL,
+  `loginip` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `token` varchar(59) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `password` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `created` datetime(0) NULL DEFAULT NULL,
+  `updated` datetime(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for assessors_group
+-- ----------------------------
+DROP TABLE IF EXISTS `assessors_group`;
+CREATE TABLE `assessors_group`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `pid` int(11) NULL DEFAULT NULL,
+  `name` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `rules` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
+  `created` int(11) NULL DEFAULT NULL,
+  `updated` int(11) NULL DEFAULT NULL,
+  `status` int(11) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for assessors_group_access
+-- ----------------------------
+DROP TABLE IF EXISTS `assessors_group_access`;
+CREATE TABLE `assessors_group_access`  (
+  `uid` bigint(20) NULL DEFAULT NULL,
+  `gid` bigint(20) NULL DEFAULT NULL
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
+
+-- ----------------------------
 -- Table structure for auth_group
 -- ----------------------------
 DROP TABLE IF EXISTS `auth_group`;
@@ -3880,7 +3927,7 @@ CREATE TABLE `auth_rule`  (
   `status` varchar(40) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `component` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 369 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 373 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of auth_rule
@@ -3893,9 +3940,13 @@ INSERT INTO `auth_rule` VALUES (358, 5, '', 'el-icon-s-flag', '/share/city', '�
 INSERT INTO `auth_rule` VALUES (357, 0, 'file', 'el-icon-coin', '/all', '机构管理', '', 1, 1671525883, 1710489684, 0, 0, '', '');
 INSERT INTO `auth_rule` VALUES (359, 357, '', 'el-icon-s-fold', '/law/category', '分类管理', '', 0, 1671528375, 1671528375, 0, 0, '', 'law/category');
 INSERT INTO `auth_rule` VALUES (361, 1, '', 'el-icon-user', '/system/group', '组别管理', '', 0, 1673574878, 1673574936, 0, 0, '', 'system/group/index');
+INSERT INTO `auth_rule` VALUES (370, 369, '', 'el-icon-monitor', '/defen/index', '得分报告', '', 0, 1711618862, 1711618909, 0, 0, '', 'defen/index');
+INSERT INTO `auth_rule` VALUES (371, 0, '', 'el-icon-user', '/pinggu', '评估管理', '', 1, 1711868836, 1711870816, 0, 0, '', '');
 INSERT INTO `auth_rule` VALUES (365, 5, '', 'el-icon-bangzhu', '/kpi/kpi', '评估标准', '', 0, 1681957457, 1711012801, 0, 0, '', 'kpi/index');
 INSERT INTO `auth_rule` VALUES (366, 0, '', 'el-icon-money', '/dingdan', '工作流管理', '', 1, 1693446059, 1710489777, 0, 0, '', '');
+INSERT INTO `auth_rule` VALUES (369, 0, '', 'el-icon-video-camera', '/defen', '得分管理', '', 1, 1711618283, 1711618811, 0, 0, '', '');
 INSERT INTO `auth_rule` VALUES (368, 0, '', 'el-icon-user', '/oldpeople', '长者管理', '', 1, 1710489840, 1710489875, 0, 0, '', '');
+INSERT INTO `auth_rule` VALUES (372, 371, '', 'el-icon-user-solid', '/pinggu', '评估员', '', 0, 1711870318, 1711870803, 0, 0, '', 'pinggu/index');
 
 -- ----------------------------
 -- Table structure for category
@@ -3916,13 +3967,24 @@ CREATE TABLE `category`  (
   `weigh` int(11) NULL DEFAULT NULL,
   `status` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of category
 -- ----------------------------
 INSERT INTO `category` VALUES (1, 0, '恶法厄', '', '', '', '', '21323', 0, 1711014407, NULL, 0, 0);
 INSERT INTO `category` VALUES (2, 1, '2323', '', '', '', '', '233232', 0, 1711014420, NULL, 0, 0);
+
+-- ----------------------------
+-- Table structure for cost
+-- ----------------------------
+DROP TABLE IF EXISTS `cost`;
+CREATE TABLE `cost`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `code` bigint(20) NULL DEFAULT NULL COMMENT '编号',
+  `payment` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '医疗费用支付方式',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for country
@@ -3945,6 +4007,51 @@ CREATE TABLE `country`  (
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for dictionary
+-- ----------------------------
+DROP TABLE IF EXISTS `dictionary`;
+CREATE TABLE `dictionary`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `code` bigint(20) NULL DEFAULT NULL COMMENT '编号',
+  `codename` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '编号拼音',
+  `name` varchar(200) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '字典名称',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for education
+-- ----------------------------
+DROP TABLE IF EXISTS `education`;
+CREATE TABLE `education`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `code` bigint(20) NULL DEFAULT NULL COMMENT '编号',
+  `title` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文化程度名称',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for kind_cost
+-- ----------------------------
+DROP TABLE IF EXISTS `kind_cost`;
+CREATE TABLE `kind_cost`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `code` bigint(20) NULL DEFAULT NULL COMMENT '编号',
+  `payment` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '医疗费用支付方式',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for kind_residential
+-- ----------------------------
+DROP TABLE IF EXISTS `kind_residential`;
+CREATE TABLE `kind_residential`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `code` bigint(20) NULL DEFAULT NULL COMMENT '编号',
+  `payment` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '医疗费用支付方式',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for kpi
 -- ----------------------------
 DROP TABLE IF EXISTS `kpi`;
@@ -3959,18 +4066,122 @@ CREATE TABLE `kpi`  (
   `weigh` int(11) NULL DEFAULT NULL COMMENT '排序',
   `status` int(11) NULL DEFAULT NULL COMMENT '状态',
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 32 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of kpi
 -- ----------------------------
-INSERT INTO `kpi` VALUES (1, 0, 'gb2022标准', 0, 'gb2022标准', 1711013411, NULL, 0, 0);
-INSERT INTO `kpi` VALUES (4, 1, '自理能力评估', 1, '进食、修改、洗澡、穿/脱上衣、穿/脱裤子和鞋袜、小便控制、大便控制、如厕', 1711014750, NULL, 1, 0);
-INSERT INTO `kpi` VALUES (5, 1, '基础运动能力', 1, '床上体位转移、座椅转移、平地行走、上下楼梯', 1711014806, NULL, 1, 0);
-INSERT INTO `kpi` VALUES (6, 1, '精神状态评估', 1, '时间定向、空间定向', 1711014849, NULL, 3, 0);
-INSERT INTO `kpi` VALUES (7, 1, '感知觉与社会参与', 1, '视力、听力、执行日常事务', 1711014890, NULL, 2, 0);
-INSERT INTO `kpi` VALUES (10, 4, '进食：使用适当的器具将食物送入口中咽下', 2, '进食：使用适当的器具将食物送入口中咽下', 1711071972, NULL, 101, 0);
-INSERT INTO `kpi` VALUES (11, 0, '企业标准', 0, '企业标准', 1711073674, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (1, 0, 'gb2022标准', 0, 'gb2022标准', 1711013411, NULL, 1000, 0);
+INSERT INTO `kpi` VALUES (4, 1, '自理能力评估', 1, '进食、修饰、洗澡、穿/脱上衣、穿/脱裤子和鞋袜、小便控制、大便控制、如厕', 1711014750, NULL, 901, 0);
+INSERT INTO `kpi` VALUES (5, 1, '基础运动能力', 1, '床上体位转移、座椅转移、平地行走、上下楼梯', 1711014806, NULL, 801, 0);
+INSERT INTO `kpi` VALUES (6, 1, '精神状态评估', 1, '时间定向、空间定向', 1711014849, NULL, 701, 0);
+INSERT INTO `kpi` VALUES (7, 1, '感知觉与社会参与', 1, '视力、听力、执行日常事务', 1711014890, NULL, 601, 0);
+INSERT INTO `kpi` VALUES (10, 4, '进食：使用适当的器具将食物送入口中咽下', 2, '进食：使用适当的器具将食物送入口中咽下', 1711071972, NULL, 898, 0);
+INSERT INTO `kpi` VALUES (11, 0, '企业标准', 1, '企业标准', 1711073674, NULL, 500, 0);
+INSERT INTO `kpi` VALUES (12, 4, '修饰：洗脸、刷牙、梳头、刮脸、剪指（趾）甲', 2, '修饰：洗脸、刷牙、梳头、刮脸、剪指（趾）甲', 1711243745, NULL, 899, 0);
+INSERT INTO `kpi` VALUES (13, 5, '床上体位转移：卧床翻身及坐下躺下', 2, '床上体位转移：卧床翻身及坐下躺下', 1711244208, NULL, 891, 0);
+INSERT INTO `kpi` VALUES (14, 4, '洗澡：清洗和擦干身体', 2, '洗澡：清洗和擦干身体', 1711245596, NULL, 897, 0);
+INSERT INTO `kpi` VALUES (16, 4, '穿/脱上衣：穿/脱上衣服、系扣、拉拉链等', 2, '穿/脱上衣：穿/脱上衣服、系扣、拉拉链等', 1711245915, NULL, 896, 0);
+INSERT INTO `kpi` VALUES (17, 4, '穿/脱裤子和鞋袜：穿/脱裤子和鞋袜等', 2, '穿/脱裤子和鞋袜：穿/脱裤子和鞋袜等', 1711246009, NULL, 895, 0);
+INSERT INTO `kpi` VALUES (18, 4, '小便控制：控制和排除尿液的能力', 2, '小便控制：控制和排除尿液的能力', 1711246141, NULL, 894, 0);
+INSERT INTO `kpi` VALUES (19, 1, '大便控制：控制和排出粪便的能力', 2, '大便控制：控制和排出粪便的能力', 1711246204, NULL, 893, 0);
+INSERT INTO `kpi` VALUES (20, 4, '如厕：上厕所排泄大小便，并清洁身体', 2, '如厕：上厕所排泄大小便，并清洁身体', 1711246293, NULL, 892, 0);
+INSERT INTO `kpi` VALUES (21, 5, '床椅转移：从座位到站位，再从站位到坐位的转换过程', 2, '床椅转移：从座位到站位，再从站位到坐位的转换过程', 1711246458, NULL, 890, 0);
+INSERT INTO `kpi` VALUES (22, 5, '平地行走：双脚交互的方式在地面行动，总是一只脚在前', 2, '平地行走：双脚交互的方式在地面行动，总是一只脚在前', 1711246552, NULL, 889, 0);
+INSERT INTO `kpi` VALUES (23, 5, '上下楼梯：双腿交替完成楼梯台阶连续的上下移动', 2, '上下楼梯：双腿交替完成楼梯台阶连续的上下移动', 1711246642, NULL, 888, 0);
+INSERT INTO `kpi` VALUES (24, 6, '时间定向：知道并确认时间的能力', 2, '时间定向：知道并确认时间的能力', 1711246712, NULL, 887, 0);
+INSERT INTO `kpi` VALUES (25, 6, '空间定向：知道并确认空间的能力', 2, '空间定向：知道并确认空间的能力', 1711246767, NULL, 886, 0);
+INSERT INTO `kpi` VALUES (26, 6, '人物定向：知道并确认人物的能力', 2, '人物定向：知道并确认人物的能力', 1711246832, NULL, 885, 0);
+INSERT INTO `kpi` VALUES (27, 6, '记忆：短期、近期和远期记忆能力', 2, '记忆：短期、近期和远期记忆能力', 1711246950, NULL, 884, 0);
+INSERT INTO `kpi` VALUES (28, 6, '理解能力：理解语言信息和非语言信息的能力（可借助平时使用助听设备等）及理解别人的话', 2, '理解能力：理解语言信息和非语言信息的能力（可借助平时使用助听设备等）及理解别人的话', 1711247098, NULL, 883, 0);
+INSERT INTO `kpi` VALUES (29, 6, '表达能力：表达信息能力，包括口头的和非口头的，及表达自己的想法', 2, '表达能力：表达信息能力，包括口头的和非口头的，及表达自己的想法', 1711247255, NULL, 882, 0);
+INSERT INTO `kpi` VALUES (30, 6, '攻击行为：身体攻击行为（如打/踢/推/咬/抓/摔东西）和语言攻击行为（如骂人、语言威胁、尖叫）', 2, '攻击行为：身体攻击行为（如打/踢/推/咬/抓/摔东西）和语言攻击行为（如骂人、语言威胁、尖叫）', 1711247623, NULL, 881, 0);
+INSERT INTO `kpi` VALUES (31, 6, '抑郁症状：存在情绪低落、兴趣减退、活力减退等症状，甚至出现妄想、幻觉、自杀念头或自杀行为', 2, '抑郁症状：存在情绪低落、兴趣减退、活力减退等症状，甚至出现妄想、幻觉、自杀念头或自杀行为', 1711247849, NULL, 880, 0);
+
+-- ----------------------------
+-- Table structure for kpiinfo
+-- ----------------------------
+DROP TABLE IF EXISTS `kpiinfo`;
+CREATE TABLE `kpiinfo`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `kpiid` bigint(20) NULL DEFAULT NULL COMMENT '姓名',
+  `title` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '指标名称',
+  `score` int(10) NULL DEFAULT NULL COMMENT '分数',
+  `created` int(11) NULL DEFAULT NULL COMMENT '创建时间',
+  `updated` int(11) NULL DEFAULT NULL COMMENT '修改时间',
+  `weigh` int(11) NULL DEFAULT NULL COMMENT '排序',
+  `status` int(11) NULL DEFAULT NULL COMMENT '状态',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 49 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of kpiinfo
+-- ----------------------------
+INSERT INTO `kpiinfo` VALUES (4, 10, '进食中需要大量接触式协助，经常（每周一次及以上）呛咳', 1, 1711338811, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (5, 10, '完全依赖他人协助进食，或吞咽困难，或留置营养管', 0, 1711358962, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (6, 10, '进食中需要少量接触式协助偶尔（每月一次及以上）呛咳', 2, 1711359178, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (7, 10, '在他人指导或提示下完成，或独立使用辅具，没有呛咳', 3, 1711359621, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (8, 10, '独立使用餐具将食品送进口中并咽下，没有呛咳', 4, 1711413808, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (9, 12, '完全依靠他人协助，且不能给予配合', 0, 1711413866, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (10, 0, '主要依靠他人协助，自身能给予配合', 1, 1711413922, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (11, 0, '主要依靠他人协助，自身能给予配合', 1, 1711413960, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (13, 12, '主要依靠他人协助，自身能给予配合', 1, 1711414037, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (14, 0, '需要他人协助，但以自身完成为主', 2, 1711414087, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (15, 12, '需要他人协助，但以自身完成为主', 2, 1711414141, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (16, 0, '在他人指导或提示下完成', 3, 1711414172, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (17, 0, '', 0, 1711414176, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (18, 12, '在他人指导或提示下完成', 3, 1711414228, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (19, 0, '独立完成，不需要协助', 4, 1711414250, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (20, 12, '独立完成，不需要协助', 4, 1711414281, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (21, 14, '在他人指导或提示下完成', 3, 1711414320, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (22, 0, '独立完成，不需要协助', 4, 1711414340, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (23, 14, '独立完成，不需要协助', 4, 1711414368, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (24, 0, '需要他人协助，但以自身完成为主', 2, 1711414404, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (25, 14, '需要他人协助，但以自身完成为主', 2, 1711414416, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (26, 14, '主要依靠他人协助，自身能给予配合', 1, 1711414450, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (27, 0, '完全依靠他人协助，且不能给予配合', 0, 1711414481, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (28, 0, '完全依靠他人协助，且不能给予配合', 0, 1711414485, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (29, 14, '完全依靠他人协助，且不能给予配合', 0, 1711414492, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (30, 13, '独立完成，不需要协助', 4, 1711414697, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (31, 0, '在他人指导或提示下完成', 3, 1711414726, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (32, 13, '在他人指导或协助下完成', 3, 1711414768, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (33, 0, '需要依靠他人协助，但以自身完成为主', 2, 1711414796, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (34, 0, '需要依靠他人协助，但以自身完成为主', 2, 1711414802, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (35, 13, '需要依靠他人协助，但以自身完成为主', 2, 1711414820, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (36, 0, '主要依靠他人协助，自身能给予配合', 1, 1711414853, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (37, 13, '主要依靠他人协助，自身能给予配合', 1, 1711414867, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (38, 0, '完全依靠他人协助，且不能给予配合', 0, 1711414894, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (39, 13, '完全依靠他人协助，且不能给予配合', 0, 1711414904, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (40, 21, '完全依靠他人协助，且不能给予配合', 0, 1711414927, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (41, 0, '主要依靠他人协助，自身能给予配合', 1, 1711414938, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (42, 21, '主要依靠他人协助，自身能给予配合', 1, 1711414952, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (43, 0, '需要依靠他人协助，但以自身完成为主', 2, 1711414963, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (44, 21, '需要依靠他人协助，但以自身完成为主', 2, 1711414975, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (45, 0, '在他人指导或协助下完成', 3, 1711414998, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (46, 21, '在他人指导或协助下完成', 3, 1711415014, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (47, 21, '独立完成，不需要协助', 4, 1711415044, NULL, 0, 0);
+
+-- ----------------------------
+-- Table structure for marital
+-- ----------------------------
+DROP TABLE IF EXISTS `marital`;
+CREATE TABLE `marital`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `code` bigint(20) NULL DEFAULT NULL COMMENT '编号',
+  `name` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '婚姻状况名称',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for nation
+-- ----------------------------
+DROP TABLE IF EXISTS `nation`;
+CREATE TABLE `nation`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `code` bigint(20) NULL DEFAULT NULL COMMENT '编号',
+  `minzu` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '民族',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for news

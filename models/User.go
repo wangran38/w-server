@@ -19,7 +19,7 @@ type User struct {
 }
 
 func (a *User) TableName() string {
-	return "user"0.
+	return "user"
 }
 func AddUser(a *User) error {
 	_, err := orm.Insert(a)

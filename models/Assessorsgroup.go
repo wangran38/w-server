@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-type Authgroup struct {
+type Assessorsgroup struct {
 	Id      int64     `json:"id"`
 	Pid     int       `json:"pid"`
 	Name    string    `json:"name" xorm:"LONGTEXT "`
@@ -14,7 +14,7 @@ type Authgroup struct {
 	Updated time.Time `json:"updatetime" xorm:"int"`
 	Status  int       `json:"status"`
 }
-type Authgrouptree struct {
+type Assessorsgrouptree struct {
 	Id       int64     `json:"id"`
 	Pid      int       `json:"pid"`
 	Name     string    `json:"name" xorm:"LONGTEXT "`
@@ -22,31 +22,31 @@ type Authgrouptree struct {
 	Created  time.Time `json:"createtime" xorm:"int"`
 	Updated  time.Time `json:"updatetime" xorm:"int"`
 	Status   int       `json:"status"`
-	Children []*Authgrouptree
+	Children []*Assessorsgrouptree
 }
 
-func (a *Authgroup) TableName() string {
-	return "auth_group"
+func (a *Assessorsgroup) TableName() string {
+	return "Assessors_group"
 }
 
 // 获取树状数据
-func Getgrouptree(pid int) []*Authgrouptree {
-	m := new(Authgroup)
+func GetAssessorsgrouptree(pid int) []*Assessorsgrouptree {
+	m := new(Assessorsgroup)
 	//不new一个新的，采用结构体，外部无法访问()getruletreee() []*tt这样子，只能new一个，然后去访问
-	return m.Treegrouplist(pid)
+	return m.TreeAssessorsgrouplist(pid)
 
 }
 
 // 全部菜单
-func (m *Authgroup) Treegrouplist(pid int) []*Authgrouptree {
+func (m *Assessorsgroup) TreeAssessorsgrouplist(pid int) []*Assessorsgrouptree {
 	// menus := new(Authgroup)
 	// // 	var a []Authrule
-	var menus []*Authgroup
+	var menus []*Assessorsgroup
 	orm.Where("pid = ?", pid).Find(&menus)
-	treelist := []*Authgrouptree{}
+	treelist := []*Assessorsgrouptree{}
 	for _, v := range menus {
-		child := v.Treegrouplist(int(v.Id))
-		node := &Authgrouptree{
+		child := v.TreeAssessorsgrouplist(int(v.Id))
+		node := &Assessorsgrouptree{
 			Id:     v.Id,
 			Pid:    v.Pid,
 			Name:   v.Name,
@@ -61,8 +61,8 @@ func (m *Authgroup) Treegrouplist(pid int) []*Authgrouptree {
 }
 
 // 根据用户id找用户返回数据
-func SelectGidRule(Id int64) (*Authgroup, error) {
-	a := new(Authgroup)
+func SelectAssessorsGidRule(Id int64) (*Assessorsgroup, error) {
+	a := new(Assessorsgroup)
 	has, err := orm.Where("id = ?", Id).Get(a)
 	if err != nil {
 		return nil, err
@@ -75,25 +75,25 @@ func SelectGidRule(Id int64) (*Authgroup, error) {
 }
 
 // 添加
-func Addgroup(a *Authgroup) error {
+func AddAssessorsgroup(a *Assessorsgroup) error {
 	_, err := orm.Insert(a)
 	return err
 }
 
 // 修改
-func Upgroup(a *Authgroup) (int64, error) {
+func UpAssessorsgroup(a *Assessorsgroup) (int64, error) {
 	affected, err := orm.Id(a.Id).Cols("pid").Update(a)
 	return affected, err
 
 }
-func GetgroupList(limit int, pagesize int, search string, order string) []*Authgroup {
+func GetAssessorsgroupList(limit int, pagesize int, search string, order string) []*Assessorsgroup {
 	//fmt.Println("搜索关键词",search)
 	//    limit,_ := strconv.Atoi(limits)
 	//
 	//   if pagesize-1<1 {
 	page := pagesize - 1
 	//   }
-	listdata := []*Authgroup{}
+	listdata := []*Assessorsgroup{}
 	//拼接搜索分页查询语句
 	var byorder string
 	byorder = "id ASC"
@@ -111,10 +111,10 @@ func GetgroupList(limit int, pagesize int, search string, order string) []*Authg
 	return listdata
 }
 
-func Getgrouptotal(search string) int64 {
+func GetAssessorsgrouptotal(search string) int64 {
 	var num int64
 	num = 0
-	a := new(Authgroup)
+	a := new(Assessorsgroup)
 	total, err := orm.Cols("id", "name").Where("name like ?", "%"+search+"%").Count(a)
 	if err == nil {
 		num = total
@@ -123,9 +123,9 @@ func Getgrouptotal(search string) int64 {
 	return num
 }
 
-func DeleteGroup(id int64) int {
+func DeleteAssessorsgroup(id int64) int {
 	// intid, _ := strconv.ParseInt(id, 10, 64)
-	a := new(Authgroup)
+	a := new(Assessorsgroup)
 	outnum, _ := orm.ID(id).Delete(a)
 
 	return int(outnum)
@@ -133,8 +133,8 @@ func DeleteGroup(id int64) int {
 }
 
 // 根据
-func SelectGroupByName(Name string) (*Authgroup, error) {
-	a := new(Authgroup)
+func SelectAssessorsgroupByName(Name string) (*Assessorsgroup, error) {
+	a := new(Assessorsgroup)
 	has, err := orm.Where("name = ?", Name).Get(a)
 	if err != nil {
 		return nil, err

@@ -2,9 +2,10 @@ package controllers
 
 import (
 	// "fmt"
-	"changxiaoyang/models"
 	"time"
-	"changxiaoyang/utils"
+	"w-server/models"
+	"w-server/utils"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -14,8 +15,9 @@ type Groupserch struct {
 	Page  int    `json:"page"`
 	Order string `json:"sort"`
 }
+
 // type Any interface{}
-//获取当前用户信息
+// 获取当前用户信息
 func Getgrouplist(c *gin.Context) {
 	//从header中获取到token
 	var searchdata Groupserch
@@ -50,19 +52,20 @@ func Getgrouplist(c *gin.Context) {
 		return
 	}
 }
-//获取全部上下级
+
+// 获取全部上下级
 func TreeGroup(c *gin.Context) {
 	token := c.Request.Header.Get("Authorization")
 	if token != "" || len(token) <= 0 {
 		user := utils.GetLoginUser(token)
-		access, _ := models.SelectAdminGid(user.Id)//查找组别
+		access, _ := models.SelectAdminGid(user.Id) //查找组别
 		if access == nil {
-		c.JSON(200, gin.H{
-			"code":    201,
-			"message": "失败",
-			"data": "",
-		})
-		return
+			c.JSON(200, gin.H{
+				"code":    201,
+				"message": "失败",
+				"data":    "",
+			})
+			return
 		}
 		// group, err := models.SelectGidRule(access.Gid)//查找组别菜单
 		// if err != nil {
@@ -73,26 +76,25 @@ func TreeGroup(c *gin.Context) {
 		// })
 		// return
 		// }
-	
 
-        grouplist := models.Getgrouptree(0)
-
+		grouplist := models.Getgrouptree(0)
 
 		c.JSON(200, gin.H{
 			"code":    200,
 			"message": "数据获取成功",
-			"data": grouplist,
+			"data":    grouplist,
 		})
 
 	} else {
-			c.JSON(200, gin.H{
+		c.JSON(200, gin.H{
 			"code":    201,
 			"message": "你没有权限，或已经退出",
-			"data": "",
+			"data":    "",
 		})
 	}
 }
-//删除用户组
+
+// 删除用户组
 func Delgroup(c *gin.Context) {
 	var json models.Authgroup
 	// json := make(map[string]interface{}) //注意该结构接受的内容
@@ -112,20 +114,19 @@ func Delgroup(c *gin.Context) {
 		})
 	}
 
-
-
 }
-//添加用户组
+
+// 添加用户组
 func AddGroup(c *gin.Context) {
 	var formdata models.Authgroup
 	c.ShouldBind(&formdata)
-		// 	c.JSON(200, gin.H{
-		// 	"code": "201",
-		// 	"msg":  "添加数据出错！",
-		// 	"data": formdata,
-		// })
+	// 	c.JSON(200, gin.H{
+	// 	"code": "201",
+	// 	"msg":  "添加数据出错！",
+	// 	"data": formdata,
+	// })
 	Rulesdata := new(models.Authgroup)
-	
+
 	Rulesdata.Pid = formdata.Pid
 	Rulesdata.Name = formdata.Name
 	Rulesdata.Rules = formdata.Rules
@@ -140,7 +141,7 @@ func AddGroup(c *gin.Context) {
 		return
 	}
 	err := models.Addgroup(Rulesdata) //判断账号是否存在！
-		if err != nil {
+	if err != nil {
 		c.JSON(201, gin.H{
 			"code": 201,
 			"msg":  "添加数据出错！",
@@ -157,10 +158,10 @@ func AddGroup(c *gin.Context) {
 		})
 
 	}
-	
+
 }
 
-//修改用户组
+// 修改用户组
 func EditGroup(c *gin.Context) {
 	var formdata models.Authgroup
 	c.ShouldBind(&formdata)
@@ -169,31 +170,31 @@ func EditGroup(c *gin.Context) {
 	intodata.Pid = formdata.Pid
 	intodata.Name = formdata.Name
 	intodata.Rules = formdata.Rules
-	if(formdata.Id<=0) {
-	c.JSON(201, gin.H{
+	if formdata.Id <= 0 {
+		c.JSON(201, gin.H{
 			"code": 201,
 			"msg":  "修改选择的ID出错！",
 			"data": "",
 		})
 		return
 	} else {
-		res,err := models.Upgroup(intodata) //判断账号是否存在！
+		res, err := models.Upgroup(intodata) //判断账号是否存在！
 		if err != nil {
-		c.JSON(201, gin.H{
-			"code": 201,
-			"msg":  "修改数据出错！",
-			"data": err,
-		})
-		return
-	} else {
-		
-		c.JSON(200, gin.H{
-			"code": 200,
-			"msg":  "数据修改成功！",
-			"data": res,
-		})
+			c.JSON(201, gin.H{
+				"code": 201,
+				"msg":  "修改数据出错！",
+				"data": err,
+			})
+			return
+		} else {
 
-	}
+			c.JSON(200, gin.H{
+				"code": 200,
+				"msg":  "数据修改成功！",
+				"data": res,
+			})
+
+		}
 	}
 
 }

@@ -4,12 +4,12 @@ import (
 
 	// "hanyun-admin/src/service"
 	// "hanyun-admin/src/utils"
-	"changxiaoyang/lib"
-	"changxiaoyang/models"
-	"changxiaoyang/utils"
 	"net/http"
-	"time"
 	"strconv"
+	"time"
+	"w-server/lib"
+	"w-server/models"
+	"w-server/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,7 +19,7 @@ type LoginForm struct {
 	Password string `form:"password" binding:"required"`
 }
 
-//登录
+// 登录
 func LoginController(c *gin.Context) {
 
 	// dtime := time.Date(2020, 8, 25, 0, 0, 0, 0, time.Local).Unix()
@@ -49,7 +49,7 @@ func LoginController(c *gin.Context) {
 			return
 
 		}
-		adminid:=strconv.FormatInt(admindata.Id,10) //转换字符串
+		adminid := strconv.FormatInt(admindata.Id, 10) //转换字符串
 		token := utils.CreateJsonWebToken(adminid)
 		result := make(map[string]interface{})
 		result["token"] = token
@@ -78,7 +78,7 @@ func LoginController(c *gin.Context) {
 
 }
 
-//获取当前用户信息
+// 获取当前用户信息
 func GetLoginAdminInfo(c *gin.Context) {
 	//从header中获取到token
 	token := c.Request.Header.Get("Authorization")
@@ -111,13 +111,14 @@ func GetLoginAdminInfo(c *gin.Context) {
 		})
 	}
 }
-//退出登录
+
+// 退出登录
 func Loginout(c *gin.Context) {
-		//从header中获取到token
+	//从header中获取到token
 	token := c.Request.Header.Get("Authorization")
 	if token != "" || len(token) != 0 {
-	utils.DelRedisKey(token)
-			c.JSON(201, gin.H{
+		utils.DelRedisKey(token)
+		c.JSON(201, gin.H{
 			"code":    200,
 			"message": "退出成功！",
 			"data":    "",
@@ -125,7 +126,7 @@ func Loginout(c *gin.Context) {
 			// "roles":       role,
 		})
 	} else {
-			c.JSON(201, gin.H{
+		c.JSON(201, gin.H{
 			"code":    201,
 			"message": "你没有权限！",
 			"data":    "",

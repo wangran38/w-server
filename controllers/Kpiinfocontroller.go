@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"changxiaoyang/models"
 	"time"
+	"w-server/models"
 
 	"github.com/gin-gonic/gin"
 )

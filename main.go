@@ -2,7 +2,7 @@ package main
 
 import (
 	// _ "ginstudy/models"
-	_ "changxiaoyang/routers"
+	_ "w-server/routers"
 )
 
 func main() {

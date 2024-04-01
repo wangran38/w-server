@@ -1,17 +1,17 @@
-module changxiaoyang
+module w-server
 
-go 1.20
+go 1.22.1
 
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/garyburd/redigo v1.6.4
 	github.com/gin-gonic/gin v1.9.1
-	github.com/go-sql-driver/mysql v1.7.1
+	github.com/go-sql-driver/mysql v1.8.1
 	github.com/go-xorm/xorm v0.7.9
-	github.com/wechatpay-apiv3/wechatpay-go v0.2.18
 )
 
 require (
+	filippo.io/edwards25519 v1.1.0 // indirect
 	github.com/bytedance/sonic v1.9.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20221115062448-fe3a3abad311 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect

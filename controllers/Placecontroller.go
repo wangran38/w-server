@@ -2,36 +2,38 @@ package controllers
 
 import (
 	// "fmt"
-	"changxiaoyang/models"
 	"time"
+	"w-server/models"
+
 	// "linfeng/utils"
 	"github.com/gin-gonic/gin"
 )
 
 type Placeserch struct {
-	Id      int64     `json:"id"`
-    Cityid     int64       `json:"city_id"`
-	Countryid     int64       `json:"country_id"`
-	Title    string    `json:"title" xorm:"varchar(200)"`
-	Image   string    `json:"image" xorm:"TEXT "`
-	Keywords   string  `json:"keywords" xorm:"TEXT "`
-	Description   string  `json:"description" xorm:" TEXT "`
-    Oldlink    string    `json:"oldlink" xorm:"varchar(200)"`
-	Address    string    `json:"address" xorm:"varchar(200)"`
-    Lng int `json:"lng"`  //地址经度
-    Lat int `json:"lat"`  //地址维度
-	Content   string  `json:"content" xorm:"LONGTEXT "`
-	Isshow     int       `json:"isshow" xorm:"not null default 1 comment('是否启用 默认1 是 0 无') TINYINT"`
-	Created time.Time `json:"createtime" xorm:"int"`
-	Updated time.Time `json:"updatetime" xorm:"int"`
-    Iscountry     int       `json:"iscountry" xorm:"not null default 1 comment('是否启用 默认2 是 1 无') TINYINT"`
-	Weigh   int  `json:"weigh"`
-	Limit     int    `json:"limit"`
-	Page      int    `json:"page"`
-	Order     string `json:"order"`
+	Id          int64     `json:"id"`
+	Cityid      int64     `json:"city_id"`
+	Countryid   int64     `json:"country_id"`
+	Title       string    `json:"title" xorm:"varchar(200)"`
+	Image       string    `json:"image" xorm:"TEXT "`
+	Keywords    string    `json:"keywords" xorm:"TEXT "`
+	Description string    `json:"description" xorm:" TEXT "`
+	Oldlink     string    `json:"oldlink" xorm:"varchar(200)"`
+	Address     string    `json:"address" xorm:"varchar(200)"`
+	Lng         int       `json:"lng"` //地址经度
+	Lat         int       `json:"lat"` //地址维度
+	Content     string    `json:"content" xorm:"LONGTEXT "`
+	Isshow      int       `json:"isshow" xorm:"not null default 1 comment('是否启用 默认1 是 0 无') TINYINT"`
+	Created     time.Time `json:"createtime" xorm:"int"`
+	Updated     time.Time `json:"updatetime" xorm:"int"`
+	Iscountry   int       `json:"iscountry" xorm:"not null default 1 comment('是否启用 默认2 是 1 无') TINYINT"`
+	Weigh       int       `json:"weigh"`
+	Limit       int       `json:"limit"`
+	Page        int       `json:"page"`
+	Order       string    `json:"order"`
 }
+
 // type Any interface{}
-//获取当前用户信息
+// 获取当前用户信息
 func Getplacelist(c *gin.Context) {
 	//从header中获取到token
 	var searchdata Placeserch
@@ -42,7 +44,7 @@ func Getplacelist(c *gin.Context) {
 	limit := searchdata.Limit
 	page := searchdata.Page
 	psearch := &models.Places{
-		Title:     searchdata.Title,
+		Title: searchdata.Title,
 	}
 	order := searchdata.Order
 	listdata := models.GetPlacesList(limit, page, psearch, order)
@@ -68,6 +70,7 @@ func Getplacelist(c *gin.Context) {
 		return
 	}
 }
+
 //获取全部上下级
 // func TreePlace(c *gin.Context) {
 
@@ -80,7 +83,6 @@ func Getplacelist(c *gin.Context) {
 
 // }
 
-
 // //添加用户组
 // func AddPlace(c *gin.Context) {
 // 	var formdata models.Place
@@ -91,7 +93,7 @@ func Getplacelist(c *gin.Context) {
 // 		// 	"data": formdata,
 // 		// })
 // 	Rulesdata := new(models.Place)
-	
+
 // 	Rulesdata.Pid = formdata.Pid
 // 	Rulesdata.Title = formdata.Title
 // 	Rulesdata.Image = formdata.Image
@@ -125,7 +127,7 @@ func Getplacelist(c *gin.Context) {
 // 		})
 
 // 	}
-	
+
 // }
 
 // // //修改用户组
@@ -158,7 +160,7 @@ func Getplacelist(c *gin.Context) {
 // 		})
 // 		return
 // 	} else {
-		
+
 // 		c.JSON(200, gin.H{
 // 			"code": 200,
 // 			"msg":  "数据修改成功！",

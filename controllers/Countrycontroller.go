@@ -2,22 +2,24 @@ package controllers
 
 import (
 	// "fmt"
-	"changxiaoyang/models"
-	_"time"
+	_ "time"
+	"w-server/models"
+
 	// "linfeng/utils"
 	"github.com/gin-gonic/gin"
 )
 
 type Countryserch struct {
-    Id  int64 `json:"id"`
-    Pid  int `json:"pid"`
+	Id    int64  `json:"id"`
+	Pid   int    `json:"pid"`
 	Name  string `json:"name"`
 	Limit int    `json:"limit"`
 	Page  int    `json:"page"`
 	Order string `json:"sort"`
 }
+
 // type Any interface{}
-//获取当前用户信息
+// 获取当前用户信息
 func Getcountrylist(c *gin.Context) {
 	//从header中获取到token
 	var searchdata Countryserch
@@ -28,9 +30,9 @@ func Getcountrylist(c *gin.Context) {
 	limit := searchdata.Limit
 	page := searchdata.Page
 	search := &models.Country{
-		Id:        searchdata.Id,
-		Pid:       searchdata.Pid,
-		Name:     searchdata.Name,
+		Id:   searchdata.Id,
+		Pid:  searchdata.Pid,
+		Name: searchdata.Name,
 	}
 	order := searchdata.Order
 	listdata := models.GetCountryList(limit, page, search, order)
@@ -56,30 +58,30 @@ func Getcountrylist(c *gin.Context) {
 		return
 	}
 }
-//获取全部上下级
+
+// 获取全部上下级
 func Treecountry(c *gin.Context) {
 
-        grouplist := models.Getcountrytree(0)
-		c.JSON(200, gin.H{
-			"code":    200,
-			"message": "数据获取成功",
-			"data": grouplist,
-		})
+	grouplist := models.Getcountrytree(0)
+	c.JSON(200, gin.H{
+		"code":    200,
+		"message": "数据获取成功",
+		"data":    grouplist,
+	})
 
 }
-
 
 // //添加用户组
 func Addcountry(c *gin.Context) {
 	var formdata models.Country
 	c.ShouldBind(&formdata)
-		// 	c.JSON(200, gin.H{
-		// 	"code": "201",
-		// 	"msg":  "添加数据出错！",
-		// 	"data": formdata,
-		// })
+	// 	c.JSON(200, gin.H{
+	// 	"code": "201",
+	// 	"msg":  "添加数据出错！",
+	// 	"data": formdata,
+	// })
 	Rulesdata := new(models.Country)
-	
+
 	Rulesdata.Pid = formdata.Pid
 	Rulesdata.Name = formdata.Name
 	Rulesdata.Shortname = formdata.Shortname
@@ -96,7 +98,7 @@ func Addcountry(c *gin.Context) {
 		return
 	}
 	err := models.AddCountry(Rulesdata) //判断账号是否存在！
-		if err != nil {
+	if err != nil {
 		c.JSON(201, gin.H{
 			"code": 201,
 			"msg":  "添加数据出错！",
@@ -113,7 +115,7 @@ func Addcountry(c *gin.Context) {
 		})
 
 	}
-	
+
 }
 
 // //修改用户组
@@ -129,31 +131,31 @@ func Editcountry(c *gin.Context) {
 	intodata.Pinyin = formdata.Pinyin
 	intodata.Code = formdata.Code
 	// intodata.Content = formdata.Content
-	if(formdata.Id<=0) {
-	c.JSON(201, gin.H{
+	if formdata.Id <= 0 {
+		c.JSON(201, gin.H{
 			"code": 201,
 			"msg":  "修改选择的ID出错！",
 			"data": "",
 		})
 		return
 	} else {
-		res,err := models.UpCountry(intodata) //判断账号是否存在！
+		res, err := models.UpCountry(intodata) //判断账号是否存在！
 		if err != nil {
-		c.JSON(201, gin.H{
-			"code": 201,
-			"msg":  "修改数据出错！",
-			"data": err,
-		})
-		return
-	} else {
-		
-		c.JSON(200, gin.H{
-			"code": 200,
-			"msg":  "数据修改成功！",
-			"data": res,
-		})
+			c.JSON(201, gin.H{
+				"code": 201,
+				"msg":  "修改数据出错！",
+				"data": err,
+			})
+			return
+		} else {
 
-	}
+			c.JSON(200, gin.H{
+				"code": 200,
+				"msg":  "数据修改成功！",
+				"data": res,
+			})
+
+		}
 	}
 
 }

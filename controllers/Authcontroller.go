@@ -2,18 +2,19 @@ package controllers
 
 import (
 	// "fmt"
-	"changxiaoyang/models"
-    "changxiaoyang/utils"
-	"github.com/gin-gonic/gin"
 	"strings"
+	"w-server/models"
+	"w-server/utils"
+
+	"github.com/gin-gonic/gin"
 )
 
-//获取当前用户信息
+// 获取当前用户信息
 func GetAdminInfo(c *gin.Context) {
 	//从header中获取到token
 	token := c.Request.Header.Get("Authorization")
 	if token != "" || len(token) != 0 {
-    //   fmt.Println(token)
+		//   fmt.Println(token)
 		user := utils.GetLoginUser(token)
 		result := make(map[string]interface{})
 		// result["user"] = user //返回当前总数
@@ -32,7 +33,7 @@ func GetAdminInfo(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"code":    200,
 			"message": "数据获取成功",
-			"data": result,
+			"data":    result,
 		})
 	} else {
 		c.JSON(201, gin.H{
@@ -45,48 +46,48 @@ func GetAdminInfo(c *gin.Context) {
 	}
 }
 
-//获取当前用户 所有的权限控制
+// 获取当前用户 所有的权限控制
 func GetAdminRule(c *gin.Context) {
 	token := c.Request.Header.Get("Authorization")
 	if token != "" || len(token) != 0 {
-    //   fmt.Println(token)
+		//   fmt.Println(token)
 		user := utils.GetLoginUser(token)
-		access, err := models.SelectAdminGid(user.Id)//查找组别
+		access, err := models.SelectAdminGid(user.Id) //查找组别
 		if err != nil {
-		c.JSON(200, gin.H{
-			"code":    201,
-			"message": "失败",
-			"data": err,
-		})
-		return
+			c.JSON(200, gin.H{
+				"code":    201,
+				"message": "失败",
+				"data":    err,
+			})
+			return
 		}
-		group, err := models.SelectGidRule(access.Gid)//查找组别菜单
+		group, err := models.SelectGidRule(access.Gid) //查找组别菜单
 		if err != nil {
-		c.JSON(200, gin.H{
-			"code":    201,
-			"message": "获取菜单失败",
-			"data": err,
-		})
-		return
+			c.JSON(200, gin.H{
+				"code":    201,
+				"message": "获取菜单失败",
+				"data":    err,
+			})
+			return
 		}
 		//判断是否是超级用户
-		if group.Rules== "*" {
+		if group.Rules == "*" {
 			rule := models.Getruletree()
-			if rule== nil {
-			c.JSON(200, gin.H{
-			"code":    201,
-			"message": "获取菜单失败1",
-			"data": "",
-		})
-		return
+			if rule == nil {
+				c.JSON(200, gin.H{
+					"code":    201,
+					"message": "获取菜单失败1",
+					"data":    "",
+				})
+				return
 			} else {
 
-		c.JSON(200, gin.H{
-			"code":    200,
-			"message": "数据获取成功1",
-			"data": rule,
-		})
-		return
+				c.JSON(200, gin.H{
+					"code":    200,
+					"message": "数据获取成功1",
+					"data":    rule,
+				})
+				return
 			}
 		}
 		ruleslist := models.Getruleadmintree(group.Rules)
@@ -102,7 +103,7 @@ func GetAdminRule(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"code":    200,
 			"message": "数据获取成功2",
-			"data": ruleslist,
+			"data":    ruleslist,
 		})
 	} else {
 		c.JSON(201, gin.H{
@@ -115,7 +116,7 @@ func GetAdminRule(c *gin.Context) {
 	}
 }
 
-//获取所有的菜单列表
+// 获取所有的菜单列表
 func GetAllRule(c *gin.Context) {
 	var formdata models.Authgroup
 	c.ShouldBind(&formdata)
@@ -138,25 +139,24 @@ func GetAllRule(c *gin.Context) {
 	// 		return
 	// 	}
 
-	// } 
-	
+	// }
+
 	s := strings.Split(formdata.Rules, ",")
-		if s == nil {
-			c.JSON(200, gin.H{
+	if s == nil {
+		c.JSON(200, gin.H{
 			"code":    201,
 			"message": "获取菜单失败1",
-			"data": "",
+			"data":    "",
 		})
 		return
-			} else {
-	
+	} else {
+
 		c.JSON(200, gin.H{
 			"code":    200,
 			"message": "数据获取成功1",
-			"data": s,
+			"data":    s,
 		})
 		return
-			}
-
+	}
 
 }

@@ -2,8 +2,8 @@ package controllers
 
 import (
 	// "fmt"
-	"changxiaoyang/models"
 	"time"
+	"w-server/models"
 
 	// "linfeng/utils"
 	"github.com/gin-gonic/gin"

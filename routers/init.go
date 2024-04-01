@@ -1,14 +1,14 @@
 package routers
 
 import (
-	"changxiaoyang/apic"
-	"changxiaoyang/controllers"
-	"changxiaoyang/htmlc"
-	_ "changxiaoyang/models"
-	"changxiaoyang/utils"
 	"fmt"
 	"net/http"
 	"strings"
+	"w-server/apic"
+	"w-server/controllers"
+	"w-server/htmlc"
+	_ "w-server/models"
+	"w-server/utils"
 
 	"github.com/gin-gonic/gin"
 	//"github.com/unrolled/secure"

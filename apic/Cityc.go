@@ -2,29 +2,31 @@ package apic
 
 import (
 	// "fmt"
-	"changxiaoyang/models"
 	_ "time"
+	"w-server/models"
+
 	// "linfeng/utils"
 	"github.com/gin-gonic/gin"
 )
 
 type Cityserch struct {
-	Id int64 `json:"id"`
-	Shortname  string `json:"shortname"`
-	Pid  int `json:"pid"`
-    Level  int `json:"level"`
-	Limit int    `json:"limit"`
-	Page  int    `json:"page"`
-	Order string `json:"sort"`
+	Id        int64  `json:"id"`
+	Shortname string `json:"shortname"`
+	Pid       int    `json:"pid"`
+	Level     int    `json:"level"`
+	Limit     int    `json:"limit"`
+	Page      int    `json:"page"`
+	Order     string `json:"sort"`
 }
+
 // type Any interface{}
-//获取当前用户信息
+// 获取当前用户信息
 func Getcitylist(c *gin.Context) {
 	//从header中获取到token
 	var searchdata Cityserch
 	c.BindJSON(&searchdata)
 	// //读取数据库
-	
+
 	// name:=""
 	limit := searchdata.Limit
 	page := searchdata.Page
@@ -33,12 +35,12 @@ func Getcitylist(c *gin.Context) {
 	search := &models.City{
 		Id:        searchdata.Id,
 		Pid:       searchdata.Pid,
-        Level:       searchdata.Level,
-		Shortname:     searchdata.Shortname,
+		Level:     searchdata.Level,
+		Shortname: searchdata.Shortname,
 	}
 	listdata := models.GetCityList(limit, page, search, order)
 	listnum := models.GetCitytotal(search)
-result := make(map[string]interface{})
+	result := make(map[string]interface{})
 	result["page"] = page
 	result["totalnum"] = listnum
 	result["limit"] = limit
@@ -59,22 +61,20 @@ result := make(map[string]interface{})
 		return
 	}
 }
-//获取全部上下级
-//获取全部上下级
+
+// 获取全部上下级
+// 获取全部上下级
 func Treecity(c *gin.Context) {
 	var searchdata Cityserch
 	c.BindJSON(&searchdata)
 	pid := searchdata.Pid
-	if pid>=1 {
-        grouplist := models.Getcitytree(pid)
+	if pid >= 1 {
+		grouplist := models.Getcitytree(pid)
 		c.JSON(200, gin.H{
 			"code":    200,
 			"message": "数据获取成功",
-			"data": grouplist,
+			"data":    grouplist,
 		})
 	}
 
-
 }
-
-

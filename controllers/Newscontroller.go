@@ -2,29 +2,32 @@ package controllers
 
 import (
 	// "fmt"
-	"changxiaoyang/models"
 	"time"
+	"w-server/models"
+
 	// "linfeng/utils"
 	"github.com/gin-gonic/gin"
 )
+
 // type NewsController struct{}
 type Newsserch struct {
-	Id      int64     `json:"id"`
-	Categoryid     int       `json:"categroy_id"`
-	Title    string    `json:"title" xorm:"varchar(200)"`
-	Image   string    `json:"image" xorm:"TEXT "`
-	Keywords   string  `json:"keywords" xorm:"TEXT "`
-	Description   string  `json:"description" xorm:" TEXT "`
-	Content   string  `json:"content" xorm:"LONGTEXT "`
-	Isshow     int       `json:"isshow" xorm:"not null default 1 comment('是否启用 默认1 是 0 无') TINYINT"`
-	Created time.Time `json:"createtime" xorm:"int"`
-	Updated time.Time `json:"updatetime" xorm:"int"`
-	Limit     int    `json:"limit"`
-	Page      int    `json:"page"`
-	Order     string `json:"order"`
+	Id          int64     `json:"id"`
+	Categoryid  int       `json:"categroy_id"`
+	Title       string    `json:"title" xorm:"varchar(200)"`
+	Image       string    `json:"image" xorm:"TEXT "`
+	Keywords    string    `json:"keywords" xorm:"TEXT "`
+	Description string    `json:"description" xorm:" TEXT "`
+	Content     string    `json:"content" xorm:"LONGTEXT "`
+	Isshow      int       `json:"isshow" xorm:"not null default 1 comment('是否启用 默认1 是 0 无') TINYINT"`
+	Created     time.Time `json:"createtime" xorm:"int"`
+	Updated     time.Time `json:"updatetime" xorm:"int"`
+	Limit       int       `json:"limit"`
+	Page        int       `json:"page"`
+	Order       string    `json:"order"`
 }
+
 // type Any interface{}
-//获取当前用户信息
+// 获取当前用户信息
 func Getnewslist(c *gin.Context) {
 	//从header中获取到token
 	var searchdata Newsserch
@@ -36,10 +39,10 @@ func Getnewslist(c *gin.Context) {
 	page := searchdata.Page
 	order := searchdata.Order
 	search := &models.News{
-		Id:        searchdata.Id,
+		Id:         searchdata.Id,
 		Categoryid: searchdata.Categoryid,
-		Title:     searchdata.Title,
-		Isshow:  searchdata.Isshow,
+		Title:      searchdata.Title,
+		Isshow:     searchdata.Isshow,
 	}
 	listdata := models.GetNewsList(limit, page, search, order)
 	listnum := models.GetNewstotal(search)
@@ -69,13 +72,13 @@ func Getnewslist(c *gin.Context) {
 func AddNews(c *gin.Context) {
 	var formdata models.News
 	c.ShouldBind(&formdata)
-		// 	c.JSON(200, gin.H{
-		// 	"code": "201",
-		// 	"msg":  "添加数据出错！",
-		// 	"data": formdata,
-		// })
+	// 	c.JSON(200, gin.H{
+	// 	"code": "201",
+	// 	"msg":  "添加数据出错！",
+	// 	"data": formdata,
+	// })
 	Intodata := new(models.News)
-	
+
 	Intodata.Categoryid = formdata.Categoryid
 	Intodata.Title = formdata.Title
 	Intodata.Image = formdata.Image
@@ -93,7 +96,7 @@ func AddNews(c *gin.Context) {
 		return
 	}
 	err := models.Addnews(Intodata) //判断账号是否存在！
-		if err != nil {
+	if err != nil {
 		c.JSON(201, gin.H{
 			"code": 201,
 			"msg":  "添加数据出错！",
@@ -110,7 +113,7 @@ func AddNews(c *gin.Context) {
 		})
 
 	}
-	
+
 }
 
 // //修改用户组
@@ -127,31 +130,31 @@ func EditNews(c *gin.Context) {
 	updata.Content = formdata.Content
 	updata.Isshow = formdata.Isshow
 	updata.Updated = time.Now()
-	if(formdata.Id<=0) {
-	c.JSON(201, gin.H{
+	if formdata.Id <= 0 {
+		c.JSON(201, gin.H{
 			"code": 201,
 			"msg":  "修改选择的ID出错！",
 			"data": "",
 		})
 		return
 	} else {
-		res,err := models.UpNews(updata) //判断账号是否存在！
+		res, err := models.UpNews(updata) //判断账号是否存在！
 		if err != nil {
-		c.JSON(201, gin.H{
-			"code": 201,
-			"msg":  "修改数据出错！",
-			"data": err,
-		})
-		return
-	} else {
-		
-		c.JSON(200, gin.H{
-			"code": 200,
-			"msg":  "数据修改成功！",
-			"data": res,
-		})
+			c.JSON(201, gin.H{
+				"code": 201,
+				"msg":  "修改数据出错！",
+				"data": err,
+			})
+			return
+		} else {
 
-	}
+			c.JSON(200, gin.H{
+				"code": 200,
+				"msg":  "数据修改成功！",
+				"data": res,
+			})
+
+		}
 	}
 
 }

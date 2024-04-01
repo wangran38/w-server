@@ -2,7 +2,7 @@ package controllers
 
 import (
 	// "fmt"
-	"changxiaoyang/models"
+	"w-server/models"
 	// "time"
 
 	// "linfeng/utils"

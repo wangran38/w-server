@@ -1,10 +1,11 @@
 package controllers
 
 import (
-	"changxiaoyang/lib"
-	"changxiaoyang/models"
 	"net/http"
 	"time"
+	"w-server/lib"
+	"w-server/models"
+
 	// "fmt"
 	// "strconv"
 	"github.com/gin-gonic/gin"
@@ -13,23 +14,24 @@ import (
 type Adminform struct {
 	Username string `form:"username" binding:"required" json:"username"`
 	Nickname string `form:"nickname" binding:"required" json:"nickname"`
-	Phone string `form:"phone" binding:"required" json:"phone"`
-	Email string `form:"email" binding:"required" json:"email"`
-	Avatar string `form:"avatar" binding:"required" json:"avatar"`
-	Gid int64 `form:"gid" binding:"required" json:"gid"`
+	Phone    string `form:"phone" binding:"required" json:"phone"`
+	Email    string `form:"email" binding:"required" json:"email"`
+	Avatar   string `form:"avatar" binding:"required" json:"avatar"`
+	Gid      int64  `form:"gid" binding:"required" json:"gid"`
 	Password string `form:"password" binding:"required" json:"password"`
 }
 type Adminserch struct {
-	ID int `json:"id"`
+	ID       int    `json:"id"`
 	Username string `json:"title"`
-	Limit int `json:"limit"`
-	Page int `json:"page"`
-	Order string `json:"sort"`
+	Limit    int    `json:"limit"`
+	Page     int    `json:"page"`
+	Order    string `json:"sort"`
 }
-// type AdminController struct {
-// 	BaseController //继承统一判断是否登录或者是否有权限类
-// 	// beego.Controller
-// }
+
+//	type AdminController struct {
+//		BaseController //继承统一判断是否登录或者是否有权限类
+//		// beego.Controller
+//	}
 func AddAdmin(c *gin.Context) {
 	var admindata Adminform
 	if err := c.BindJSON(&admindata); err != nil {
@@ -73,25 +75,26 @@ func AddAdmin(c *gin.Context) {
 		Authaccess.Uid = Admin.Id
 		Authaccess.Gid = admindata.Gid
 		err := models.AddAuthaccess(Authaccess) //判断账号是否存在！
-		if err==nil {
-		c.JSON(http.StatusOK, gin.H{
-			"code": 200,
-			"msg":  "数据添加成功！",
-			"data": "",
-		})
-		return
-	} else {
-		c.JSON(http.StatusOK, gin.H{
-			"code": 201,
-			"msg":  "数据添加失败！",
-			"data": err,
-		})
+		if err == nil {
+			c.JSON(http.StatusOK, gin.H{
+				"code": 200,
+				"msg":  "数据添加成功！",
+				"data": "",
+			})
+			return
+		} else {
+			c.JSON(http.StatusOK, gin.H{
+				"code": 201,
+				"msg":  "数据添加失败！",
+				"data": err,
+			})
 
-	}
+		}
 
 	}
 }
-//修改
+
+// 修改
 func EditAdmin(c *gin.Context) {
 	var formdata models.Adminjson
 	c.BindJSON(&formdata)
@@ -102,45 +105,44 @@ func EditAdmin(c *gin.Context) {
 	intodata.Phone = formdata.Phone
 	intodata.Email = formdata.Email
 	intodata.Avatar = formdata.Avatar
-	if intodata.Password!="" {
-	pwd, salt := lib.Password(4, intodata.Password) //截取四位随机盐+上这个做原始密码
-	intodata.Password = pwd
-	intodata.Salt = salt
+	if intodata.Password != "" {
+		pwd, salt := lib.Password(4, intodata.Password) //截取四位随机盐+上这个做原始密码
+		intodata.Password = pwd
+		intodata.Salt = salt
 	}
 
-	if(formdata.Id<=0) {
-	c.JSON(201, gin.H{
+	if formdata.Id <= 0 {
+		c.JSON(201, gin.H{
 			"code": 201,
 			"msg":  "修改选择的ID出错！",
 			"data": "",
 		})
 		return
 	} else {
-		res,err := models.Upadmin(intodata) //判断账号是否存在！
+		res, err := models.Upadmin(intodata) //判断账号是否存在！
 		if err != nil {
-		c.JSON(201, gin.H{
-			"code": 201,
-			"msg":  "修改数据出错！",
-			"data": err,
-		})
-		return
-	} else {
-		// var formdata1 models.Adminjson
-		// c.ShouldBind(&formdata1)
-		updata := new(models.Authaccess)
-		updata.Uid = formdata.Id
-		updata.Gid = formdata.Gid
-		_,err := models.UpAuthaccess(updata) //判断账号是否存在！
-		if err==nil {
-			c.JSON(200, gin.H{
-				"code": 200,
-				"msg":  "数据修改成功！",
-				"data": res,
+			c.JSON(201, gin.H{
+				"code": 201,
+				"msg":  "修改数据出错！",
+				"data": err,
 			})
+			return
+		} else {
+			// var formdata1 models.Adminjson
+			// c.ShouldBind(&formdata1)
+			updata := new(models.Authaccess)
+			updata.Uid = formdata.Id
+			updata.Gid = formdata.Gid
+			_, err := models.UpAuthaccess(updata) //判断账号是否存在！
+			if err == nil {
+				c.JSON(200, gin.H{
+					"code": 200,
+					"msg":  "数据修改成功！",
+					"data": res,
+				})
+			}
+
 		}
-
-
-	}
 	}
 
 }
@@ -149,32 +151,32 @@ func GetAdminlist(c *gin.Context) {
 	// c.BindJSON(&searchdata)
 	c.ShouldBind(&searchdata)
 	result := make(map[string]interface{})
-	limit:= searchdata.Limit
-	page:= searchdata.Page
-	username:= searchdata.Username
-	order:= searchdata.Order
-		listdata := models.GetUserList(limit,page,username,order)
-		listnum := models.GetUsertotal(username)
-		
-		result["page"] = page
-		result["totalnum"] = listnum
-		result["limit"] = limit
-		if listdata== nil {
-			c.JSON(200, gin.H{
+	limit := searchdata.Limit
+	page := searchdata.Page
+	username := searchdata.Username
+	order := searchdata.Order
+	listdata := models.GetUserList(limit, page, username, order)
+	listnum := models.GetUsertotal(username)
+
+	result["page"] = page
+	result["totalnum"] = listnum
+	result["limit"] = limit
+	if listdata == nil {
+		c.JSON(200, gin.H{
 			"code":    201,
 			"message": "获取菜单失败1",
-			"data": "",
+			"data":    "",
 		})
 		return
-			} else {
-result["listdata"] = listdata
+	} else {
+		result["listdata"] = listdata
 		c.JSON(200, gin.H{
 			"code":    200,
 			"message": "数据获取成功1",
-			"data": result,
+			"data":    result,
 		})
 		return
-			}
+	}
 }
 
 func Deladmin(c *gin.Context) {

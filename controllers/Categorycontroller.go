@@ -2,20 +2,22 @@ package controllers
 
 import (
 	// "fmt"
-	"changxiaoyang/models"
 	"time"
+	"w-server/models"
+
 	// "linfeng/utils"
 	"github.com/gin-gonic/gin"
 )
 
 type Categoryserch struct {
-	Title  string `json:"title"`
+	Title string `json:"title"`
 	Limit int    `json:"limit"`
 	Page  int    `json:"page"`
 	Order string `json:"sort"`
 }
+
 // type Any interface{}
-//获取当前用户信息
+// 获取当前用户信息
 func Getcategorylist(c *gin.Context) {
 	//从header中获取到token
 	var searchdata Categoryserch
@@ -50,30 +52,30 @@ func Getcategorylist(c *gin.Context) {
 		return
 	}
 }
-//获取全部上下级
+
+// 获取全部上下级
 func TreeCategory(c *gin.Context) {
 
-        grouplist := models.Getcategorytree(0)
-		c.JSON(200, gin.H{
-			"code":    200,
-			"message": "数据获取成功",
-			"data": grouplist,
-		})
+	grouplist := models.Getcategorytree(0)
+	c.JSON(200, gin.H{
+		"code":    200,
+		"message": "数据获取成功",
+		"data":    grouplist,
+	})
 
 }
-
 
 // //添加用户组
 func AddCategory(c *gin.Context) {
 	var formdata models.Category
 	c.ShouldBind(&formdata)
-		// 	c.JSON(200, gin.H{
-		// 	"code": "201",
-		// 	"msg":  "添加数据出错！",
-		// 	"data": formdata,
-		// })
+	// 	c.JSON(200, gin.H{
+	// 	"code": "201",
+	// 	"msg":  "添加数据出错！",
+	// 	"data": formdata,
+	// })
 	Rulesdata := new(models.Category)
-	
+
 	Rulesdata.Pid = formdata.Pid
 	Rulesdata.Title = formdata.Title
 	Rulesdata.Image = formdata.Image
@@ -90,7 +92,7 @@ func AddCategory(c *gin.Context) {
 		return
 	}
 	err := models.Addcategory(Rulesdata) //判断账号是否存在！
-		if err != nil {
+	if err != nil {
 		c.JSON(201, gin.H{
 			"code": 201,
 			"msg":  "添加数据出错！",
@@ -107,7 +109,7 @@ func AddCategory(c *gin.Context) {
 		})
 
 	}
-	
+
 }
 
 // //修改用户组
@@ -123,31 +125,31 @@ func EditCategory(c *gin.Context) {
 	intodata.Keywords = formdata.Keywords
 	intodata.Description = formdata.Description
 	intodata.Content = formdata.Content
-	if(formdata.Id<=0) {
-	c.JSON(201, gin.H{
+	if formdata.Id <= 0 {
+		c.JSON(201, gin.H{
 			"code": 201,
 			"msg":  "修改选择的ID出错！",
 			"data": "",
 		})
 		return
 	} else {
-		res,err := models.Upcategory(intodata) //判断账号是否存在！
+		res, err := models.Upcategory(intodata) //判断账号是否存在！
 		if err != nil {
-		c.JSON(201, gin.H{
-			"code": 201,
-			"msg":  "修改数据出错！",
-			"data": err,
-		})
-		return
-	} else {
-		
-		c.JSON(200, gin.H{
-			"code": 200,
-			"msg":  "数据修改成功！",
-			"data": res,
-		})
+			c.JSON(201, gin.H{
+				"code": 201,
+				"msg":  "修改数据出错！",
+				"data": err,
+			})
+			return
+		} else {
 
-	}
+			c.JSON(200, gin.H{
+				"code": 200,
+				"msg":  "数据修改成功！",
+				"data": res,
+			})
+
+		}
 	}
 
 }

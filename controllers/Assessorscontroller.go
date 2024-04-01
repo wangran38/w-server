@@ -1,10 +1,10 @@
 package controllers
 
 import (
-	"changxiaoyang/lib"
-	"changxiaoyang/models"
 	"net/http"
 	"time"
+	"w-server/lib"
+	"w-server/models"
 
 	// "fmt"
 	// "strconv"

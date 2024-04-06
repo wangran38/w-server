@@ -7,13 +7,13 @@ import (
 )
 
 type Kpiinfo struct {
-	Id      int64     `json:"id"`                                                //ID自增长
-	Kpiid   int64     `xorm:"comment('姓名')" json:"kpi_id"`                       //ID自增长
-	Title   string    `xorm:"not null varchar(64) comment('指标名称')" json:"title"` //指标名称
-	Score   int       `xorm:"int(10) comment('分数')" json:"score"`                //指标等级
-	Created time.Time `xorm:"int comment('创建时间')" json:"createtime"`             //创建时间戳
-	Updated time.Time `xorm:"int comment('修改时间')"json:"updatetime"`              //更改时间戳
-	Weigh   int       `xorm:"comment('排序')" json:"weigh"`                        //排序，倒序，
+	Id      int64     `json:"id"`                                                 //ID自增长
+	Kpiid   int64     `xorm:"comment('姓名')" json:"kpi_id"`                        //ID自增长
+	Title   string    `xorm:"not null varchar(255) comment('指标名称')" json:"title"` //指标名称
+	Score   int       `xorm:"int(10) comment('分数')" json:"score"`                 //指标等级
+	Created time.Time `xorm:"int comment('创建时间')" json:"createtime"`              //创建时间戳
+	Updated time.Time `xorm:"int comment('修改时间')"json:"updatetime"`               //更改时间戳
+	Weigh   int       `xorm:"comment('排序')" json:"weigh"`                         //排序，倒序，
 	// Is_hassorce int       `xorm:"comment('是否为分值')" json:"weigh"`            //排序，倒序，
 	Status int `xorm:"comment('状态')" json:"status"` //状态
 }

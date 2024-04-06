@@ -8,7 +8,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-//生成jwt身份标识
+// 生成jwt身份标识
 func CreateJsonWebToken(userName string) (token string) {
 	keyInfo := "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()"
 	//将部分用户信息保存到map转化为json
@@ -38,7 +38,37 @@ func CreateJsonWebToken(userName string) (token string) {
 	return
 }
 
-//效验token是否过期
+// 生成jwt评估员身份标识
+func CreateAssessorscToken(phone string) (token string) {
+	keyInfo := "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()"
+	//将部分用户信息保存到map转化为json
+	info := map[string]interface{}{}
+	info["userName"] = phone
+	dataByte, _ := json.Marshal(info)
+	var dataStr = string(dataByte)
+	//获取当前时间戳
+	t := time.Now().Unix()
+	//设置过期时间 30分钟
+	exTime := t + 60000*30
+	//使用Claim保存json
+	//data := jwt.StandardClaims{Subject:dataStr,ExpiresAt:int64(time.Now().Add(time.Hour * 72).Unix())}
+	data := jwt.StandardClaims{Subject: dataStr, ExpiresAt: exTime}
+	tokenInfo := jwt.NewWithClaims(jwt.SigningMethodHS256, data)
+	//生成token字符串
+	token, _ = tokenInfo.SignedString([]byte(keyInfo))
+	tMap := make(map[string]interface{})
+	//把token存进map
+	tMap["token"] = token
+	//过期时间
+	tMap["expireTime"] = exTime
+	json, _ := json.Marshal(tMap)
+	//设置redis有效期
+	timer := 60 * 30
+	InsertRedisKeyExpire("loginAssessors_"+phone, string(json), timer)
+	return
+}
+
+// 效验token是否过期
 func CheckTokenExpired(token string) error {
 	keyInfo := "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()"
 	tokenInfo, _ := jwt.Parse(token, func(token *jwt.Token) (i interface{}, e error) {
@@ -52,7 +82,7 @@ func CheckTokenExpired(token string) error {
 	return err
 }
 
-//解析jwt获取到当前登录用户的唯一标识  返回{"userName":"admin"} json字符串
+// 解析jwt获取到当前登录用户的唯一标识  返回{"userName":"admin"} json字符串
 func GetLoginUserName(token string) string {
 	keyInfo := "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()"
 	tokenInfo, _ := jwt.Parse(token, func(token *jwt.Token) (i interface{}, e error) {
@@ -63,7 +93,7 @@ func GetLoginUserName(token string) string {
 	return jwtMap["sub"].(string)
 }
 
-//根据用户唯一标识从redis取出存在里面的json字符串
+// 根据用户唯一标识从redis取出存在里面的json字符串
 func GetRedisMapByUserName(userName string) (tokenMap map[string]interface{}) {
 	tokenMap = make(map[string]interface{})
 	str := "loginAdmin_" + userName
@@ -76,7 +106,7 @@ func GetRedisMapByUserName(userName string) (tokenMap map[string]interface{}) {
 	return
 }
 
-//验证令牌有效期，相差不足20分钟，自动刷新缓存
+// 验证令牌有效期，相差不足20分钟，自动刷新缓存
 func VerifyToken(tMap map[string]interface{}) {
 	//得到20分钟时间戳
 	MILLIS_MINUTE_TEN := 1000 * 60 * 20

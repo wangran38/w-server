@@ -38,6 +38,18 @@ func Getuserinfo(userName string) models.Admin {
 	return user
 }
 
+// 通过查找数据库取得用户信息
+// func GetAssessorsinfo(userName string) models.Assessors {
+// 	var user models.Assessors
+// 	Userinfo, err := models.SelectAssessorsById(userName)
+// 	if err != nil {
+// 		log.Println("无当前用户信息", err)
+// 	}
+// 	// json.Unmarshal([]byte(userinfo), &user)
+// 	user = *Userinfo
+// 	return user
+// }
+
 // 获取用户信息
 func GetLoginUser(token string) models.Admin {
 	var user models.Admin
@@ -45,6 +57,16 @@ func GetLoginUser(token string) models.Admin {
 	userMap := JsonToMap(jsonStr)
 	userName := userMap["userName"].(string)
 	user = Getuserinfo(userName)
+	return user
+}
+
+// 获取用户信息
+func GetLoginAssessorsc(token string) models.Assessors {
+	var user models.Assessors
+	jsonStr := GetLoginUserName(token)
+	userMap := JsonToMap(jsonStr)
+	userName := userMap["userName"].(string)
+	user = GetAssessorsinfo(userName)
 	return user
 }
 
@@ -63,7 +85,7 @@ func GetLoginAssessorsInfo(phone string) models.Assessors {
 // 通过查找数据库取得用户信息
 func GetAssessorsinfo(phone string) models.Assessors {
 	var user models.Assessors
-	Userinfo, err := models.SelectAssessorsbyphone(phone)
+	Userinfo, err := models.SelectAssessorsById(phone)
 	if err != nil {
 		log.Println("无当前用户信息", err)
 	}

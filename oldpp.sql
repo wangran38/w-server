@@ -11,7 +11,7 @@
  Target Server Version : 80012
  File Encoding         : 65001
 
- Date: 31/03/2024 17:07:44
+ Date: 03/04/2024 17:24:59
 */
 
 SET NAMES utf8mb4;
@@ -3840,7 +3840,13 @@ CREATE TABLE `assessors`  (
   `created` datetime(0) NULL DEFAULT NULL,
   `updated` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = MyISAM AUTO_INCREMENT = 9 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of assessors
+-- ----------------------------
+INSERT INTO `assessors` VALUES (8, '', '', '123456548583', '', 'NaM2', 0, '', 0, 0, '', '', '24f68400b3ca6b8528e5c52f80a9607d', '2024-04-01 14:53:30', '2024-04-01 14:53:30');
+INSERT INTO `assessors` VALUES (7, '', '', '123456548582', '', 'MClD', 0, '', 0, 0, '', '', '500006b44eeb94b827e3a32c08ab3089', '2024-04-01 14:41:28', '2024-04-01 14:41:28');
 
 -- ----------------------------
 -- Table structure for assessors_group
@@ -3867,6 +3873,16 @@ CREATE TABLE `assessors_group_access`  (
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Fixed;
 
 -- ----------------------------
+-- Records of assessors_group_access
+-- ----------------------------
+INSERT INTO `assessors_group_access` VALUES (4, 1);
+INSERT INTO `assessors_group_access` VALUES (3, 1);
+INSERT INTO `assessors_group_access` VALUES (5, 1);
+INSERT INTO `assessors_group_access` VALUES (6, 1);
+INSERT INTO `assessors_group_access` VALUES (7, 1);
+INSERT INTO `assessors_group_access` VALUES (8, 1);
+
+-- ----------------------------
 -- Table structure for auth_group
 -- ----------------------------
 DROP TABLE IF EXISTS `auth_group`;
@@ -3881,7 +3897,7 @@ CREATE TABLE `auth_group`  (
   `created` int(11) NULL DEFAULT NULL,
   `updated` int(11) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 14 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '分组表' ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci COMMENT = '分组表' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of auth_group
@@ -4019,39 +4035,6 @@ CREATE TABLE `dictionary`  (
 ) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for education
--- ----------------------------
-DROP TABLE IF EXISTS `education`;
-CREATE TABLE `education`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `code` bigint(20) NULL DEFAULT NULL COMMENT '编号',
-  `title` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '文化程度名称',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for kind_cost
--- ----------------------------
-DROP TABLE IF EXISTS `kind_cost`;
-CREATE TABLE `kind_cost`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `code` bigint(20) NULL DEFAULT NULL COMMENT '编号',
-  `payment` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '医疗费用支付方式',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
--- Table structure for kind_residential
--- ----------------------------
-DROP TABLE IF EXISTS `kind_residential`;
-CREATE TABLE `kind_residential`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `code` bigint(20) NULL DEFAULT NULL COMMENT '编号',
-  `payment` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '医疗费用支付方式',
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
-
--- ----------------------------
 -- Table structure for kpi
 -- ----------------------------
 DROP TABLE IF EXISTS `kpi`;
@@ -4097,6 +4080,27 @@ INSERT INTO `kpi` VALUES (28, 6, '理解能力：理解语言信息和非语言�
 INSERT INTO `kpi` VALUES (29, 6, '表达能力：表达信息能力，包括口头的和非口头的，及表达自己的想法', 2, '表达能力：表达信息能力，包括口头的和非口头的，及表达自己的想法', 1711247255, NULL, 882, 0);
 INSERT INTO `kpi` VALUES (30, 6, '攻击行为：身体攻击行为（如打/踢/推/咬/抓/摔东西）和语言攻击行为（如骂人、语言威胁、尖叫）', 2, '攻击行为：身体攻击行为（如打/踢/推/咬/抓/摔东西）和语言攻击行为（如骂人、语言威胁、尖叫）', 1711247623, NULL, 881, 0);
 INSERT INTO `kpi` VALUES (31, 6, '抑郁症状：存在情绪低落、兴趣减退、活力减退等症状，甚至出现妄想、幻觉、自杀念头或自杀行为', 2, '抑郁症状：存在情绪低落、兴趣减退、活力减退等症状，甚至出现妄想、幻觉、自杀念头或自杀行为', 1711247849, NULL, 880, 0);
+INSERT INTO `kpi` VALUES (32, 0, '国际标准', 0, '2332', 1712132284, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (33, 11, '日常生活活动能力', 0, '日常生活活动能力', 1712132506, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (34, 11, '认知能力', 0, '', 1712132517, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (35, 11, '精神状态与社会交流能力', 0, '', 1712132536, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (36, 33, 'B1进食', 0, '', 1712132605, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (37, 33, 'B2洗澡', 0, '过程中需他人帮助', 1712133609, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (42, 33, 'B6小便控制', 0, '', 1712134299, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (38, 33, 'B3修饰', 0, '5 分，可自己独立完成\n0 分，需他人帮助', 1712133657, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (39, 33, 'B4穿脱衣裤，鞋子', 0, '10分，可独立完成\n5分，需部分帮助(能自己穿脱，但需他人帮助整理衣物、系扣/鞋带拉拉链)', 1712133685, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (40, 33, 'B5大便控制', 0, '10分，可控制大便\n5分，偶尔失控(每周<1次)，或需要他人提示\n0分，完全失控', 1712133728, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (43, 33, 'B7如厕', 0, '', 1712134396, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (44, 33, 'B8 床椅转移', 0, '', 1712134468, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (45, 33, 'B9 平地行走', 0, '', 1712134577, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (46, 33, 'B10 上下楼梯', 0, '', 1712134716, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (47, 35, 'D1 攻击行为', 0, '', 1712134914, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (48, 35, 'D2 抑郁状态', 0, '', 1712134981, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (49, 35, 'D3 意识水平', 0, '', 1712135035, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (50, 35, 'D4 沟通交流', 0, '', 1712135311, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (51, 35, 'D5 社会交往能力', 0, '', 1712135414, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (52, 35, 'D6 视力功能', 0, '', 1712135508, NULL, 0, 0);
+INSERT INTO `kpi` VALUES (53, 35, 'D7 听力功能', 0, '', 1712135585, NULL, 0, 0);
 
 -- ----------------------------
 -- Table structure for kpiinfo
@@ -4105,7 +4109,7 @@ DROP TABLE IF EXISTS `kpiinfo`;
 CREATE TABLE `kpiinfo`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `kpiid` bigint(20) NULL DEFAULT NULL COMMENT '姓名',
-  `title` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '指标名称',
+  `title` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '指标名称',
   `score` int(10) NULL DEFAULT NULL COMMENT '分数',
   `created` int(11) NULL DEFAULT NULL COMMENT '创建时间',
   `updated` int(11) NULL DEFAULT NULL COMMENT '修改时间',
@@ -4160,6 +4164,71 @@ INSERT INTO `kpiinfo` VALUES (44, 21, '需要依靠他人协助，但以自身�
 INSERT INTO `kpiinfo` VALUES (45, 0, '在他人指导或协助下完成', 3, 1711414998, NULL, 0, 0);
 INSERT INTO `kpiinfo` VALUES (46, 21, '在他人指导或协助下完成', 3, 1711415014, NULL, 0, 0);
 INSERT INTO `kpiinfo` VALUES (47, 21, '独立完成，不需要协助', 4, 1711415044, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (49, 36, '可独立进食', 10, 1712132639, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (50, 0, '需部分帮助', 5, 1712132653, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (51, 37, '准备好洗澡水后，可自己独立完成洗澡过程', 5, 1712134018, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (52, 0, '在洗澡过程中需他人帮助', 0, 1712134030, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (53, 0, '在洗澡过程中需他人帮助', 0, 1712134039, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (54, 37, '在洗澡过程中需他人帮助', 0, 1712134070, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (55, 36, '需部分帮助(进食过程中需要一定帮助，如协助把持餐具)', 5, 1712134090, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (56, 36, '需极大帮助或完全依赖他人，或有留置营养管', 0, 1712134102, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (57, 38, '可自己独立完成', 5, 1712134129, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (58, 38, '需他人帮助', 0, 1712134139, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (59, 39, '可独立完成', 10, 1712134162, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (60, 0, '需部分帮助(能自己穿脱，但需他人帮助整理衣物、系扣/鞋带拉拉链)', 5, 1712134175, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (61, 39, '需部分帮助(能自己穿脱，但需他人帮助整理衣物、系扣/鞋带拉拉链)', 5, 1712134184, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (62, 39, '需极大帮助或完全依赖他人', 0, 1712134199, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (63, 40, '可控制大便', 10, 1712134218, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (64, 40, '偶尔失控(每周<1次)，或需要他人提示', 5, 1712134232, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (65, 40, '完全失控', 0, 1712134242, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (66, 42, '可控制小便', 10, 1712134323, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (67, 42, '偶尔失控(每天<1次，但每周>1次)，或需要他人提示', 5, 1712134339, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (68, 42, '完全失控，或留置导尿管', 0, 1712134350, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (69, 43, '可独立完成', 10, 1712134408, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (70, 43, '需部分帮助(需他人搀扶去厕所、需他人帮忙冲水或整理衣裤等)', 5, 1712134428, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (71, 43, '需极大帮助或完全依赖他人', 0, 1712134437, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (72, 44, '可独立完成', 15, 1712134489, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (73, 0, '需部分帮助(需他人搀扶或使用拐杖)', 10, 1712134506, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (74, 44, '需部分帮助(需他人搀扶或使用拐杖)', 10, 1712134521, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (75, 44, '需极大帮助(较大程度上依赖他人搀扶和帮助)', 5, 1712134536, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (76, 44, '完全依赖他人', 0, 1712134547, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (77, 45, '可独立在平地上行走45m', 15, 1712134594, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (78, 45, '需部分帮助(因肢体残疾、平衡能力差、过度衰弱、视力等问题,在一定程度上需他人地搀扶或使用拐杖、助行器等辅助用具)', 10, 1712134613, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (79, 45, '需极大帮助(因肢体残疾、平衡能力差、过度衰弱、视力等问题,在较大程度上依赖他人搀扶，或坐在轮椅上自行移动)', 5, 1712134685, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (80, 45, '完全依赖他人', 0, 1712134699, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (81, 46, '可独立上下楼梯(连续上下10-15个台阶)', 10, 1712134735, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (82, 46, '需部分帮助(需他人搀扶，或扶着楼梯、使用拐等)', 5, 1712134750, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (83, 46, '需极大帮助或完全依赖他人', 0, 1712134762, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (84, 47, '无身体攻击行为(如打/踢/推/咬/抓/摔东西)和语言攻击行为(如骂人、语言 威胁、尖叫)', 2, 1712134940, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (85, 47, '每月有几次身体攻击行为，或每周有几次语言攻击行为', 1, 1712134956, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (86, 47, '每周有几次身体攻击行为，或每日有语言攻击行为', 0, 1712134967, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (87, 48, '无', 2, 1712134998, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (88, 48, '情绪低落、不爱说话、不爱梳洗、不爱活动', 1, 1712135011, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (89, 48, '有自杀念头或自杀行为', 0, 1712135023, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (90, 49, '神志清醒，对周围环境警觉', 3, 1712135046, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (91, 49, '嗜睡，表现为睡眠状态过度延长。当呼唤或推动其肢体时可唤醒，并能进行正确的交谈或执行指令，停止刺激后又继续入睡', 2, 1712135057, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (94, 49, '昏睡，一般的外界刺激不能使其觉醒，给予较强烈的刺激时可有短时的意识清醒:醒后可简短回答提问，当刺激减弱后又很快进入睡眠状态', 1, 1712135298, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (93, 49, '昏迷，处于浅昏迷时对疼痛刺激有回避和痛苦表情;处于深昏迷时对刺激无反应(若评定为昏迷，直接评定为重度失能，可不进行以下项目的评估)', 0, 1712135233, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (95, 50, '无困难，能与他人正常沟通和交流', 3, 1712135327, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (96, 50, '能够表达自己的需要及理解别人的话，但需要增加时间或给予帮助', 2, 1712135342, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (97, 50, '表达需要或理解有困难，需频繁重复或简化口头表达', 1, 1712135362, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (98, 50, '不能表达需要或理解他人的话', 0, 1712135380, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (99, 51, '参与社会，在社会环境有一定的适应能力，待人接物恰当', 4, 1712135429, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (100, 51, '能适应单纯环境，主动接触人，初见面时难让人发现智力问题，不能理解隐喻语', 3, 1712135446, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (101, 51, '脱离社会，可被动接触，不会主动待人，谈话中很多不适词句，容易上当受骗', 2, 1712135460, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (102, 0, '勉强可与人交往，谈吐内容不清楚，表情不恰当', 1, 1712135470, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (103, 51, '勉强可与人交往，谈吐内容不清楚，表情不恰当', 1, 1712135478, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (104, 51, '难以与人接触', 0, 1712135491, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (105, 52, '能看清书报上的标准字体', 4, 1712135524, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (106, 52, '能看清楚大字体，但看不清书报上的标准字体', 3, 1712135535, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (107, 52, '视力有限，看不清报纸大标题，但能辨认物体', 2, 1712135547, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (108, 52, '辨认物体有困难，但眼睛能跟随物体移动，只能看到光、颜色和形状', 1, 1712135558, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (109, 52, '没有视力，眼睛不能跟随物体移动', 0, 1712135569, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (110, 53, '可正常交谈，能听到电视、电话、门铃的声音', 4, 1712135597, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (111, 53, '在轻声说话或说话距离超过2米时听不清', 3, 1712135609, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (112, 53, '正常交流有些困难，需在安静的环静或大声说话才能听到', 2, 1712135621, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (113, 53, '讲话者大声说话或说话很慢，才能部分听见', 1, 1712135634, NULL, 0, 0);
+INSERT INTO `kpiinfo` VALUES (114, 53, '完全听不见', 0, 1712135647, NULL, 0, 0);
 
 -- ----------------------------
 -- Table structure for marital

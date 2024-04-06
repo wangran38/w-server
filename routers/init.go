@@ -6,7 +6,6 @@ import (
 	"strings"
 	"w-server/apic"
 	"w-server/controllers"
-	"w-server/htmlc"
 	_ "w-server/models"
 	"w-server/utils"
 
@@ -19,13 +18,13 @@ func init() {
 	router := gin.Default()
 	//加载模版
 	//router.LoadHTMLGlob("./view/*")
-	router.LoadHTMLGlob("./view/**/*")
-	router.StaticFS("/static", http.Dir("./static"))
+	// router.LoadHTMLGlob("./view/**/*")
+	// router.StaticFS("/static", http.Dir("./static"))
 	//router.StaticFile("/MP_verify_4RLm31WaN7toWx0O.txt", "./MP_verify_4RLm31WaN7toWx0O.txt") //固定根目录微信文件可以访问
 	// router.GET("/news_list/:page/:limit/:cagegoryid", apic.GetNewslist)
 	//router.GET("/news_list/:page/:limit/:cagegoryid", htmlc.Newslist)
 	//router.GET("/wx/login", htmlc.Pcindex)
-	router.GET("/ex_list", htmlc.Pczhanhui)
+	// router.GET("/ex_list", htmlc.Pczhanhui)
 	router.Use(Cors())
 	// 版本v1
 	router.POST("admin/login", controllers.LoginController) //登录
@@ -91,12 +90,17 @@ func init() {
 	{
 		api.POST("/getkpi", apic.Getkpilist)                //Kpi指标的API前端接口
 		api.POST("/getdictionary", apic.GetDictionaryclist) //居住情况的API前端接口
-		api.POST("/cglist", apic.Getcategorylist)           //登录
-		api.POST("/cgtree", apic.Getcategorytree)           //登录
-		api.POST("/citylist", apic.Getcitylist)             //登录
-		api.POST("/citytree", apic.Treecity)                //登录
-		api.POST("/newslist", apic.GetNewslist)             //登录
-		api.POST("/newsinfo", apic.GetNewsinfo)             //登录
+		api.POST("/cglist", apic.Getcategorylist)           //
+		api.POST("/cgtree", apic.Getcategorytree)           //
+		api.POST("/citylist", apic.Getcitylist)             //
+		api.POST("/citytree", apic.Treecity)                //
+		api.POST("/newslist", apic.GetNewslist)             //
+		api.POST("/newsinfo", apic.GetNewsinfo)             //
+		//评估员注册登录
+		api.POST("/assessors_rg", apic.Rsassessors) //
+		api.POST("/assessors_login", apic.Loginassessors)
+		//评估员操作
+		api.POST("/add_numbercode", apic.AddNumberc)
 		// api.GET("/wx/ckwx", apic.CkSign) //微信基础token
 		// api.GET("/wx/getopenid", apic.Getopenid) //微信基础token
 		// //支付接口
@@ -159,6 +163,37 @@ func Loginhead() gin.HandlerFunc { //是否登录权限
 		if token != "" || len(token) != 0 {
 			//   fmt.Println(token)
 			user := utils.GetLoginUser(token)
+			if user.Id <= 0 {
+				c.JSON(201, gin.H{
+					"code":    201,
+					"message": "你没有权限！",
+					"data":    "",
+					// "permissions": menu,
+					// "roles":       role,
+				})
+				c.Abort()
+				return
+			}
+
+		} else {
+			c.JSON(201, gin.H{
+				"code":    201,
+				"message": "你没有登录！",
+				"data":    "",
+				// "permissions": menu,
+				// "roles":       role,
+			})
+			c.Abort()
+			return
+		}
+	}
+}
+func Loginassessorschead() gin.HandlerFunc { //是否登录权限
+	return func(c *gin.Context) {
+		token := c.Request.Header.Get("Authorization")
+		if token != "" || len(token) != 0 {
+			//   fmt.Println(token)
+			user := utils.GetLoginAssessorsc(token)
 			if user.Id <= 0 {
 				c.JSON(201, gin.H{
 					"code":    201,

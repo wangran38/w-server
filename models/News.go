@@ -6,26 +6,26 @@ import (
 )
 
 type News struct {
-	Id      int64     `json:"id"`
-	Categoryid     int       `json:"categroy_id"`
-	Title    string    `json:"title" xorm:"varchar(200)"`
-	Image   string    `json:"image" xorm:"TEXT "`
-	Keywords   string  `json:"keywords" xorm:"TEXT "`
-	Description   string  `json:"description" xorm:" TEXT "`
-	Content   string  `json:"content" xorm:"LONGTEXT "`
-	Isshow     int       `json:"isshow" xorm:"not null default 1 comment('是否启用 默认1 是 0 无') TINYINT"`
-	Created time.Time `json:"createtime" xorm:"int"`
-	Updated time.Time `json:"updatetime" xorm:"int"`
-	Opennums   int  `json:"opennums"`
-	Weigh   int  `json:"weigh"`
-	Status  int       `json:"status"`
+	Id          int64     `json:"id"`
+	Categoryid  int       `json:"categroy_id"`
+	Title       string    `json:"title" xorm:"varchar(200)"`
+	Image       string    `json:"image" xorm:"TEXT "`
+	Keywords    string    `json:"keywords" xorm:"TEXT "`
+	Description string    `json:"description" xorm:" TEXT "`
+	Content     string    `json:"content" xorm:"LONGTEXT "`
+	Isshow      int       `json:"isshow" xorm:"not null default 1 comment('是否启用 默认1 是 0 无') TINYINT"`
+	Created     time.Time `json:"createtime" xorm:"int"`
+	Updated     time.Time `json:"updatetime" xorm:"int"`
+	Opennums    int       `json:"opennums"`
+	Weigh       int       `json:"weigh"`
+	Status      int       `json:"status"`
 }
 
 func (a *News) TableName() string {
 	return "news"
 }
 
-//根据用户id找用户返回数据
+// 根据用户id找用户返回数据
 func SelectNewsid(Id int64) (*News, error) {
 	a := new(News)
 	has, err := orm.Where("id = ?", Id).Get(a)
@@ -39,13 +39,14 @@ func SelectNewsid(Id int64) (*News, error) {
 
 }
 
-//添加
+// 添加
 func Addnews(a *News) error {
 	_, err := orm.Insert(a)
 	return err
 }
-//修改
-func UpNews(a *News) (int64,error) {
+
+// 修改
+func UpNews(a *News) (int64, error) {
 	affected, err := orm.Id(a.Id).Update(a)
 	return affected, err
 
@@ -120,7 +121,8 @@ func DeleteNews(id int64) int {
 	return int(outnum)
 
 }
-//根据
+
+// 根据
 func SelectNewsByTitle(Title string) (*News, error) {
 	a := new(News)
 	has, err := orm.Where("title = ?", Title).Get(a)

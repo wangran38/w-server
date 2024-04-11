@@ -63,7 +63,7 @@ func CreateAssessorscToken(phone string) (token string) {
 	tMap["expireTime"] = exTime
 	json, _ := json.Marshal(tMap)
 	//设置redis有效期
-	timer := 60 * 30
+	timer := 60000 * 30
 	InsertRedisKeyExpire("loginAssessors_"+phone, string(json), timer)
 	return
 }
@@ -78,6 +78,20 @@ func CheckTokenExpired(token string) error {
 	err := tokenInfo.Claims.Valid()
 	if err != nil {
 		print("jwt失效 ", err.Error())
+	}
+	return err
+}
+
+// 效验token是否过期
+func CheckTokenisExpired(token string) error {
+	keyInfo := "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%^&*()"
+	tokenInfo, _ := jwt.Parse(token, func(token *jwt.Token) (i interface{}, e error) {
+		return keyInfo, nil
+	})
+	//效验jwt令牌是否失效
+	err := tokenInfo.Claims.Valid()
+	if err != nil {
+		return err
 	}
 	return err
 }

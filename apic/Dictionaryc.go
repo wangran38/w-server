@@ -31,7 +31,7 @@ func GetDictionaryclist(c *gin.Context) {
 		Codename: searchdata.Codename,
 		// Name:     searchdata.Name,
 	}
-	listdata := models.SelectDictionarylist(search)
+	listdata := models.SelectDictionarylist(10, 1, search)
 	// listnum := models.GetNewstotal(search)
 	result := make(map[string]interface{})
 	// result["page"] = page

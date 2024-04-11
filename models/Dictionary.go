@@ -17,10 +17,18 @@ type Dictionary struct {
 func (a *Dictionary) TableName() string {
 	return "dictionary" //数据库表的名
 }
+
+// 添加方法
 func AddDictionary(a *Dictionary) error {
 	_, err := orm.Insert(a)
 
 	return err
+}
+
+// 修改
+func Updedictionary(a *Dictionary) (int64, error) {
+	affected, err := orm.Id(a.Id).Update(a)
+	return affected, err
 }
 
 // 根据code查询数据
@@ -38,27 +46,75 @@ func SelectDictionarybycode(Code int64) (*Dictionary, error) {
 }
 
 // 根据前端参数查询Dictionary表的全部内容
-func SelectDictionarylist(wk *Dictionary) []*Dictionary {
+func SelectDictionarylist(limit int, pagesize int, search *Dictionary) []*Dictionary {
 	// a := new(Dictionary)
 	listdata := []*Dictionary{}
 	// session := orm.Table("education")
+	var page int
+	// listdata := []*News{}
+	if pagesize-1 < 1 {
+		page = 0
+	} else {
+		page = pagesize - 1
+	}
+	if limit <= 6 {
+		limit = 6
+
+	}
 	session := orm.Table("dictionary")
-	if wk.Codename != "" {
-		session = session.And("codename = ?", wk.Codename)
+	// stringid := strconv.FormatInt(search.Id, 10)
+	if search.Id > 0 {
+		session = session.And("id = ?", search.Id)
+	}
+	// fmt.Println(stringid)
+
+	if search.Codename != "" {
+		title := "%" + search.Codename + "%"
+		session = session.And("codename LIKE ?", title)
 		// session = session.And("pid", rules.Title)
 	}
-	// if wk.Code <= 1 {
-	// 	session = session.And("code = ?", wk.Code)
-	// 	// session = session.And("pid", rules.Title)
+	if search.Code > 0 {
+		// title := "%" + search.Codename + "%"
+		session = session.And("code = ?", search.Code)
+		// session = session.And("pid", rules.Title)
+	}
+	// if search.Categoryid > 0 {
+	// 	session = session.And("category_id = ?", search.Categoryid)
 	// }
-	// if wk.Code == 0 {
-	// 	session = session.And("code = ?", wk.Code)
-	// 	// session = session.And("pid", rules.Title)
+
+	var byorder string
+	byorder = "id DESC"
+	// if order != "" {
+	// 	byorder = "id DESC"
 	// }
-	// orm.Table("Dictionary").
-	// Where("codename = ?",wk.Codename)
-	session.Find(&listdata)
+	session.OrderBy(byorder).Limit(limit, limit*page).Find(&listdata)
 	return listdata
+}
+
+func GetDictionarytotal(search *Dictionary) int64 {
+	var num int64
+	num = 0
+	session := orm.Table("news")
+	if search.Id > 0 {
+		session = session.And("id = ?", search.Id)
+	}
+	if search.Codename != "" {
+		title := "%" + search.Codename + "%"
+		session = session.And("codename LIKE ?", title)
+		// session = session.And("pid", rules.Title)
+	}
+	if search.Code > 0 {
+		// title := "%" + search.Codename + "%"
+		session = session.And("code = ?", search.Code)
+		// session = session.And("pid", rules.Title)
+	}
+	a := new(Dictionary)
+	total, err := session.Count(a)
+	if err == nil {
+		num = total
+
+	}
+	return num
 }
 
 func DeleteDictionary(id int64) int {
@@ -67,5 +123,4 @@ func DeleteDictionary(id int64) int {
 	outnum, _ := orm.ID(id).Delete(a)
 
 	return int(outnum)
-
 }

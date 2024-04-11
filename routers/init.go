@@ -83,6 +83,11 @@ func init() {
 		admin.POST("/addnews", controllers.AddNews)
 		admin.POST("/editnews", controllers.EditNews)
 		admin.POST("/delnews", controllers.DelNews)
+		//字典接口
+		admin.POST("/dictionary", controllers.GetDictionarylist) //查询
+		admin.POST("/adddictionary", controllers.AddDictionary)  //添加
+		admin.POST("/updictionary", controllers.Updedictionary)  //修改
+		admin.POST("/deldictionary", controllers.DelDictionary)  //删除
 		//支付接口
 
 	}
@@ -99,8 +104,7 @@ func init() {
 		//评估员注册登录
 		api.POST("/assessors_rg", apic.Rsassessors) //
 		api.POST("/assessors_login", apic.Loginassessors)
-		//评估员操作
-		api.POST("/add_numbercode", apic.AddNumberc)
+
 		// api.GET("/wx/ckwx", apic.CkSign) //微信基础token
 		// api.GET("/wx/getopenid", apic.Getopenid) //微信基础token
 		// //支付接口
@@ -109,6 +113,13 @@ func init() {
 
 		//头部加密
 		//api.GET("/wx/get", apic.Getopenid) //微信基础token
+	}
+	api.Use(Loginassessorschead())
+	{
+		//评估员操作
+		api.POST("/add_numbercode", apic.AddNumberc) //添加编号
+		api.POST("/my_number", apic.MyNumberc)       //添加编号
+		api.POST("/add_seniorc", apic.Addseniorc)    //添加老人信息
 	}
 
 	// //开启TCP服务结束
@@ -192,9 +203,8 @@ func Loginassessorschead() gin.HandlerFunc { //是否登录权限
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("Authorization")
 		if token != "" || len(token) != 0 {
-			//   fmt.Println(token)
-			user := utils.GetLoginAssessorsc(token)
-			if user.Id <= 0 {
+			_, finderr := utils.GetLoginAssessorsc(token)
+			if finderr != nil {
 				c.JSON(201, gin.H{
 					"code":    201,
 					"message": "你没有权限！",
@@ -202,7 +212,7 @@ func Loginassessorschead() gin.HandlerFunc { //是否登录权限
 					// "permissions": menu,
 					// "roles":       role,
 				})
-				c.Abort()
+				// c.Abort()
 				return
 			}
 

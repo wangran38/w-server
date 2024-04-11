@@ -53,7 +53,7 @@ func init() {
 	orm.Ping()
 	//是否显示sql语句
 	orm.ShowSQL(true)
-	if err = orm.Sync2(new(Admin), new(User), new(Authgroup), new(Authrule), new(Authaccess), new(City), new(Category), new(News), new(Kpi), new(Kpiinfo), new(Dictionary), new(Assessors), new(Assessorsaccess), new(Assessorsgroup), new(Number)); err != nil {
+	if err = orm.Sync2(new(Admin), new(User), new(Authgroup), new(Authrule), new(Authaccess), new(City), new(Category), new(News), new(Kpi), new(Kpiinfo), new(Dictionary), new(Assessors), new(Assessorsaccess), new(Assessorsgroup), new(Number), new(Information), new(Health)); err != nil {
 		fmt.Println(err)
 	} else {
 		fmt.Print("自动生成表成功！")

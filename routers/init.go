@@ -88,14 +88,14 @@ func init() {
 	}
 	api := router.Group("/api")
 	{
-		api.POST("/getkpi", apic.Getkpilist)                //Kpi指标的API前端接口
-		api.POST("/getdictionary", apic.GetDictionaryclist) //居住情况的API前端接口
-		api.POST("/cglist", apic.Getcategorylist)           //
-		api.POST("/cgtree", apic.Getcategorytree)           //
-		api.POST("/citylist", apic.Getcitylist)             //
-		api.POST("/citytree", apic.Treecity)                //
-		api.POST("/newslist", apic.GetNewslist)             //
-		api.POST("/newsinfo", apic.GetNewsinfo)             //
+		api.POST("/getkpi", apic.Getkpilist)                 //Kpi指标的API前端接口
+		api.POST("/getdictionary", apic.GetDictionaryclist)  //居住情况的API前端接口
+		api.POST("/cglist", apic.Getcategorylist)            //
+		api.POST("/getinformation", apic.GetInformationlist) //登录
+		api.POST("/gethealth", apic.GetHealthlist)           //健康
+		api.POST("/citytree", apic.Treecity)                 //
+		api.POST("/newslist", apic.GetNewslist)              //
+		api.POST("/newsinfo", apic.GetNewsinfo)              //
 		//评估员注册登录
 		api.POST("/assessors_rg", apic.Rsassessors) //
 		api.POST("/assessors_login", apic.Loginassessors)

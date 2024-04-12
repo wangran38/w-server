@@ -93,14 +93,16 @@ func init() {
 	}
 	api := router.Group("/api")
 	{
-		api.POST("/getkpi", apic.Getkpilist)                 //Kpi指标的API前端接口
-		api.POST("/getdictionary", apic.GetDictionaryclist)  //居住情况的API前端接口
-		api.POST("/cglist", apic.Getcategorylist)            //
-		api.POST("/getinformation", apic.GetInformationlist) //登录
-		api.POST("/gethealth", apic.GetHealthlist)           //健康
-		api.POST("/citytree", apic.Treecity)                 //
-		api.POST("/newslist", apic.GetNewslist)              //
-		api.POST("/newsinfo", apic.GetNewsinfo)              //
+		api.POST("/getkpi", apic.Getkpilist)                //Kpi指标的API前端接口
+		api.POST("/getdictionary", apic.GetDictionaryclist) //居住情况的API前端接口
+		api.POST("/cglist", apic.Getcategorylist)           //
+		// api.POST("/getinformation", apic.GetInformationlist) //登录
+		api.POST("/gethealthrelated", apic.GetHealthrelatedlist) //健康相关信息
+		api.POST("/getinformation", apic.GetInformationlist)     //登录
+		api.POST("/gethealth", apic.GetHealthlist)               //健康
+		api.POST("/citytree", apic.Treecity)                     //
+		api.POST("/newslist", apic.GetNewslist)                  //
+		api.POST("/newsinfo", apic.GetNewsinfo)                  //
 		//评估员注册登录
 		api.POST("/assessors_rg", apic.Rsassessors) //
 		api.POST("/assessors_login", apic.Loginassessors)
@@ -117,12 +119,12 @@ func init() {
 	api.Use(Loginassessorschead())
 	{
 		//评估员操作
-		api.POST("/add_numbercode", apic.AddNumberc)         //添加编号
-		api.POST("/my_number", apic.MyNumberc)               //添加编号
-		api.POST("/add_seniorc", apic.Addseniorc)            //添加老人信息
-		api.POST("/getinformation", apic.GetInformationlist) //登录
-		api.POST("/gethealth", apic.GetHealthlist)           //健康
-		// api.POST("/gethealthrelated", apic.GetHealthrelatedlist) //健康相关信息
+		api.POST("/add_numbercode", apic.AddNumberc) //添加编号
+		api.POST("/my_number", apic.MyNumberc)       //添加编号
+		api.POST("/add_seniorc", apic.Addseniorc)    //添加老人信息
+
+		//api.POST("/gethealth", apic.GetHealthlist)               //健康
+
 	}
 
 	// //开启TCP服务结束

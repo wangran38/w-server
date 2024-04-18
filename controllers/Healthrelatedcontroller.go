@@ -63,8 +63,8 @@ func GetoHealthrelatedlist(c *gin.Context) {
 		Cleaning:       searchdata.Cleaning,
 		Coma:           searchdata.Coma,
 		Other:          searchdata.Other,
-		Created:        searchdata.Created,
-		Updated:        searchdata.Updated,
+		// Created:        searchdata.Created,
+		// Updated:        searchdata.Updated,
 	}
 	listdata := models.GetHealthrelatedList(limit, page, search)
 	// listnum := models.GetHealthList(search)

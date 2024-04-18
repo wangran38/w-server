@@ -32,7 +32,7 @@ type Healthrelated struct {
 	Page           int    `json:"page"`
 }
 
-// 获取展会信息
+// 获取信息
 func GetHealthrelatedlist(c *gin.Context) {
 	//从header中获取到token
 	var searchdata Healthrelated

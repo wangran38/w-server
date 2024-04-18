@@ -69,7 +69,6 @@ func Addseniorc(c *gin.Context) {
 	// 	"data": formdata,
 	// })
 	Intodata := new(models.Senior)
-
 	Intodata.Id = formdata.Id
 	Intodata.Assessor_id = user.Id
 	Intodata.Senior_gender = formdata.Senior_gender

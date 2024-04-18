@@ -66,6 +66,13 @@ func GetHealthList(limit int, pagesize int, search *Health) []*Health {
 	if search.Number_id > 0 {
 		session = session.And("number_id = ?", search.Number_id)
 	}
+	if search.Senior_id > 0 {
+		session = session.And("senior_id = ?", search.Senior_id)
+	}
+	if search.Assessors_id > 0 {
+		session = session.And("assessors_id = ?", search.Assessors_id)
+	}
+
 	// fmt.Println(stringid)
 
 	// if search.Title != "" {

@@ -119,10 +119,10 @@ func init() {
 	api.Use(Loginassessorschead())
 	{
 		//评估员操作
-		api.POST("/add_numbercode", apic.AddNumberc) //添加编号
-		api.POST("/my_number", apic.MyNumberc)       //添加编号
-		api.POST("/add_seniorc", apic.Addseniorc)    //添加老人信息
-
+		api.POST("/add_numbercode", apic.AddNumberc)        //添加编号
+		api.POST("/my_number", apic.MyNumberc)              //添加编号
+		api.POST("/add_seniorc", apic.Addseniorc)           //添加老人信息
+		api.POST("/add_score_record", apic.AddScore_record) //添加老人信息
 		//api.POST("/gethealth", apic.GetHealthlist)               //健康
 
 	}

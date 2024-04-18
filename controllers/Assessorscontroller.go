@@ -12,7 +12,7 @@ import (
 )
 
 type Assessorsserch struct {
-	ID       int    `json:"id"`
+	Id       int    `json:"id"`
 	Username string `json:"title"`
 	Phone    string `json:"phone"`
 	Limit    int    `json:"limit"`

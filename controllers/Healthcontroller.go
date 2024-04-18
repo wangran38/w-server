@@ -47,8 +47,8 @@ func GetoHealthlist(c *gin.Context) {
 		Disease:      searchdata.Disease,
 		Drugname:     searchdata.Drugname,
 		Frequency:    searchdata.Frequency,
-		Created:      searchdata.Created,
-		Updated:      searchdata.Updated,
+		// Created:      searchdata.Created,
+		// Updated:      searchdata.Updated,
 	}
 	listdata := models.GetHealthList(limit, page, search)
 	// listnum := models.GetHealthList(search)

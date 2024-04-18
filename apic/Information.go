@@ -15,6 +15,7 @@ type Information struct {
 	Senior_id    int64  `json:"senior_id"`
 	Provider     string `json:"provider"`
 	Assessors_id int64  `json:"assessors_id"`
+	Number_id    int64  `json:"number_id"`
 	Relationship string `json:"relationship" xorm:"varchar(200)"`
 	Contactname  string `json:"contactname" xorm:"TEXT "`
 	Phone        string `json:"phone" xorm:"TEXT "`
@@ -32,6 +33,7 @@ func GetInformationlist(c *gin.Context) {
 		Senior_id:    searchdata.Senior_id,
 		Assessors_id: searchdata.Assessors_id,
 		Provider:     searchdata.Provider,
+		Number_id:    searchdata.Number_id,
 		Relationship: searchdata.Relationship,
 		Contactname:  searchdata.Contactname,
 		Phone:        searchdata.Phone,

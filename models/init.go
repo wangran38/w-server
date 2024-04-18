@@ -54,7 +54,7 @@ func init() {
 	//是否显示sql语句
 	orm.ShowSQL(true)
 
-	if err = orm.Sync2(new(Admin), new(User), new(Authgroup), new(Authrule), new(Authaccess), new(City), new(Category), new(News), new(Kpi), new(Kpiinfo), new(Dictionary), new(Assessors), new(Assessorsaccess), new(Assessorsgroup), new(Number), new(Information), new(Health), new(Senior), new(Score_record)); err != nil {
+	if err = orm.Sync2(new(Admin), new(User), new(Authgroup), new(Authrule), new(Authaccess), new(City), new(Category), new(News), new(Kpi), new(Kpiinfo), new(Dictionary), new(Assessors), new(Assessorsaccess), new(Assessorsgroup), new(Number), new(Information), new(Health), new(Senior), new(Score_record), new(Healthrelated), new(Book), new(Bookinfo)); err != nil {
 
 		fmt.Println(err)
 	} else {

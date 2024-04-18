@@ -9,7 +9,8 @@ type Information struct {
 	Id           int64     `json:"id"`                                     //id
 	Senior_id    int64     `xorm:"comment('老者id')" json:"senior_id"`       //老者id
 	Assessors_id int64     `xorm:"comment('所属评估员id')" json:"assessors_id"` //所属评估员id
-	Provider     string    `xorm:"comment('提供者姓名')" json:"provider"`       //所属评估员id
+	Number_id    int64     `xorm:"comment('评估编号id')" json:"number_id"`     //评估编号id
+	Provider     string    `xorm:"comment('提供者姓名')" json:"provider"`       //提供者姓名
 	Relationship string    ` xorm:"varchar(200)" json:"relationship"`      //关系
 	Contactname  string    `xorm:"TEXT " json:"contactname"`               //提供者姓名
 	Phone        string    `xorm:"TEXT" json:"phone"`                      //电话
@@ -26,6 +27,20 @@ func (a *Information) TableName() string {
 func SelectInformationid(id int64) (*Information, error) {
 	a := new(Information)
 	has, err := orm.Where(" id = ?", id).Get(a)
+	if err != nil {
+		return nil, err
+	}
+	if !has {
+		return nil, errors.New("数据出错！")
+	}
+	return a, nil
+
+}
+
+// 根据评估员id返回数据
+func SelectInformationnumber_id(number_id int64) (*Information, error) {
+	a := new(Information)
+	has, err := orm.Where(" number_id = ?", number_id).Get(a)
 	if err != nil {
 		return nil, err
 	}

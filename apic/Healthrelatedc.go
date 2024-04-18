@@ -11,8 +11,8 @@ import (
 )
 
 type Healthrelated struct {
-	Id             int64  `json:"id`                //id
-	Senior_id      int64  `json:"senior_id`         //老者id
+	Id             int64  `json:"id"`               //id
+	Senior_id      int64  `json:"senior_id"`        //老者id
 	Assessors_id   int64  `json:"assessors_id"`     //所属评估员id
 	Number_id      int64  ` json:"number_id"`       //编号id
 	Pressureinjury string `json:"pressureinjury"`   //压力性损伤

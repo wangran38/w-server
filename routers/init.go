@@ -83,6 +83,27 @@ func init() {
 		admin.POST("/addnews", controllers.AddNews)
 		admin.POST("/editnews", controllers.EditNews)
 		admin.POST("/delnews", controllers.DelNews)
+
+		//查找企业资源数字化文章接口
+		admin.POST("/getbooklist", controllers.GetBooklist)
+		//添加企业资源数字化文章接口
+		admin.POST("/addbook", controllers.Addbook)
+		//修改企业资源数字化文章接口
+		admin.POST("/editbook", controllers.EditBook)
+		//删除企业资源数字化文章接口
+		admin.POST("/delbook", controllers.DelBook)
+
+		//查找企业资源数字化文章tree接口 （前为定义给前端访问的接口路径）（controlloers.调的是方法名）
+		admin.POST("/getbookinfolist", controllers.GetBookinfolist)
+		//添加企业资源数字化文章tree接口
+		admin.POST("/addbookinfo", controllers.Addbookinfo)
+		//修改企业资源数字化文章tree接口
+		admin.POST("/editbookinfo", controllers.EditBookinfo)
+		//删除企业资源数字化文章tree接口
+		admin.POST("/delbookinfo", controllers.DelBookinfo)
+		//删除企业资源数字化文章tree接口
+		admin.POST("/treebook", controllers.TreeBook)
+
 		//字典接口
 		admin.POST("/dictionary", controllers.GetDictionarylist) //查询
 		admin.POST("/adddictionary", controllers.AddDictionary)  //添加
@@ -97,8 +118,8 @@ func init() {
 		api.POST("/getdictionary", apic.GetDictionaryclist) //居住情况的API前端接口
 		api.POST("/cglist", apic.Getcategorylist)           //
 		// api.POST("/getinformation", apic.GetInformationlist) //登录
-		api.POST("/gethealthrelated", apic.GetHealthrelatedlist) //健康相关信息
-		api.POST("/getinformation", apic.GetInformationlist)     //登录
+		api.POST("/addhealthrelated", apic.GetHealthrelatedlist) //健康相关信息
+		api.POST("/addinformation", apic.GetInformationlist)     //信息提供者及联系人接口
 		api.POST("/gethealth", apic.GetHealthlist)               //健康
 		api.POST("/citytree", apic.Treecity)                     //
 		api.POST("/newslist", apic.GetNewslist)                  //

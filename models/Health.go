@@ -6,8 +6,8 @@ import (
 )
 
 type Health struct {
-	Id           int64     `json:"id`                                      //id
-	Senior_id    int64     `xorm:"comment('老者id')" json:"senior_id`        //老者id
+	Id           int64     `json:"id"`                                     //id
+	Senior_id    int64     `xorm:"comment('老者id')" json:"senior_id"`       //老者id
 	Assessors_id int64     `xorm:"comment('所属评估员id')" json:"assessors_id"` //所属评估员id
 	Number_id    int64     `xorm:"comment('编号id')" json:"number_id"`       //编号id
 	Disease      string    `xorm:"comment('疾病诊断')" json:"disease"`         //疾病诊断

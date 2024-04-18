@@ -15,6 +15,7 @@ type Information struct {
 	Senior_id    int64     `json:"senior_id"`
 	Assessors_id int64     `json:"assessors_id"`
 	Provider     string    `json:"provider"`
+	Number_id    int64     `json:"number_id"`
 	Relationship string    `json:"relationship" xorm:"varchar(200)"`
 	Contactname  string    `json:"contactname" xorm:"TEXT "`
 	Phone        string    `json:"phone" xorm:"varchar(200)"`
@@ -40,6 +41,7 @@ func GetInformationlist(c *gin.Context) {
 		Senior_id:    searchdata.Senior_id,
 		Assessors_id: searchdata.Assessors_id,
 		Provider:     searchdata.Provider,
+		Number_id:    searchdata.Number_id,
 		Relationship: searchdata.Relationship,
 		Contactname:  searchdata.Contactname,
 		Phone:        searchdata.Phone,
@@ -93,6 +95,7 @@ func AddInformation(c *gin.Context) {
 	Intodata.Senior_id = formdata.Senior_id
 	Intodata.Assessors_id = formdata.Assessors_id
 	Intodata.Provider = formdata.Provider
+	Intodata.Number_id = formdata.Number_id
 	Intodata.Relationship = formdata.Relationship
 	Intodata.Contactname = formdata.Contactname
 	Intodata.Phone = formdata.Phone
@@ -141,6 +144,7 @@ func EdiInformation(c *gin.Context) {
 	updata.Assessors_id = formdata.Assessors_id
 	updata.Contactname = formdata.Contactname
 	updata.Provider = formdata.Provider
+	updata.Number_id = formdata.Number_id
 	updata.Relationship = formdata.Relationship
 	updata.Phone = formdata.Phone
 	updata.Updated = time.Now()

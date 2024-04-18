@@ -6,23 +6,23 @@ import (
 )
 
 type Healthrelated struct {
-	Id             int64     `json:"id`                                      //id
-	Senior_id      int64     `xorm:"comment('老者id')" json:"senior_id`        //老者id
-	Assessors_id   int64     `xorm:"comment('所属评估员id')" json:"assessors_id"` //所属评估员id
-	Number_id      int64     `xorm:"comment('编号id')" json:"number_id"`       //编号id
-	Pressureinjury string    `xorm:"comment('压力性损伤')" json:"pressureinjury"` //压力性损伤
-	Joint          string    ` xorm:"comment('关节活动度')" json:"Joint"`         //关节活动度
-	Affectedarea   string    ` xorm:"comment('关节影响部位')" json:"affectedarea"` //关节影响部位
-	Woundcondition string    ` xorm:"comment('伤口情况')" json:"woundcondition"` //伤口情况
-	Specialcare    string    ` xorm:"comment('用药剂量')" json:"specialcare"`    //特殊护理
-	Painsensation  string    ` xorm:"comment('疼痛感')" json:"painsensation"`   //疼痛感
-	Toothloss      string    ` xorm:"comment('牙齿缺失')" json:"toothloss"`      //牙齿缺失
-	Wearing        string    ` xorm:"comment('义齿佩戴')" json:"wearing"`        //义齿佩戴
-	Swallow        string    ` xorm:"comment('吞咽困难的情形和症状')" json:"swallow"`  //吞咽困难的情形和状况
-	Malnutrition   string    ` xorm:"comment('营养不良')" json:"malnutrition"`   //营养不良
-	Cleaning       string    ` xorm:"comment('清理呼吸道无效')" json:"cleaning"`    //清理呼吸道无效
-	Coma           string    ` xorm:"comment('昏迷')" json:"coma"`             //昏迷
-	Other          string    ` xorm:"comment('其他')" json:"other"`            //其他
+	Id             int64     `json:"id"`                                                  //id
+	Senior_id      int64     `xorm:"comment('老者id')" json:"senior_id"`                    //老者id
+	Assessors_id   int64     `xorm:"comment('所属评估员id')" json:"assessors_id"`              //所属评估员id
+	Number_id      int64     `xorm:"comment('编号id')" json:"number_id"`                    //编号id
+	Pressureinjury string    `xorm:"varchar(100) comment('压力性损伤')" json:"pressureinjury"` //压力性损伤
+	Joint          string    ` xorm:"varchar(100) comment('关节活动度')" json:"Joint"`         //关节活动度
+	Affectedarea   string    ` xorm:"varchar(100) comment('关节影响部位')" json:"affectedarea"` //关节影响部位
+	Woundcondition string    ` xorm:"varchar(100) comment('伤口情况')" json:"woundcondition"` //伤口情况
+	Specialcare    string    ` xorm:"varchar(100) comment('用药剂量')" json:"specialcare"`    //特殊护理
+	Painsensation  string    ` xorm:"varchar(100) comment('疼痛感')" json:"painsensation"`   //疼痛感
+	Toothloss      string    ` xorm:"varchar(100) comment('牙齿缺失')" json:"toothloss"`      //牙齿缺失
+	Wearing        string    ` xorm:"varchar(100) comment('义齿佩戴')" json:"wearing"`        //义齿佩戴
+	Swallow        string    ` xorm:"varchar(100) comment('吞咽困难的情形和状况')" json:"swallow"`  //吞咽困难的情形和状况
+	Malnutrition   string    ` xorm:"varchar(100) comment('营养不良')" json:"malnutrition"`   //营养不良
+	Cleaning       string    ` xorm:"varchar(100) comment('清理呼吸道无效')" json:"cleaning"`    //清理呼吸道无效
+	Coma           string    ` xorm:"varchar(100) comment('昏迷')" json:"coma"`             //昏迷
+	Other          string    ` xorm:"varchar(100) comment('其他')" json:"other"`            //其他
 	Created        time.Time `xorm:"int" json:"createtime"`
 	Updated        time.Time `xorm:"int" json:"updatetime"`
 }
@@ -110,6 +110,7 @@ func GetHealthrelatedtotal(search *Healthrelated) int64 {
 	return num
 }
 
+// 删除
 func DeleteHealthrelated(Number_id int64) int {
 	// intid, _ := strconv.ParseInt(id, 10, 64)
 	a := new(Healthrelated)

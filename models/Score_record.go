@@ -6,13 +6,13 @@ import (
 )
 
 type Score_record struct {
-	Id           int64     `json:"id`                                           //id
-	Seniorid     int64     `xorm:"'senior_id' comment('老者id')" json:"senior_id` //老者id
-	Assessors_id int64     `xorm:"comment('所属评估员id')" json:"assessors_id"`      //所属评估员id
-	Number_id    int64     `xorm:"comment('编号id')" json:"number_id"`            //编号id
-	Kpi_id       int64     `xorm:"comment('指标id')" json:"kpi_id"`               //KPI的id
-	Kpiinfo_id   int64     `xorm:"comment('指标分题id')" json:"kpiinfo_id"`         //KPI的id
-	Score        int       ` xorm:"comment('分值')" json:"score"`                 //药物名称
+	Id           int64     `json:"id"`                                           //id
+	Seniorid     int64     `xorm:"'senior_id' comment('老者id')" json:"senior_id"` //老者id
+	Assessors_id int64     `xorm:"comment('所属评估员id')" json:"assessors_id"`       //所属评估员id
+	Number_id    int64     `xorm:"comment('编号id')" json:"number_id"`             //编号id
+	Kpi_id       int64     `xorm:"comment('指标id')" json:"kpi_id"`                //KPI的id
+	Kpiinfo_id   int64     `xorm:"comment('指标分题id')" json:"kpiinfo_id"`          //KPI的id
+	Score        int       ` xorm:"comment('分值')" json:"score"`                  //药物名称
 	Created      time.Time `xorm:"int" json:"createtime"`
 	Updated      time.Time `xorm:"int" json:"updatetime"`
 }

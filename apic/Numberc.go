@@ -4,6 +4,7 @@ import (
 	// "fmt"
 	// "net/http"
 
+	"time"
 	_ "time"
 	"w-server/models"
 	"w-server/utils"
@@ -102,7 +103,7 @@ func AddNumberc(c *gin.Context) {
 
 }
 
-// //添加用户组
+// 我的编号
 func MyNumberc(c *gin.Context) {
 	//如若是models则为models结构体的名称
 	token := c.Request.Header.Get("Authorization")
@@ -116,17 +117,7 @@ func MyNumberc(c *gin.Context) {
 		})
 		return
 	}
-	// tokennum := utils.CheckRedisExits(token)
-	// if tokennum < 1 {
-	// 	c.JSON(201, gin.H{
-	// 		"code":    201,
-	// 		"message": "登录已经过期！111",
-	// 		"data":    "",
-	// 		// "permissions": menu,
-	// 		// "roles":       role,
-	// 	})
-	// 	return
-	// }
+
 	var searchdata Numberc
 	c.BindJSON(&searchdata)
 	user, finderr := utils.GetLoginAssessorsc(token)
@@ -170,6 +161,64 @@ func MyNumberc(c *gin.Context) {
 			"data":    result,
 		})
 		return
+	}
+
+}
+
+// 我的编号
+func EditNumberc(c *gin.Context) {
+	//如若是models则为models结构体的名称
+	token := c.Request.Header.Get("Authorization")
+	if token == "" || len(token) == 0 {
+		c.JSON(201, gin.H{
+			"code":    201,
+			"message": "你没有权限,去远处玩！",
+			"data":    "",
+			// "permissions": menu,
+			// "roles":       role,
+		})
+		return
+	}
+
+	user, _ := utils.GetLoginAssessorsc(token)
+	if user.Id < 0 {
+		c.JSON(201, gin.H{
+			"code":    201,
+			"message": "你没有权限,去远处玩！",
+			"data":    "",
+			// "permissions": menu,
+			// "roles":       role,
+		})
+		return
+	}
+	//也可继承controller里的结构体
+	var formdata Numberc
+	c.ShouldBind(&formdata)
+	Intodata := new(models.Number)
+	Intodata.Id = formdata.Id
+	Intodata.Code = formdata.Code
+	Intodata.Codetime = formdata.Codetime
+	Intodata.Reasons = formdata.Reasons
+	Intodata.Assessorsid = user.Id
+	Intodata.Updated = time.Now()
+
+	_, err := models.UpNumber(Intodata) //判断账号是否存在！
+	if err != nil {
+		c.JSON(201, gin.H{
+			"code": 201,
+			"msg":  "添加数据出错！",
+			"data": "",
+		})
+		return
+	} else {
+		// result := make(map[string]interface{})
+		// result["id"] = Rulestable.Id //返回当前总数
+		c.JSON(200, gin.H{
+			"code": 200,
+			"msg":  "修改编号成功！",
+			"data": "",
+		})
+
 	}
 
 }

@@ -27,6 +27,13 @@ func AddNumber(a *Number) error {
 	return err
 }
 
+// 修改
+func UpNumber(a *Number) (int64, error) {
+	affected, err := orm.Id(a.Id).Update(a) //通过添加Cols函数指定需要更新结构体中的哪些值，未指定的将不更新，指定了的即使为0也会更新。
+	return affected, err
+
+}
+
 // 根据用户id找用户返回数据
 func SelectNumberCode(code string) (*Number, error) {
 	a := new(Number)

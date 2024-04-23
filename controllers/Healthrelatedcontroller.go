@@ -11,8 +11,8 @@ import (
 
 // type NewsController struct{}
 type Healthrelated struct {
-	Id             int64     `json:"id`                                      //id
-	Senior_id      int64     `xorm:"comment('老者id')" json:"senior_id`        //老者id
+	Id             int64     `json:"id"`                                     //id
+	Senior_id      int64     `xorm:"comment('老者id')" json:"senior_id"`       //老者id
 	Assessors_id   int64     `xorm:"comment('所属评估员id')" json:"assessors_id"` //所属评估员id
 	Number_id      int64     `xorm:"comment('编号id')" json:"number_id"`       //编号id
 	Pressureinjury string    `xorm:"comment('压力性损伤')" json:"pressureinjury"` //压力性损伤
@@ -36,7 +36,7 @@ type Healthrelated struct {
 
 // type Any interface{}
 // 获取当前用户信息
-func GetoHealthrelatedlist(c *gin.Context) {
+func GetHealthrelatedlist(c *gin.Context) {
 	//从header中获取到token
 	var searchdata Healthrelated
 	c.BindJSON(&searchdata)

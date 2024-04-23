@@ -29,7 +29,7 @@ type Seniorc struct {
 	Education_level string `json:"education_level"` //文化程度
 	Live_way        string `json:"live_way"`        //居家方式
 	Is_marriage     string `json:"is_marriage"`     //婚姻状况
-	// Ssnumber      string `xorm:"varchar(64)" json:"ssnumber"`                                                //社保号码
+	// Ssnumber      string `xorm:"varchar(64)" json:"ssnumber"` //社保号码
 	Payment   string `json:"payment"`   //医疗费用支付方式
 	Financial string `json:"financial"` //经济来源
 

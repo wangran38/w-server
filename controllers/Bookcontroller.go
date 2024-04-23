@@ -6,6 +6,7 @@ import (
 	"w-server/models"
 
 	// "linfeng/utils"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -41,6 +42,8 @@ func GetBooklist(c *gin.Context) {
 		Pid:         searchdata.Pid,
 		Chaptername: searchdata.Chaptername,
 		Level:       searchdata.Level,
+		Name:        searchdata.Name,
+		Content:     searchdata.Content,
 	}
 	listdata := models.GetbookapiList(limit, page, search, order)
 

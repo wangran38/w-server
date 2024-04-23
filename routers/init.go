@@ -109,7 +109,18 @@ func init() {
 		admin.POST("/adddictionary", controllers.AddDictionary)  //添加
 		admin.POST("/updictionary", controllers.Updedictionary)  //修改
 		admin.POST("/deldictionary", controllers.DelDictionary)  //删除
-		//支付接口
+
+		//健康相关问题接口
+		admin.POST("/gethealthrelatedlist", controllers.GetHealthrelatedlist) //查询
+		admin.POST("/addhealthrelatedlist", controllers.AddHealthrelated)     //添加
+		admin.POST("/uphealthrelatedlist", controllers.EdiHealthrelated)      //修改
+		admin.POST("/delhealthrelatedlist", controllers.DeleteHealthrelated)  //删除
+
+		//疾病诊断和用药情况接口
+		admin.POST("/gethealth", controllers.GetHealthlist)    //查询
+		admin.POST("/addhealthlist", controllers.AddHealth)    //添加
+		admin.POST("/uphealthlist", controllers.UpHealth)      //修改
+		admin.POST("/delhealthlist", controllers.DeleteHealth) //删除
 
 	}
 	api := router.Group("/api")
@@ -118,12 +129,12 @@ func init() {
 		api.POST("/getdictionary", apic.GetDictionaryclist) //居住情况的API前端接口
 		api.POST("/cglist", apic.Getcategorylist)           //
 		// api.POST("/getinformation", apic.GetInformationlist) //登录
-		api.POST("/addhealthrelated", apic.GetHealthrelatedlist) //健康相关信息
-		api.POST("/addinformation", apic.GetInformationlist)     //信息提供者及联系人接口
-		api.POST("/gethealth", apic.GetHealthlist)               //健康
-		api.POST("/citytree", apic.Treecity)                     //
-		api.POST("/newslist", apic.GetNewslist)                  //
-		api.POST("/newsinfo", apic.GetNewsinfo)                  //
+		api.POST("/addhealthrelated", apic.AddHealthrelated) //健康相关信息
+		api.POST("/addinformation", apic.AddInformation)     //信息提供者及联系人接口
+		api.POST("/addhealth", apic.AddHealth)               //添加健康相关问题
+		api.POST("/citytree", apic.Treecity)                 //
+		api.POST("/newslist", apic.GetNewslist)              //
+		api.POST("/newsinfo", apic.GetNewsinfo)              //
 		//评估员注册登录
 		api.POST("/assessors_rg", apic.Rsassessors) //
 		api.POST("/assessors_login", apic.Loginassessors)

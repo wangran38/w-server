@@ -5,6 +5,7 @@ import (
 	// "net/http"
 	_ "time"
 	"w-server/models"
+	"w-server/utils"
 
 	// "linfeng/utils"
 	"github.com/gin-gonic/gin"
@@ -24,7 +25,62 @@ type Health struct {
 	Page         int    `json:"page"`
 }
 
-// 获取展会信息
+// AddHealth 用于添加用户信息
+func AddHealth(c *gin.Context) {
+	// 从请求头中获取令牌
+	token := c.Request.Header.Get("Authorization")
+	if token == "" || len(token) == 0 {
+		c.JSON(201, gin.H{
+			"code":    201,
+			"message": "你没有权限,去远处玩！",
+			"data":    "",
+			// "permissions": menu,
+			// "roles":       role,
+		})
+		return
+	}
+	user, tokenerr := utils.GetLoginAssessorsc(token)
+	if tokenerr != nil {
+		c.JSON(201, gin.H{
+			"code":    201,
+			"message": "登录失效，请重新登录！",
+			"data":    "",
+			// "permissions": menu,
+			// "roles":       role,
+		})
+		return
+	}
+	var formdata Health
+	c.ShouldBind(&formdata)
+	Intodata := new(models.Health)
+	Intodata.Id = formdata.Id
+	Intodata.Senior_id = formdata.Senior_id
+	Intodata.Assessors_id = user.Id
+	Intodata.Number_id = formdata.Number_id
+	Intodata.Disease = formdata.Disease
+	Intodata.Drugname = formdata.Drugname
+	Intodata.Medication = formdata.Medication
+	Intodata.Dosage = formdata.Dosage
+	Intodata.Frequency = formdata.Frequency
+
+	err := models.AddHealth(Intodata) // 判断账号是否存在！
+	if err != nil {
+		c.JSON(201, gin.H{
+			"code": 201,
+			"msg":  "添加数据出错！",
+			"data": err,
+		})
+		return
+	} else {
+		c.JSON(200, gin.H{
+			"code": 200,
+			"msg":  "数据添加成功！",
+			"data": "",
+		})
+	}
+}
+
+// 获取信息
 func GetHealthlist(c *gin.Context) {
 	//从header中获取到token
 	var searchdata Health

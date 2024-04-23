@@ -11,26 +11,24 @@ import (
 
 // type NewsController struct{}
 type Health struct {
-	Id           int64 `json:"id`        //id
-	Senior_id    int64 `json:"senior_id` //老者id
-	Assessors_id int64 `json:"assessors_id"`
-
-	//所属评估员id
-	Number_id  int64     ` json:"number_id"`                         //编号id
-	Disease    string    `xorm:"comment('疾病诊断')" json:"disease"`     //疾病诊断
-	Drugname   string    ` xorm:"comment('药物名称')" json:"drugname"`   //药物名称
-	Medication string    ` xorm:"comment('服药方法')" json:"medication"` //服药方法
-	Dosage     string    ` xorm:"comment('用药剂量')" json:"dosage"`     //用药剂量
-	Frequency  string    ` xorm:"comment('用药频率')" json:"frequency"`  //用药频率
-	Created    time.Time `json:"createtime" xorm:"int"`
-	Updated    time.Time `json:"updatetime" xorm:"int"`
-	Limit      int       `json:"limit"`
-	Page       int       `json:"page"`
+	Id           int64     `json:"id"`                                 //id
+	Senior_id    int64     `json:"senior_id"`                          //老者id
+	Assessors_id int64     `json:"assessors_id"`                       //所属评估员id
+	Number_id    int64     ` json:"number_id"`                         //编号id
+	Disease      string    `xorm:"comment('疾病诊断')" json:"disease"`     //疾病诊断
+	Drugname     string    ` xorm:"comment('药物名称')" json:"drugname"`   //药物名称
+	Medication   string    ` xorm:"comment('服药方法')" json:"medication"` //服药方法
+	Dosage       string    ` xorm:"comment('用药剂量')" json:"dosage"`     //用药剂量
+	Frequency    string    ` xorm:"comment('用药频率')" json:"frequency"`  //用药频率
+	Created      time.Time `json:"createtime" xorm:"int"`
+	Updated      time.Time `json:"updatetime" xorm:"int"`
+	Limit        int       `json:"limit"`
+	Page         int       `json:"page"`
 }
 
 // type Any interface{}
 // 获取当前用户信息
-func GetoHealthlist(c *gin.Context) {
+func GetHealthlist(c *gin.Context) {
 	//从header中获取到token
 	var searchdata Health
 	c.BindJSON(&searchdata)
@@ -120,7 +118,7 @@ func AddHealth(c *gin.Context) {
 }
 
 // //修改用户组
-func EdiHealth(c *gin.Context) {
+func UpHealth(c *gin.Context) {
 	var formdata models.Health
 	c.ShouldBind(&formdata)
 	updata := new(models.Health)

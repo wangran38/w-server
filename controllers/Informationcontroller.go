@@ -148,7 +148,7 @@ func EdiInformation(c *gin.Context) {
 	updata.Relationship = formdata.Relationship
 	updata.Phone = formdata.Phone
 	updata.Updated = time.Now()
-	if formdata.Senior_id <= 0 {
+	if formdata.Id <= 0 {
 		c.JSON(201, gin.H{
 			"code": 201,
 			"msg":  "修改选择的ID出错！",
@@ -179,7 +179,7 @@ func EdiInformation(c *gin.Context) {
 func DelInformation(c *gin.Context) {
 	var searchdata models.Information
 	c.BindJSON(&searchdata)
-	delnum := models.DeleteInformation(searchdata.Senior_id)
+	delnum := models.DeleteInformation(searchdata.Id)
 	if delnum > 0 {
 		c.JSON(200, gin.H{
 			"code":    200,

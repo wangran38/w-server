@@ -34,28 +34,6 @@ type Bookinfojson struct {
 	Children []*models.Bookinfo
 }
 
-// type Any interface{}
-// func Getcategorytree(c *gin.Context) {
-// 	listdata := models.Getcategorytree(0)
-// 	result := make(map[string]interface{})
-// 	if listdata == nil {
-// 		c.JSON(200, gin.H{
-// 			"code":    201,
-// 			"message": "获取分类失败",
-// 			"data":    "",
-// 		})
-// 		return
-// 	} else {
-// 		result["listdata"] = listdata
-// 		c.JSON(200, gin.H{
-// 			"code":    200,
-// 			"message": "数据获取成功",
-// 			"data":    result,
-// 		})
-// 		return
-// 	}
-// }
-
 // 获取当前用户信息
 func Getbooklist(c *gin.Context) {
 	//从header中获取到token
@@ -82,29 +60,6 @@ func Getbooklist(c *gin.Context) {
 		Content:     searchdata.Content,
 	}
 	listdata := models.GetbookapiList(limit, page, search, order)
-	//treelist := []*Bookinfojson{}
-	// for _, v := range listdata { //循环range切片
-	// 	// search1 := &models.Bookinfo{
-	// 	// 	// Id:    searchdata.Id,
-	// 	// 	Kpiid: v.Id,
-	// 	// }
-
-	// 	// infolistdata := models.GetbookinfoList(10, 1, search1, "")
-	// 	// node := &Bookinfojson{
-	// 	// 	Id:          v.Id,
-	// 	// 	Pid:         v.Pid,
-	// 	// 	Chaptername: v.Chaptername,
-	// 	// 	Level:       v.Level,
-	// 	// 	Name:        v.Name,
-	// 	// 	Content:     Content,
-	// 	// 	// Level:  v.Level,
-	// 	// 	// Weigh: v.Weigh,
-	// 	// }
-	// 	// node.Children = infolistdata
-	// 	// treelist = append(treelist, node)
-	// 	// fmt.Printf("%s -> %s\n", k, v.Kname)
-	// }
-	// listnum := models.Getbooktotal(search)
 	result := make(map[string]interface{})
 	result["page"] = page
 	// result["totalnum"] = listnum

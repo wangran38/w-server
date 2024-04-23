@@ -5,11 +5,13 @@ import (
 	// "net/http"
 	_ "time"
 	"w-server/models"
+	"w-server/utils"
 
 	// "linfeng/utils"
 	"github.com/gin-gonic/gin"
 )
 
+// Information 结构体表示用户信息
 type Information struct {
 	Id           int64  `json:"Id"`
 	Senior_id    int64  `json:"senior_id"`
@@ -21,7 +23,60 @@ type Information struct {
 	Phone        string `json:"phone" xorm:"TEXT "`
 }
 
-// 获取展会信息
+// AddInformation 用于添加用户信息
+func AddInformation(c *gin.Context) {
+	// 从请求头中获取令牌
+	token := c.Request.Header.Get("Authorization")
+	if token == "" || len(token) == 0 {
+		c.JSON(201, gin.H{
+			"code":    201,
+			"message": "你没有权限,去远处玩！",
+			"data":    "",
+			// "permissions": menu,
+			// "roles":       role,
+		})
+		return
+	}
+	user, tokenerr := utils.GetLoginAssessorsc(token)
+	if tokenerr != nil {
+		c.JSON(201, gin.H{
+			"code":    201,
+			"message": "登录失效，请重新登录！",
+			"data":    "",
+			// "permissions": menu,
+			// "roles":       role,
+		})
+		return
+	}
+	var formdata Information
+	c.ShouldBind(&formdata)
+	Intodata := new(models.Information)
+	Intodata.Id = formdata.Id
+	Intodata.Senior_id = formdata.Senior_id
+	Intodata.Assessors_id = user.Id
+	Intodata.Provider = formdata.Provider
+	Intodata.Number_id = formdata.Number_id
+	Intodata.Relationship = formdata.Relationship
+	Intodata.Contactname = formdata.Contactname
+	Intodata.Phone = formdata.Phone
+	err := models.AddInformation(Intodata) // 判断账号是否存在！
+	if err != nil {
+		c.JSON(201, gin.H{
+			"code": 201,
+			"msg":  "添加数据出错！",
+			"data": err,
+		})
+		return
+	} else {
+		c.JSON(200, gin.H{
+			"code": 200,
+			"msg":  "数据添加成功！",
+			"data": "",
+		})
+	}
+}
+
+// 获取信息
 func GetInformationlist(c *gin.Context) {
 	//从header中获取到token
 	var searchdata Information
@@ -32,8 +87,8 @@ func GetInformationlist(c *gin.Context) {
 		Id:           searchdata.Id,
 		Senior_id:    searchdata.Senior_id,
 		Assessors_id: searchdata.Assessors_id,
-		Provider:     searchdata.Provider,
 		Number_id:    searchdata.Number_id,
+		Provider:     searchdata.Provider,
 		Relationship: searchdata.Relationship,
 		Contactname:  searchdata.Contactname,
 		Phone:        searchdata.Phone,
@@ -60,12 +115,14 @@ func GetInformationlist(c *gin.Context) {
 	}
 }
 
-func GetInformationinfo(c *gin.Context) {
+func GetInformationList1(c *gin.Context) {
 	var searchdata Information
 	c.ShouldBind(&searchdata)
 	// fmt.Print(searchinfo.Id)
 	// result := make(map[string]interface{})
+
 	info, _ := models.SelectNewsid(searchdata.Id)
+
 	if info != nil {
 		c.JSON(200, gin.H{
 			"code": 200,

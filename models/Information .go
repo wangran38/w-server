@@ -59,7 +59,7 @@ func AddInformation(a *Information) error {
 
 // 修改
 func UpInformation(a *Information) (int64, error) {
-	affected, err := orm.Id(a.Senior_id).Update(a)
+	affected, err := orm.Id(a.Id).Update(a)
 	return affected, err
 
 }
@@ -78,18 +78,8 @@ func GetInformationList(limit int, pagesize int, search *Information) []*Informa
 	session := orm.Table("Information")
 	// stringid := strconv.FormatInt(search.Id, 10)
 	if search.Senior_id > 0 {
-		session = session.And("senior_id = ?", search.Senior_id)
+		session = session.And("id = ?", search.Id)
 	}
-	// fmt.Println(stringid)
-
-	// if search.Title != "" {
-	// 	title := "%" + search.Title + "%"
-	// 	session = session.And("title LIKE ?", title)
-	// 	// session = session.And("pid", rules.Title)
-	// }
-	// if search.Categoryid > 0 {
-	// 	session = session.And("category_id = ?", search.Categoryid)
-	// }
 
 	var byorder string
 	byorder = "id ASC"
@@ -105,7 +95,7 @@ func GetInformationtotal(search *Information) int64 {
 	num = 0
 	session := orm.Table("information")
 	if search.Senior_id > 0 {
-		session = session.And(" Provider_id = ?", search.Senior_id)
+		session = session.And(" Id = ?", search.Id)
 	}
 	a := new(Information)
 	total, err := session.Count(a)
@@ -116,10 +106,10 @@ func GetInformationtotal(search *Information) int64 {
 	return num
 }
 
-func DeleteInformation(id int64) int {
+func DeleteInformation(Id int64) int {
 	// intid, _ := strconv.ParseInt(id, 10, 64)
 	a := new(Information)
-	outnum, _ := orm.ID(id).Delete(a)
+	outnum, _ := orm.ID(Id).Delete(a)
 
 	return int(outnum)
 

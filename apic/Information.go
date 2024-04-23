@@ -116,7 +116,7 @@ func GetInformationlist(c *gin.Context) {
 }
 
 func GetInformationList1(c *gin.Context) {
-	var searchdata Healthrelated
+	var searchdata Information
 	c.ShouldBind(&searchdata)
 	// fmt.Print(searchinfo.Id)
 	// result := make(map[string]interface{})

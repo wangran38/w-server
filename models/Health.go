@@ -24,9 +24,9 @@ func (a *Health) TableName() string {
 }
 
 // 根据用户id找用户返回数据
-func SelectHealthnumber_id(number_id int64) (*Health, error) {
+func SelectHealthid(id int64) (*Health, error) {
 	a := new(Health)
-	has, err := orm.Where(" number_id = ?", number_id).Get(a)
+	has, err := orm.Where(" id = ?", id).Get(a)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func AddHealth(a *Health) error {
 
 // 修改
 func UpHealth(a *Health) (int64, error) {
-	affected, err := orm.Id(a.Number_id).Update(a)
+	affected, err := orm.Id(a.Id).Update(a)
 	return affected, err
 
 }
@@ -97,8 +97,8 @@ func GetHealthtotal(search *Health) int64 {
 	var num int64
 	num = 0
 	session := orm.Table("health")
-	if search.Senior_id > 0 {
-		session = session.And(" Number_id = ?", search.Number_id)
+	if search.Id > 0 {
+		session = session.And(" Id= ?", search.Id)
 	}
 	a := new(Health)
 	total, err := session.Count(a)
@@ -109,10 +109,10 @@ func GetHealthtotal(search *Health) int64 {
 	return num
 }
 
-func DeleteHealth(Number_id int64) int {
+func DeleteHealth(Id int64) int {
 	// intid, _ := strconv.ParseInt(id, 10, 64)
 	a := new(Health)
-	outnum, _ := orm.ID(Number_id).Delete(a)
+	outnum, _ := orm.ID(Id).Delete(a)
 
 	return int(outnum)
 

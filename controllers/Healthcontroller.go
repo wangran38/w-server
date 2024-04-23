@@ -90,7 +90,7 @@ func AddHealth(c *gin.Context) {
 	Intodata.Drugname = formdata.Drugname
 	Intodata.Frequency = formdata.Frequency
 	Intodata.Created = time.Now()
-	info, _ := models.SelectHealthnumber_id(Intodata.Number_id) //判断账号是否存在！
+	info, _ := models.SelectHealthid(Intodata.Id) //判断账号是否存在！
 	if info != nil {
 		c.JSON(200, gin.H{
 			"code": "201",
@@ -130,7 +130,7 @@ func UpHealth(c *gin.Context) {
 	updata.Drugname = formdata.Drugname
 	updata.Frequency = formdata.Frequency
 	updata.Updated = time.Now()
-	if formdata.Number_id <= 0 {
+	if formdata.Id <= 0 {
 		c.JSON(201, gin.H{
 			"code": 201,
 			"msg":  "修改选择的ID出错！",
@@ -161,7 +161,7 @@ func UpHealth(c *gin.Context) {
 func DeleteHealth(c *gin.Context) {
 	var searchdata models.Health
 	c.BindJSON(&searchdata)
-	delnum := models.DeleteHealth(searchdata.Senior_id)
+	delnum := models.DeleteHealth(searchdata.Id)
 	if delnum > 0 {
 		c.JSON(200, gin.H{
 			"code":    200,

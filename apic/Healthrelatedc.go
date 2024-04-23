@@ -86,7 +86,7 @@ func GetHealthrelatedList1(c *gin.Context) {
 	c.ShouldBind(&searchdata)
 	// fmt.Print(searchinfo.Id)
 	// result := make(map[string]interface{})
-	info, _ := models.SelectHealthrelatednumber_id(searchdata.Number_id)
+	info, _ := models.SelectHealthrelatedid(searchdata.Id)
 	if info != nil {
 		c.JSON(200, gin.H{
 			"code": 200,
@@ -98,7 +98,7 @@ func GetHealthrelatedList1(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"code": 201,
 			"msg":  "获取数据失败",
-			"data": searchdata.Senior_id,
+			"data": searchdata.Id,
 		})
 	}
 }
@@ -131,7 +131,7 @@ func AddHealthrelated(c *gin.Context) {
 	var formdata Healthrelated
 	c.ShouldBind(&formdata)
 	Intodata := new(models.Healthrelated)
-	Intodata.Id = formdata.Id
+	// Intodata.Id = formdata.Id
 	Intodata.Senior_id = formdata.Senior_id
 	Intodata.Assessors_id = user.Id
 	Intodata.Number_id = formdata.Number_id

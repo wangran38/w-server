@@ -51,7 +51,7 @@ func AddInformation(c *gin.Context) {
 	var formdata Information
 	c.ShouldBind(&formdata)
 	Intodata := new(models.Information)
-	Intodata.Id = formdata.Id
+	// Intodata.Id = formdata.Id
 	Intodata.Senior_id = formdata.Senior_id
 	Intodata.Assessors_id = user.Id
 	Intodata.Provider = formdata.Provider
@@ -120,9 +120,7 @@ func GetInformationList1(c *gin.Context) {
 	c.ShouldBind(&searchdata)
 	// fmt.Print(searchinfo.Id)
 	// result := make(map[string]interface{})
-
-	info, _ := models.SelectNewsid(searchdata.Id)
-
+	info, _ := models.SelectInformationnumber_id(searchdata.Number_id)
 	if info != nil {
 		c.JSON(200, gin.H{
 			"code": 200,
@@ -134,7 +132,7 @@ func GetInformationList1(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"code": 201,
 			"msg":  "获取数据失败",
-			"data": searchdata.Senior_id,
+			"data": searchdata.Id,
 		})
 	}
 }

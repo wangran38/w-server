@@ -118,7 +118,7 @@ func AddHealthrelated(c *gin.Context) {
 	Intodata.Coma = formdata.Coma
 	Intodata.Other = formdata.Other
 	Intodata.Created = time.Now()
-	info, _ := models.SelectHealthrelatednumber_id(Intodata.Number_id) //判断账号是否存在！
+	info, _ := models.SelectHealthrelatedid(Intodata.Number_id) //判断账号是否存在！
 	if info != nil {
 		c.JSON(200, gin.H{
 			"code": "201",
@@ -168,7 +168,7 @@ func EdiHealthrelated(c *gin.Context) {
 	updata.Coma = formdata.Coma
 	updata.Other = formdata.Other
 	updata.Updated = time.Now()
-	if formdata.Number_id <= 0 {
+	if formdata.Id <= 0 {
 		c.JSON(201, gin.H{
 			"code": 201,
 			"msg":  "修改选择的ID出错！",
@@ -199,7 +199,7 @@ func EdiHealthrelated(c *gin.Context) {
 func DeleteHealthrelated(c *gin.Context) {
 	var searchdata models.Healthrelated
 	c.BindJSON(&searchdata)
-	delnum := models.DeleteHealthrelated(searchdata.Senior_id)
+	delnum := models.DeleteHealthrelated(searchdata.Id)
 	if delnum > 0 {
 		c.JSON(200, gin.H{
 			"code":    200,

@@ -34,9 +34,9 @@ func (a *Healthrelated) TableName() string {
 }
 
 // 根据用户id找用户返回数据
-func SelectHealthrelatednumber_id(number_id int64) (*Healthrelated, error) {
+func SelectHealthrelatedid(id int64) (*Healthrelated, error) {
 	a := new(Healthrelated)
-	has, err := orm.Where(" number_id = ?", number_id).Get(a)
+	has, err := orm.Where(" id = ?", id).Get(a)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +55,7 @@ func AddHealthrelated(a *Healthrelated) error {
 
 // 修改（用于更新数据库中的数据）
 func UpHealthrelated(a *Healthrelated) (int64, error) {
-	affected, err := orm.Id(a.Number_id).Update(a)
+	affected, err := orm.Id(a.Id).Update(a)
 	return affected, err
 
 }
@@ -80,8 +80,8 @@ func GetHealthrelatedList(limit int, pagesize int, search *Healthrelated) []*Hea
 	//构建查询语句
 	session := orm.Table("Healthrelated")
 	// stringid := strconv.FormatInt(search.Id, 10)
-	if search.Number_id > 0 {
-		session = session.And("number_id = ?", search.Number_id)
+	if search.Id > 0 {
+		session = session.And("id = ?", search.Id)
 	}
 	// fmt.Println(stringid)
 
@@ -108,8 +108,8 @@ func GetHealthrelatedtotal(search *Healthrelated) int64 {
 	var num int64
 	num = 0
 	session := orm.Table("healthrelated")
-	if search.Senior_id > 0 {
-		session = session.And(" Number_id = ?", search.Number_id)
+	if search.Id > 0 {
+		session = session.And(" Id = ?", search.Id)
 	}
 	a := new(Healthrelated)
 	total, err := session.Count(a)
@@ -121,10 +121,10 @@ func GetHealthrelatedtotal(search *Healthrelated) int64 {
 }
 
 // 删除
-func DeleteHealthrelated(Number_id int64) int {
+func DeleteHealthrelated(Id int64) int {
 	// intid, _ := strconv.ParseInt(id, 10, 64)
 	a := new(Healthrelated)
-	outnum, _ := orm.ID(Number_id).Delete(a)
+	outnum, _ := orm.ID(Id).Delete(a)
 
 	return int(outnum)
 

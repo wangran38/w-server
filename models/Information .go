@@ -116,10 +116,10 @@ func GetInformationtotal(search *Information) int64 {
 	return num
 }
 
-func DeleteInformation(Senior_id int64) int {
+func DeleteInformation(id int64) int {
 	// intid, _ := strconv.ParseInt(id, 10, 64)
 	a := new(Information)
-	outnum, _ := orm.ID(Senior_id).Delete(a)
+	outnum, _ := orm.ID(id).Delete(a)
 
 	return int(outnum)
 

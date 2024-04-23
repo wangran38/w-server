@@ -107,9 +107,71 @@ func Addseniorc(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"code": 200,
 			"msg":  "数据添加成功！",
-			"data": "",
+			"data": Intodata.Id,
 		})
 
+	}
+
+}
+
+// 我的编号
+func MySeniorc(c *gin.Context) {
+	//如若是models则为models结构体的名称
+	token := c.Request.Header.Get("Authorization")
+	if token == "" || len(token) == 0 {
+		c.JSON(201, gin.H{
+			"code":    201,
+			"message": "你没有权限,去远处玩！",
+			"data":    "",
+			// "permissions": menu,
+			// "roles":       role,
+		})
+		return
+	}
+
+	var searchdata Numberc
+	c.BindJSON(&searchdata)
+	user, finderr := utils.GetLoginAssessorsc(token)
+	if finderr != nil {
+		c.JSON(201, gin.H{
+			"code":    201,
+			"message": "登录已经过期！111",
+			"data":    "",
+			// "permissions": menu,
+			// "roles":       role,
+		})
+		return
+	}
+	result := make(map[string]interface{})
+	// name:=""
+	limit := searchdata.Limit
+	page := searchdata.Page
+	search := &models.Number{
+		Id:          searchdata.Id,
+		Assessorsid: user.Id,
+		Code:        searchdata.Code,
+	}
+	listdata := models.GetnumberList(limit, page, search)
+	listnum := models.Getnumbertotal(search)
+
+	result["page"] = page
+	result["totalnum"] = listnum
+	result["limit"] = limit
+	if listdata == nil {
+		c.JSON(200, gin.H{
+			"code":    201,
+			"message": "获取数据为空",
+			"data":    "",
+		})
+		return
+	} else {
+		result["listdata"] = listdata
+		c.JSON(200, gin.H{
+			"code":    200,
+			"message": "数据获取成功",
+			"data":    result,
+		})
+		return
 	}
 
 }

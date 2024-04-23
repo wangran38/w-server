@@ -65,7 +65,7 @@ func GetInformationinfo(c *gin.Context) {
 	c.ShouldBind(&searchdata)
 	// fmt.Print(searchinfo.Id)
 	// result := make(map[string]interface{})
-	info, _ := models.SelectNewsid(searchdata.Senior_id)
+	info, _ := models.SelectNewsid(searchdata.Id)
 	if info != nil {
 		c.JSON(200, gin.H{
 			"code": 200,

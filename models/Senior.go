@@ -72,3 +72,39 @@ func DelSenior(id int64) int {
 	return int(outnum)
 
 }
+func GetSeniorList(limit int, pagesize int, search *Senior, order string) []*Senior {
+	//fmt.Println("搜索关键词",search)
+	//    limit,_ := strconv.Atoi(limits)
+	//
+	//   if pagesize-1<1 {
+	page := pagesize - 1
+	//   }
+	listdata := []*Senior{}
+	//拼接搜索分页查询语句
+	var byorder string
+	byorder = "weigh DESC"
+	if order == "-id" {
+		byorder = "weigh DESC"
+	}
+	orm.Table("senior").
+		// Where("kname like ?", "%"+search.Kname+"%").
+		OrderBy(byorder).
+		// Orderby(byorder).
+		Limit(limit, limit*page).
+		Find(&listdata)
+	//  orm.Where("username like ?", "%"+search+"%").Limit(limit*pagesize, pagesize).Find(&listadmin)
+	//    fmt.Println(listadmin)
+	return listdata
+}
+
+func GetSeniortotal(search *Senior) int64 {
+	var num int64
+	num = 0
+	a := new(Senior)
+	total, err := orm.Cols("id", "kname").Where("kname like ?", "%"+search.Senior_name+"%").Count(a)
+	if err == nil {
+		num = total
+
+	}
+	return num
+}

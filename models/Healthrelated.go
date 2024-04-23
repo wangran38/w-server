@@ -5,6 +5,7 @@ import (
 	"time"
 )
 
+// 建结构体
 type Healthrelated struct {
 	Id             int64     `json:"id"`                                                  //id
 	Senior_id      int64     `xorm:"comment('老者id')" json:"senior_id"`                    //老者id
@@ -27,6 +28,7 @@ type Healthrelated struct {
 	Updated        time.Time `xorm:"int" json:"updatetime"`
 }
 
+// Table Name()方法 返回数据库表的名称
 func (a *Healthrelated) TableName() string {
 	return "healthrelated"
 }
@@ -45,30 +47,37 @@ func SelectHealthrelatednumber_id(number_id int64) (*Healthrelated, error) {
 
 }
 
-// 添加
+// 添加（用于向数据库中插入数据）
 func AddHealthrelated(a *Healthrelated) error {
 	_, err := orm.Insert(a)
 	return err
 }
 
-// 修改
+// 修改（用于更新数据库中的数据）
 func UpHealthrelated(a *Healthrelated) (int64, error) {
 	affected, err := orm.Id(a.Number_id).Update(a)
 	return affected, err
 
 }
+
+// 根据前端参数查询Healthrelated表的全部内容（并进行分页）
 func GetHealthrelatedList(limit int, pagesize int, search *Healthrelated) []*Healthrelated {
+	//page用于计算分页的页面索引
 	var page int
+	//定义变量listdata用于存储查询结果的Healthrelated切片
 	listdata := []*Healthrelated{}
+	//如pagesize-1< 1 则设置页面为0 否则计算页面索引
 	if pagesize-1 < 1 {
 		page = 0
 	} else {
 		page = pagesize - 1
 	}
+	//设置限制条件 限制数量<=6则将限制数量设置为6
 	if limit <= 6 {
 		limit = 6
 
 	}
+	//构建查询语句
 	session := orm.Table("Healthrelated")
 	// stringid := strconv.FormatInt(search.Id, 10)
 	if search.Number_id > 0 {
@@ -90,6 +99,7 @@ func GetHealthrelatedList(limit int, pagesize int, search *Healthrelated) []*Hea
 	// if order != "" {
 	// 	byorder = "id DESC"
 	// }
+	//执行查询（将结果存储在listdata中，最后返回该列表）
 	session.OrderBy(byorder).Limit(limit, limit*page).Find(&listdata)
 	return listdata
 }

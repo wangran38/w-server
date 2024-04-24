@@ -34,6 +34,58 @@ type Bookinfojson struct {
 	Children []*models.Bookinfo
 }
 
+// AddInformation 用于添加用户信息
+// func AddBook(c *gin.Context) {
+// 	// 从请求头中获取令牌
+// 	token := c.Request.Header.Get("Authorization")
+// 	if token == "" || len(token) == 0 {
+// 		c.JSON(201, gin.H{
+// 			"code":    201,
+// 			"message": "你没有权限,去远处玩！",
+// 			"data":    "",
+// 			// "permissions": menu,
+// 			// "roles":       role,
+// 		})
+// 		return
+// 	}
+// 	user, tokenerr := utils.GetLoginAssessorsc(token)
+// 	if tokenerr != nil {
+// 		c.JSON(201, gin.H{
+// 			"code":    201,
+// 			"message": "登录失效，请重新登录！",
+// 			"data":    "",
+// 			// "permissions": menu,
+// 			// "roles":       role,
+// 		})
+// 		return
+// 	}
+// 	var formdata models.Book
+// 	c.ShouldBind(&formdata)
+// 	Intodata := new(models.Book)
+// 	// Intodata.Id = formdata.Id
+// 	Intodata.Pid = formdata.Pid
+// 	Intodata.Chaptername = formdata.Chaptername
+// 	Intodata.Level = formdata.Level
+// 	Intodata.Name = formdata.Name
+// 	Intodata.Content = formdata.Content
+// 	Intodata.Isdel = formdata.Isdel
+// 	err := models.AddBook(Intodata) // 判断账号是否存在！
+// 	if err != nil {
+// 		c.JSON(201, gin.H{
+// 			"code": 201,
+// 			"msg":  "添加数据出错！",
+// 			"data": err,
+// 		})
+// 		return
+// 	} else {
+// 		c.JSON(200, gin.H{
+// 			"code": 200,
+// 			"msg":  "数据添加成功！",
+// 			"data": "",
+// 		})
+// 	}
+// }
+
 // 获取当前用户信息
 func Getbooklist(c *gin.Context) {
 	//从header中获取到token

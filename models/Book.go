@@ -54,6 +54,7 @@ func (m *Book) TreeBooklist(pid int64) []*Booktree {
 			Id:          v.Id,
 			Pid:         v.Pid,
 			Chaptername: v.Chaptername,
+			Name:        v.Name,
 		}
 		node.Children = child
 		treelist = append(treelist, node)

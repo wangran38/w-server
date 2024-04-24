@@ -34,6 +34,7 @@ func GetDictionarylist(c *gin.Context) {
 	search := &models.Dictionary{
 		Id:       searchdata.Id,
 		Code:     searchdata.Code,
+		Name:     searchdata.Name,
 		Codename: searchdata.Codename,
 		// Isshow:   searchdata.Isshow,
 	}

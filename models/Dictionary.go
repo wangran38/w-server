@@ -76,6 +76,12 @@ func SelectDictionarylist(limit int, pagesize int, search *Dictionary) []*Dictio
 		session = session.And("codename LIKE ?", title)
 		// session = session.And("pid", rules.Title)
 	}
+
+	if search.Name != "" {
+		title1 := "%" + search.Name + "%"
+		session = session.And("name LIKE ?", title1)
+		// session = session.And("pid", rules.Title)
+	}
 	if search.Code > 0 {
 		// title := "%" + search.Codename + "%"
 		session = session.And("code = ?", search.Code)
@@ -95,13 +101,18 @@ func GetDictionarytotal(search *Dictionary) int64 {
 	var num int64
 	num = 0
 	//创建一个orm.Table("news")的会话
-	session := orm.Table("news")
+	session := orm.Table("dictionary")
 	if search.Id > 0 {
 		session = session.And("id = ?", search.Id)
 	}
 	if search.Codename != "" {
 		title := "%" + search.Codename + "%"
 		session = session.And("codename LIKE ?", title)
+		// session = session.And("pid", rules.Title)
+	}
+	if search.Name != "" {
+		title1 := "%" + search.Name + "%"
+		session = session.And("name LIKE ?", title1)
 		// session = session.And("pid", rules.Title)
 	}
 	if search.Code > 0 {

@@ -39,12 +39,13 @@ func AddSenior(a *Senior) error {
 	return err
 }
 
-// //修改
-// func UpUser(a *User) (int64,error) {
-// 	affected, err := orm.Id(a.Id).Update(a)
-// 	return affected, err
+// 修改
+func UpSenior(a *Senior) (int64, error) {
+	affected, err := orm.Id(a.Id).Update(a)
+	return affected, err
 
-// }
+}
+
 // //根据
 func SelectSeniorbyidnum(Idnum string) (*Senior, error) {
 	a := new(Senior)
@@ -82,26 +83,93 @@ func GetSeniorList(limit int, pagesize int, search *Senior, order string) []*Sen
 	listdata := []*Senior{}
 	//拼接搜索分页查询语句
 	var byorder string
-	byorder = "weigh DESC"
+	byorder = "id DESC"
 	if order == "-id" {
-		byorder = "weigh DESC"
+		byorder = "id DESC"
 	}
-	orm.Table("senior").
-		// Where("kname like ?", "%"+search.Kname+"%").
-		OrderBy(byorder).
-		// Orderby(byorder).
-		Limit(limit, limit*page).
-		Find(&listdata)
+	session := orm.Table("senior")
+	if search.Id >= 1 {
+		session = session.And("id = ?", search.Id)
+	}
+	// if search.Assessor_id == 0 {
+	// 	session = session.And("assessor_id = ?", search.Assessor_id)
+	// }
+	if search.Number_id >= 1 {
+		session = session.And("number_id = ?", search.Number_id)
+	}
+	if search.Assessor_id >= 1 {
+		session = session.And("assessor_id = ?", search.Assessor_id)
+	}
+
+	if search.Senior_name != "" {
+		Kname := "%" + search.Senior_name + "%"
+		session = session.And("senior_name LIKE ?", Kname)
+	}
+	// if search.Level >= 1 {
+	// 	session = session.And("level = ?", search.Level)
+	// }
+	// if search.Name != "" {
+	// 	name := "%" + search.Name + "%"
+	// 	session = session.And("name LIKE ?", name)
+
+	// }
+	// Where("kname like ?", "%"+search.Kname+"%").
+	session.OrderBy(byorder).Limit(limit, limit*page).Find(&listdata)
+	return listdata
+
 	//  orm.Where("username like ?", "%"+search+"%").Limit(limit*pagesize, pagesize).Find(&listadmin)
 	//    fmt.Println(listadmin)
-	return listdata
+	// return listdata
 }
+
+// func GetSeniorList(limit int, pagesize int, search *Senior, order string) []*Senior {
+// 	//fmt.Println("搜索关键词",search)
+// 	//    limit,_ := strconv.Atoi(limits)
+// 	//
+// 	//   if pagesize-1<1 {
+// 	page := pagesize - 1
+// 	//   }
+// 	listdata := []*Senior{}
+// 	//拼接搜索分页查询语句
+// 	var byorder string
+// 	byorder = "weigh DESC"
+// 	if order == "-id" {
+// 		byorder = "weigh DESC"
+// 	}
+// 	orm.Table("senior").
+// 		// Where("kname like ?", "%"+search.Kname+"%").
+// 		OrderBy(byorder).
+// 		// Orderby(byorder).
+// 		Limit(limit, limit*page).
+// 		Find(&listdata)
+// 	//  orm.Where("username like ?", "%"+search+"%").Limit(limit*pagesize, pagesize).Find(&listadmin)
+// 	//    fmt.Println(listadmin)
+// 	return listdata
+// }
 
 func GetSeniortotal(search *Senior) int64 {
 	var num int64
 	num = 0
+	session := orm.Table("senior")
+	if search.Id >= 1 {
+		session = session.And("id = ?", search.Id)
+	}
+	// if search.Assessor_id == 0 {
+	// 	session = session.And("assessor_id = ?", search.Assessor_id)
+	// }
+	if search.Number_id >= 1 {
+		session = session.And("number_id = ?", search.Number_id)
+	}
+	if search.Assessor_id >= 1 {
+		session = session.And("assessor_id = ?", search.Assessor_id)
+	}
+
+	if search.Senior_name != "" {
+		Kname := "%" + search.Senior_name + "%"
+		session = session.And("senior_name LIKE ?", Kname)
+	}
 	a := new(Senior)
-	total, err := orm.Cols("id", "kname").Where("kname like ?", "%"+search.Senior_name+"%").Count(a)
+	total, err := session.Count(a)
 	if err == nil {
 		num = total
 

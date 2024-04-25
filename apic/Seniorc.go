@@ -32,7 +32,8 @@ type Seniorc struct {
 	// Ssnumber      string `xorm:"varchar(64)" json:"ssnumber"` //社保号码
 	Payment   string `json:"payment"`   //医疗费用支付方式
 	Financial string `json:"financial"` //经济来源
-
+	Limit     int    `json:"limit"`
+	Page      int    `json:"page"`
 }
 
 // //添加用户组
@@ -69,7 +70,7 @@ func Addseniorc(c *gin.Context) {
 	// 	"data": formdata,
 	// })
 	Intodata := new(models.Senior)
-	Intodata.Id = formdata.Id
+	// Intodata.Id = formdata.Id
 	Intodata.Assessor_id = user.Id
 	Intodata.Senior_gender = formdata.Senior_gender
 	Intodata.Senior_dob = formdata.Senior_dob
@@ -129,7 +130,7 @@ func MySeniorc(c *gin.Context) {
 		return
 	}
 
-	var searchdata Numberc
+	var searchdata Seniorc
 	c.BindJSON(&searchdata)
 	user, finderr := utils.GetLoginAssessorsc(token)
 	if finderr != nil {
@@ -146,13 +147,16 @@ func MySeniorc(c *gin.Context) {
 	// name:=""
 	limit := searchdata.Limit
 	page := searchdata.Page
-	search := &models.Number{
+	search := &models.Senior{
 		Id:          searchdata.Id,
-		Assessorsid: user.Id,
-		Code:        searchdata.Code,
+		Assessor_id: user.Id,
+		Number_id:   searchdata.Number_id,
+		Senior_name: searchdata.Senior_name,
 	}
-	listdata := models.GetnumberList(limit, page, search)
-	listnum := models.Getnumbertotal(search)
+	var byorder string
+	byorder = "id DESC"
+	listdata := models.GetSeniorList(limit, page, search, byorder)
+	listnum := models.GetSeniortotal(search)
 
 	result["page"] = page
 	result["totalnum"] = listnum
@@ -172,6 +176,85 @@ func MySeniorc(c *gin.Context) {
 			"data":    result,
 		})
 		return
+	}
+
+}
+
+// 修改老人信息
+func Upseniorc(c *gin.Context) {
+	//如若是models则为models结构体的名称
+	token := c.Request.Header.Get("Authorization")
+	if token == "" || len(token) == 0 {
+		c.JSON(201, gin.H{
+			"code":    201,
+			"message": "你没有权限,去远处玩！",
+			"data":    "",
+			// "permissions": menu,
+			// "roles":       role,
+		})
+		return
+	}
+	user, tokenerr := utils.GetLoginAssessorsc(token)
+	if tokenerr != nil {
+		c.JSON(201, gin.H{
+			"code":    201,
+			"message": "登录失效，请重新登录！",
+			"data":    "",
+			// "permissions": menu,
+			// "roles":       role,
+		})
+		return
+	}
+	//也可继承controller里的结构体
+	var formdata Seniorc
+	c.ShouldBind(&formdata)
+	// 	c.JSON(200, gin.H{
+	// 	"code": "201",
+	// 	"msg":  "添加数据出错！",
+	// 	"data": formdata,
+	// })
+	Intodata := new(models.Senior)
+	Intodata.Id = formdata.Id
+	Intodata.Assessor_id = user.Id
+	Intodata.Senior_gender = formdata.Senior_gender
+	Intodata.Senior_dob = formdata.Senior_dob
+	Intodata.Birthday = formdata.Birthday
+	Intodata.Height = formdata.Height
+	Intodata.Weight = formdata.Weight
+	Intodata.Ethnic = formdata.Ethnic
+	Intodata.Religion = formdata.Religion
+	Intodata.Idnumber = formdata.Idnumber
+	Intodata.Education_level = formdata.Education_level
+	Intodata.Live_way = formdata.Live_way
+	Intodata.Is_marriage = formdata.Is_marriage
+	Intodata.Payment = formdata.Payment
+	Intodata.Financial = formdata.Financial
+	Intodata.Created = time.Now()
+	// info, _ := models.SelectSeniorbyidnum(Intodata.Idnumber) //判断账号是否存在！
+	// if info != nil {
+	// 	c.JSON(200, gin.H{
+	// 		"code": "201",
+	// 		"msg":  "该老人身份证已经存在！",
+	// 	})
+	// 	return
+	// }
+	_, err := models.UpSenior(Intodata) //判断账号是否存在！
+	if err != nil {
+		c.JSON(201, gin.H{
+			"code": 201,
+			"msg":  "添加数据出错！",
+			"data": err,
+		})
+		return
+	} else {
+		// result := make(map[string]interface{})
+		// result["id"] = Rulestable.Id //返回当前总数
+		c.JSON(200, gin.H{
+			"code": 200,
+			"msg":  "数据添加成功！",
+			"data": Intodata.Id,
+		})
+
 	}
 
 }

@@ -13,10 +13,10 @@ import (
 
 type Adminform struct {
 	Username string `form:"username" binding:"required" json:"username"`
-	Nickname string `form:"nickname" binding:"required" json:"nickname"`
-	Phone    string `form:"phone" binding:"required" json:"phone"`
+	Nickname string `form:"nickname" json:"nickname"`
+	Phone    string `form:"phone" json:"phone"`
 	Email    string `form:"email" binding:"required" json:"email"`
-	Avatar   string `form:"avatar" binding:"required" json:"avatar"`
+	Avatar   string `form:"avatar" json:"avatar"`
 	Gid      int64  `form:"gid" binding:"required" json:"gid"`
 	Password string `form:"password" binding:"required" json:"password"`
 }

@@ -159,6 +159,8 @@ func init() {
 		api.POST("/edit_numbercode", apic.EditNumberc)      //添加编号
 		api.POST("/my_number", apic.MyNumberc)              //添加编号
 		api.POST("/add_seniorc", apic.Addseniorc)           //添加老人信息
+		api.POST("/my_seniorc", apic.MySeniorc)             //添加老人信息
+		api.POST("/up_seniorc", apic.Upseniorc)             //修改老人信息
 		api.POST("/add_score_record", apic.AddScore_record) //添加老人信息
 		//api.POST("/gethealth", apic.GetHealthlist)               //健康
 

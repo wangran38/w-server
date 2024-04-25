@@ -119,7 +119,7 @@ func Loginassessors(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"code": 201,
 			"msg":  "手机号码不能为空",
-			// "data": "",
+			"data": logindata.Phone,
 		})
 		return
 	}

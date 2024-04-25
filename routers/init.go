@@ -122,6 +122,8 @@ func init() {
 		admin.POST("/uphealthlist", controllers.UpHealth)      //修改
 		admin.POST("/delhealthlist", controllers.DeleteHealth) //删除
 
+		admin.POST("/getchuan", controllers.Chuan) //视频上传接口
+
 	}
 	api := router.Group("/api")
 	{
@@ -132,6 +134,8 @@ func init() {
 		api.POST("/addhealthrelated", apic.AddHealthrelated) //健康相关信息
 		api.POST("/addinformation", apic.AddInformation)     //信息提供者及联系人接口
 		api.POST("/addhealth", apic.AddHealth)               //添加健康相关问题
+		api.POST("/uphealth", apic.UpHealth)                 //修改健康相关问题
+		api.POST("/getbook", apic.Getbooklist)               //企业资源数字化的API前端接口
 		api.POST("/citytree", apic.Treecity)                 //
 		api.POST("/newslist", apic.GetNewslist)              //
 		api.POST("/newsinfo", apic.GetNewsinfo)              //

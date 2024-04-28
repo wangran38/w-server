@@ -3,6 +3,7 @@ package apic
 import (
 	// "fmt"
 	// "net/http"
+	"time"
 	_ "time"
 	"w-server/models"
 	"w-server/utils"
@@ -140,4 +141,138 @@ func GetHealthList1(c *gin.Context) {
 			"data": searchdata.Id,
 		})
 	}
+}
+
+// 疾病编号
+func MyHealth(c *gin.Context) {
+	//如若是models则为models结构体的名称
+	token := c.Request.Header.Get("Authorization")
+	if token == "" || len(token) == 0 {
+		c.JSON(201, gin.H{
+			"code":    201,
+			"message": "你没有权限,去远处玩！",
+			"data":    "",
+			// "permissions": menu,
+			// "roles":       role,
+		})
+		return
+	}
+
+	var searchdata Health
+	c.ShouldBind(&searchdata)
+	user, finderr := utils.GetLoginAssessorsc(token)
+	if finderr != nil {
+		c.JSON(201, gin.H{
+			"code":    201,
+			"message": "登录已经过期！111",
+			"data":    "",
+		})
+		return
+	}
+	result := make(map[string]interface{})
+	// name:=""
+	limit := searchdata.Limit
+	page := searchdata.Page
+	search := &models.Health{
+		Id:           searchdata.Id,
+		Senior_id:    searchdata.Senior_id,
+		Assessors_id: user.Id,
+		Number_id:    searchdata.Number_id,
+		Disease:      searchdata.Disease,
+		Drugname:     searchdata.Drugname,
+		Medication:   searchdata.Medication,
+		Dosage:       searchdata.Dosage,
+		Frequency:    searchdata.Frequency,
+	}
+	// var byorder string
+	// byorder = "id DESC"
+	listdata := models.GetHealthList(limit, page, search) //byorder
+	listnum := models.GetHealthtotal(search)
+
+	result["page"] = page
+	result["totalnum"] = listnum
+	result["limit"] = limit
+	if listdata == nil {
+		c.JSON(200, gin.H{
+			"code":    201,
+			"message": "获取数据为空",
+			"data":    "",
+		})
+		return
+	} else {
+		result["listdata"] = listdata
+		c.JSON(200, gin.H{
+			"code":    200,
+			"message": "数据获取成功",
+			"data":    result,
+		})
+		return
+	}
+
+}
+
+// 修改疾病信息
+func UpHealth(c *gin.Context) {
+	//如若是models则为models结构体的名称
+	token := c.Request.Header.Get("Authorization")
+	if token == "" || len(token) == 0 {
+		c.JSON(201, gin.H{
+			"code":    201,
+			"message": "你没有权限,去远处玩！",
+			"data":    "",
+			// "permissions": menu,
+			// "roles":       role,
+		})
+		return
+	}
+	user, tokenerr := utils.GetLoginAssessorsc(token)
+	if tokenerr != nil {
+		c.JSON(201, gin.H{
+			"code":    201,
+			"message": "登录失效，请重新登录！",
+			"data":    "",
+		})
+		return
+	}
+	//也可继承controller里的结构体
+	var formdata Health
+	c.ShouldBind(&formdata)
+	Intodata := new(models.Health)
+	Intodata.Id = formdata.Id
+	Intodata.Senior_id = formdata.Senior_id
+	Intodata.Assessors_id = user.Id
+	Intodata.Number_id = formdata.Number_id
+	Intodata.Disease = formdata.Disease
+	Intodata.Drugname = formdata.Drugname
+	Intodata.Medication = formdata.Medication
+	Intodata.Dosage = formdata.Dosage
+	Intodata.Frequency = formdata.Frequency
+	Intodata.Created = time.Now()
+	// info, _ := models.SelectSeniorbyidnum(Intodata.Idnumber) //判断账号是否存在！
+	// if info != nil {
+	// 	c.JSON(200, gin.H{
+	// 		"code": "201",
+	// 		"msg":  "该老人身份证已经存在！",
+	// 	})
+	// 	return
+	// }
+	_, err := models.UpHealth(Intodata) //判断账号是否存在！
+	if err != nil {
+		c.JSON(201, gin.H{
+			"code": 201,
+			"msg":  "添加数据出错！",
+			"data": err,
+		})
+		return
+	} else {
+		// result := make(map[string]interface{})
+		// result["id"] = Rulestable.Id //返回当前总数
+		c.JSON(200, gin.H{
+			"code": 200,
+			"msg":  "数据添加成功！",
+			"data": Intodata.Id,
+		})
+
+	}
+
 }

@@ -16,15 +16,6 @@ import (
 func init() {
 
 	router := gin.Default()
-	//加载模版
-	//router.LoadHTMLGlob("./view/*")
-	// router.LoadHTMLGlob("./view/**/*")
-	// router.StaticFS("/static", http.Dir("./static"))
-	//router.StaticFile("/MP_verify_4RLm31WaN7toWx0O.txt", "./MP_verify_4RLm31WaN7toWx0O.txt") //固定根目录微信文件可以访问
-	// router.GET("/news_list/:page/:limit/:cagegoryid", apic.GetNewslist)
-	//router.GET("/news_list/:page/:limit/:cagegoryid", htmlc.Newslist)
-	//router.GET("/wx/login", htmlc.Pcindex)
-	// router.GET("/ex_list", htmlc.Pczhanhui)
 	router.Use(Cors())
 	// 版本v1
 	router.POST("admin/login", controllers.LoginController) //登录
@@ -111,16 +102,16 @@ func init() {
 		admin.POST("/deldictionary", controllers.DelDictionary)  //删除
 
 		//健康相关问题接口
-		admin.POST("/gethealthrelatedlist", controllers.GetHealthrelatedlist) //查询
-		admin.POST("/addhealthrelatedlist", controllers.AddHealthrelated)     //添加
-		admin.POST("/uphealthrelatedlist", controllers.EdiHealthrelated)      //修改
-		admin.POST("/delhealthrelatedlist", controllers.DeleteHealthrelated)  //删除
+		admin.POST("/gethealthrelated", controllers.GetHealthrelatedlist) //查询
+		admin.POST("/addhealthrelated", controllers.AddHealthrelated)     //添加
+		admin.POST("/uphealthrelated", controllers.EdiHealthrelated)      //修改
+		admin.POST("/delhealthrelated", controllers.DeleteHealthrelated)  //删除
 
 		//疾病诊断和用药情况接口
-		admin.POST("/gethealth", controllers.GetHealthlist)    //查询
-		admin.POST("/addhealthlist", controllers.AddHealth)    //添加
-		admin.POST("/uphealthlist", controllers.UpHealth)      //修改
-		admin.POST("/delhealthlist", controllers.DeleteHealth) //删除
+		admin.POST("/gethealth", controllers.GetHealthlist) //查询
+		admin.POST("/addhealth", controllers.AddHealth)     //添加
+		admin.POST("/uphealth", controllers.UpHealth)       //修改
+		admin.POST("/delhealth", controllers.DeleteHealth)  //删除
 
 		admin.POST("/getchuan", controllers.Chuan) //视频上传接口
 
@@ -129,28 +120,16 @@ func init() {
 	{
 		api.POST("/getkpi", apic.Getkpilist)                //Kpi指标的API前端接口
 		api.POST("/getdictionary", apic.GetDictionaryclist) //居住情况的API前端接口
-		api.POST("/cglist", apic.Getcategorylist)           //
+		api.POST("/cglist", apic.Getcategorylist)
 		// api.POST("/getinformation", apic.GetInformationlist) //登录
-		api.POST("/addhealthrelated", apic.AddHealthrelated) //健康相关信息
-		api.POST("/addinformation", apic.AddInformation)     //信息提供者及联系人接口
-		api.POST("/addhealth", apic.AddHealth)               //添加健康相关问题
-		api.POST("/uphealth", apic.UpHealth)                 //修改健康相关问题
-		api.POST("/getbook", apic.Getbooklist)               //企业资源数字化的API前端接口
-		api.POST("/citytree", apic.Treecity)                 //
-		api.POST("/newslist", apic.GetNewslist)              //
-		api.POST("/newsinfo", apic.GetNewsinfo)              //
+
+		api.POST("/getbook", apic.Getbooklist)  //企业资源数字化的API前端接口
+		api.POST("/citytree", apic.Treecity)    //
+		api.POST("/newslist", apic.GetNewslist) //
+		api.POST("/newsinfo", apic.GetNewsinfo) //
 		//评估员注册登录
 		api.POST("/assessors_rg", apic.Rsassessors) //
 		api.POST("/assessors_login", apic.Loginassessors)
-
-		// api.GET("/wx/ckwx", apic.CkSign) //微信基础token
-		// api.GET("/wx/getopenid", apic.Getopenid) //微信基础token
-		// //支付接口
-		// api.POST("pay/codeurl", apic.Jsppay) //微信基础token
-		// api.POST("pay/get/cert", apic.V3cert) //微信基础token
-
-		//头部加密
-		//api.GET("/wx/get", apic.Getopenid) //微信基础token
 	}
 	api.Use(Loginassessorschead())
 	{
@@ -164,6 +143,17 @@ func init() {
 		api.POST("/add_score_record", apic.AddScore_record) //添加老人信息
 		//api.POST("/gethealth", apic.GetHealthlist)               //健康
 
+		api.POST("/addinformation", apic.AddInformation) //信息提供者及联系人接口
+		api.POST("/myinformation", apic.MyInformation)   //信息提供者及联系人编号接口
+		api.POST("/upinformation", apic.UpInformation)   //修改信息提供者及联系人编号接口
+
+		api.POST("/addhealth", apic.AddHealth) //添加疾病接口
+		api.POST("/myhealth", apic.MyHealth)   //疾病编号接口
+		api.POST("/uphealth", apic.UpHealth)   //修改疾病接口
+
+		api.POST("/addhealthrelated", apic.AddHealthrelated) //健康相关信息
+		api.POST("/myhealthrelated", apic.MyHealthrelated)   //健康相关问题接口
+		api.POST("/uphealthrelated", apic.UpHealthrelated)   //修改健康相关问题接口
 	}
 
 	// //开启TCP服务结束
@@ -204,9 +194,7 @@ func Cors() gin.HandlerFunc {
 		if method == "OPTIONS" {
 			c.AbortWithStatus(http.StatusNoContent)
 		}
-		// if method == "OPTIONS" {
-		// 	c.JSON(http.StatusOK, "Options Request!")
-		// }
+
 		// 处理请求
 		c.Next() //  处理请求
 	}

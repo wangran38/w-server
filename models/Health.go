@@ -1,10 +1,11 @@
 package models
 
 import (
-	"errors"
-	"time"
+	"errors" //包用于处理错误
+	"time"   //包用于处理时间
 )
 
+// 定义Health结构体
 type Health struct {
 	Id           int64     `json:"id"`                                     //id
 	Senior_id    int64     `xorm:"comment('老者id')" json:"senior_id"`       //老者id
@@ -19,6 +20,7 @@ type Health struct {
 	Updated      time.Time `xorm:"int" json:"updatetime"`
 }
 
+// TableName方法返回表名
 func (a *Health) TableName() string {
 	return "health"
 }
@@ -49,6 +51,8 @@ func UpHealth(a *Health) (int64, error) {
 	return affected, err
 
 }
+
+// 获取数据列表
 func GetHealthList(limit int, pagesize int, search *Health) []*Health {
 	var page int
 	listdata := []*Health{}
@@ -61,7 +65,7 @@ func GetHealthList(limit int, pagesize int, search *Health) []*Health {
 		limit = 6
 
 	}
-	session := orm.Table("Health")
+	session := orm.Table("health")
 	// stringid := strconv.FormatInt(search.Id, 10)
 	if search.Number_id > 0 {
 		session = session.And("number_id = ?", search.Number_id)
@@ -73,17 +77,6 @@ func GetHealthList(limit int, pagesize int, search *Health) []*Health {
 		session = session.And("assessors_id = ?", search.Assessors_id)
 	}
 
-	// fmt.Println(stringid)
-
-	// if search.Title != "" {
-	// 	title := "%" + search.Title + "%"
-	// 	session = session.And("title LIKE ?", title)
-	// 	// session = session.And("pid", rules.Title)
-	// }
-	// if search.Categoryid > 0 {
-	// 	session = session.And("category_id = ?", search.Categoryid)
-	// }
-
 	var byorder string
 	byorder = "id ASC"
 	// if order != "" {
@@ -93,6 +86,7 @@ func GetHealthList(limit int, pagesize int, search *Health) []*Health {
 	return listdata
 }
 
+// 获取数据总数
 func GetHealthtotal(search *Health) int64 {
 	var num int64
 	num = 0
@@ -109,25 +103,34 @@ func GetHealthtotal(search *Health) int64 {
 	return num
 }
 
+// DeleteHealth 函数用于删除指定 ID 的健康数据
 func DeleteHealth(Id int64) int {
+	// 这行代码用于将输入的 id 转换为 int64 类型，但是在这里被注释掉了
 	// intid, _ := strconv.ParseInt(id, 10, 64)
+	// 创建一个 Health 类型的对象 a
 	a := new(Health)
+	// 通过 ORM 方法根据指定的 ID 删除数据，并返回删除的行数
 	outnum, _ := orm.ID(Id).Delete(a)
-
+	// 将删除的行数转换为 int 类型并返回
 	return int(outnum)
-
 }
 
-// 根据
+// SelectHealthByTitle 函数根据药物名称查找健康数据
 func SelectHealthByTitle(Drugname string) (*Health, error) {
+	// 创建一个 Health 类型的对象 a
 	a := new(Health)
-	has, err := orm.Where("title = ?", Drugname).Get(a)
+	// 通过 ORM 方法根据药物名称查找数据
+	has, err := orm.Where("title =?", Drugname).Get(a)
+	// 如果发生错误
 	if err != nil {
+		// 返回错误信息
 		return nil, err
 	}
+	// 如果没有找到数据
 	if !has {
+		// 返回错误信息
 		return nil, errors.New("未找到！")
 	}
+	// 返回找到的数据
 	return a, nil
-
 }

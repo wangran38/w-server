@@ -128,7 +128,7 @@ func AddInformation(c *gin.Context) {
 }
 
 // //修改用户组
-func EdiInformation(c *gin.Context) {
+func UpInformation(c *gin.Context) {
 	var formdata models.Information
 	// 检查 phone 字段是否为 11 位数字
 	if len(formdata.Phone) != 11 {

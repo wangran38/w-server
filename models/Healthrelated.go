@@ -83,27 +83,14 @@ func GetHealthrelatedList(limit int, pagesize int, search *Healthrelated) []*Hea
 	if search.Id > 0 {
 		session = session.And("id = ?", search.Id)
 	}
-	// fmt.Println(stringid)
-
-	// if search.Title != "" {
-	// 	title := "%" + search.Title + "%"
-	// 	session = session.And("title LIKE ?", title)
-	// 	// session = session.And("pid", rules.Title)
-	// }
-	// if search.Categoryid > 0 {
-	// 	session = session.And("category_id = ?", search.Categoryid)
-	// }
-
 	var byorder string
 	byorder = "id ASC"
-	// if order != "" {
-	// 	byorder = "id DESC"
-	// }
-	//执行查询（将结果存储在listdata中，最后返回该列表）
+
 	session.OrderBy(byorder).Limit(limit, limit*page).Find(&listdata)
 	return listdata
 }
 
+// 计算总数
 func GetHealthrelatedtotal(search *Healthrelated) int64 {
 	var num int64
 	num = 0

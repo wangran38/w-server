@@ -79,6 +79,7 @@ func Uploadmp4(c *gin.Context) {
 }
 
 // 获取当前的日期
+
 func GetDay() string {
 	template := "20060102"
 	return time.Now().Format(template)

@@ -38,9 +38,9 @@ func SelectInformationid(id int64) (*Information, error) {
 }
 
 // 根据评估员id返回数据
-func SelectInformationnumber_id(number_id int64) (*Information, error) {
+func SelectInformationId(id int64) (*Information, error) {
 	a := new(Information)
-	has, err := orm.Where(" number_id = ?", number_id).Get(a)
+	has, err := orm.Where(" id = ?", id).Get(a)
 	if err != nil {
 		return nil, err
 	}
@@ -75,10 +75,19 @@ func GetInformationList(limit int, pagesize int, search *Information) []*Informa
 		limit = 6
 
 	}
-	session := orm.Table("Information")
+	session := orm.Table("information")
 	// stringid := strconv.FormatInt(search.Id, 10)
-	if search.Senior_id > 0 {
+	if search.Id > 0 {
 		session = session.And("id = ?", search.Id)
+	}
+	if search.Number_id > 0 {
+		session = session.And("number_id = ?", search.Number_id)
+	}
+	if search.Senior_id > 0 {
+		session = session.And("senior_id = ?", search.Senior_id)
+	}
+	if search.Assessors_id > 0 {
+		session = session.And("assessors_id = ?", search.Assessors_id)
 	}
 
 	var byorder string

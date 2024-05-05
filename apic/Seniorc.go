@@ -72,6 +72,7 @@ func Addseniorc(c *gin.Context) {
 	Intodata := new(models.Senior)
 	// Intodata.Id = formdata.Id
 	Intodata.Assessor_id = user.Id
+	Intodata.Senior_name = formdata.Senior_name
 	Intodata.Senior_gender = formdata.Senior_gender
 	Intodata.Senior_dob = formdata.Senior_dob
 	Intodata.Birthday = formdata.Birthday
@@ -216,6 +217,7 @@ func Upseniorc(c *gin.Context) {
 	Intodata := new(models.Senior)
 	Intodata.Id = formdata.Id
 	Intodata.Assessor_id = user.Id
+	Intodata.Senior_name = formdata.Senior_name
 	Intodata.Senior_gender = formdata.Senior_gender
 	Intodata.Senior_dob = formdata.Senior_dob
 	Intodata.Birthday = formdata.Birthday
@@ -252,7 +254,7 @@ func Upseniorc(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"code": 200,
 			"msg":  "数据添加成功！",
-			"data": Intodata.Id,
+			"data": Intodata,
 		})
 
 	}

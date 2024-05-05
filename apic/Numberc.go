@@ -216,7 +216,7 @@ func EditNumberc(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"code": 200,
 			"msg":  "修改编号成功！",
-			"data": "",
+			"data": Intodata,
 		})
 
 	}

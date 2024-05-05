@@ -8,15 +8,15 @@ import (
 )
 
 type Book struct {
-	Id          int64     `json:"id"`                                             // ID 自增长
-	Pid         int64     `xorm:"comment('父级ID')" json:"pid"`                     // ID 自增长
+	Id          int64     `xorm:"pk autoincr int(11)" json:"id"`                  // ID 自增长
+	Pid         int64     `xorm:"int(11) comment('父级ID')" json:"pid"`             // ID 自增长
 	Chaptername string    `xorm:"varchar(64) comment('章节名称')" json:"chaptername"` // 章节名称
 	Level       int       `xorm:"int(3) comment('级别')" json:"level"`              //级别
 	Name        string    `xorm:"varchar(64) comment('事件名称')" json:"name"`        // 事件名称
 	Content     string    `xorm:"LONGTEXT comment('详细内容')" json:"content"`        // 哪本书
 	Isdel       int       `json:"isdel" xorm:"not null default 1 comment('是否启用 默认1 正常 2 已删除') TINYINT"`
-	Created     time.Time `xorm:"int comment('创建时间')" json:"createtime"` // 创建时间戳
-	Updated     time.Time `xorm:"int comment('修改时间')" json:"updatetime"` // 更改时间戳
+	Created     time.Time `xorm:"int(11) comment('创建时间')" json:"createtime"` // 创建时间戳
+	Updated     time.Time `xorm:"int(11) comment('修改时间')" json:"updatetime"` // 更改时间戳
 }
 
 type Booktree struct {
@@ -46,7 +46,7 @@ func GetBooktree(pid int64) []*Booktree {
 func (m *Book) TreeBooklist(pid int64) []*Booktree {
 
 	var menus []*Book
-	orm.Where("pid =?", pid).Find(&menus)
+	orm.Cols("id", "pid", "chaptername").Where("pid =?", pid).Find(&menus)
 	treelist := []*Booktree{}
 	for _, v := range menus {
 		child := v.TreeBooklist(int64(v.Id))
@@ -54,7 +54,6 @@ func (m *Book) TreeBooklist(pid int64) []*Booktree {
 			Id:          v.Id,
 			Pid:         v.Pid,
 			Chaptername: v.Chaptername,
-			Name:        v.Name,
 		}
 		node.Children = child
 		treelist = append(treelist, node)
@@ -119,11 +118,29 @@ func SelectbookByTitle(Chaptername string) (*Book, error) {
 	return a, nil
 
 }
+
+// 根据用户id找用户返回数据
+func Selectbookid(Id int64) (*Book, error) {
+	a := new(Book)
+	has, err := orm.Cols("id", "content").Where("id = ?", Id).Get(a)
+	if err != nil {
+		return nil, err
+	}
+	if !has {
+		return nil, errors.New("数据出错！")
+	}
+	return a, nil
+
+}
 func GetbookapiList(limit int, pagesize int, search *Book, order string) []*Book {
 	//fmt.Println("搜索关键词",search)
 	//    limit,_ := strconv.Atoi(limits)
 	//
 	var page int
+	// var limit int
+	if limit < 1 {
+		limit = 6
+	}
 	// listdata := []*News{}
 	if pagesize-1 < 1 {
 		page = 0
@@ -137,7 +154,7 @@ func GetbookapiList(limit int, pagesize int, search *Book, order string) []*Book
 	if order == "-id" {
 		byorder = "id DESC"
 	}
-	session := orm.Table("book")
+	session := orm.Table("book").Cols("id", "pid", "chaptername", "level", "name", "content", "created")
 	if search.Id >= 1 {
 		session = session.And("id = ?", search.Id)
 	}
@@ -159,10 +176,10 @@ func GetbookapiList(limit int, pagesize int, search *Book, order string) []*Book
 		Name := "%" + search.Name + "%"
 		session = session.And("name LIKE ?", Name)
 	}
-	if search.Content != "" {
-		Content := "%" + search.Content + "%"
-		session = session.And("content LIKE ?", Content)
-	}
+	// if search.Content != "" {
+	// 	Content := "%" + search.Content + "%"
+	// 	session = session.And("content LIKE ?", Content)
+	// }
 	// if search.Name != "" {
 	// 	name := "%" + search.Name + "%"
 	// 	session = session.And("name LIKE ?", name)

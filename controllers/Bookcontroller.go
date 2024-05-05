@@ -6,7 +6,6 @@ import (
 	"w-server/models"
 
 	// "linfeng/utils"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -42,8 +41,6 @@ func GetBooklist(c *gin.Context) {
 		Pid:         searchdata.Pid,
 		Chaptername: searchdata.Chaptername,
 		Level:       searchdata.Level,
-		Name:        searchdata.Name,
-		Content:     searchdata.Content,
 	}
 	listdata := models.GetbookapiList(limit, page, search, order)
 
@@ -80,6 +77,28 @@ func TreeBook(c *gin.Context) {
 		"data":    grouplist,
 	})
 
+}
+
+// 根据id查找
+func Getbookbyid(c *gin.Context) {
+	var formdata models.Book
+	c.ShouldBind(&formdata)
+	info, _ := models.Selectbookid(formdata.Id) //判断账号是否存在！
+	if info != nil {
+		c.JSON(200, gin.H{
+			"code": "200",
+			"msg":  "数据返回成功",
+			"data": info,
+		})
+		return
+	} else {
+		c.JSON(200, gin.H{
+			"code": "201",
+			"msg":  "数据返回失败",
+			"data": info,
+		})
+		return
+	}
 }
 
 // //添加用户组

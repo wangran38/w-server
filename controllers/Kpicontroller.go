@@ -48,7 +48,7 @@ func GetKpilist(c *gin.Context) {
 	if listdata == nil {
 		c.JSON(200, gin.H{
 			"code":    201,
-			"message": "获取菜单失败1",
+			"message": "获取菜单失败",
 			"data":    "",
 		})
 		return

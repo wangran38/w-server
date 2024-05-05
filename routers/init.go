@@ -107,8 +107,8 @@ func init() {
 		//字典接口
 		admin.POST("/dictionary", controllers.GetDictionarylist) //查询
 		admin.POST("/adddictionary", controllers.AddDictionary)  //添加
-		admin.POST("/updictionary", controllers.Updedictionary)  //修改
-		admin.POST("/deldictionary", controllers.DelDictionary)  //删除
+		//admin.POST("/updictionary", controllers.Updedictionary)  //修改
+		admin.POST("/deldictionary", controllers.DelDictionary) //删除
 
 		//健康相关问题接口
 		admin.POST("/gethealthrelatedlist", controllers.GetHealthrelatedlist) //查询
@@ -121,6 +121,16 @@ func init() {
 		admin.POST("/addhealthlist", controllers.AddHealth)    //添加
 		admin.POST("/uphealthlist", controllers.UpHealth)      //修改
 		admin.POST("/delhealthlist", controllers.DeleteHealth) //删除
+		//文件上传接口
+		admin.POST("/mp4_upload", controllers.Uploadmp4) //提交文件上传
+		//护理动作文章视频接口
+		admin.POST("/getbookfilelist", controllers.GetBookfilelist)
+		//添加护理动作文章视频接口
+		admin.POST("/addbookfile", controllers.AddBookfile)
+		//修改护理动作文章视频接口
+		admin.POST("/editbookfile", controllers.EditBookfile)
+		//删除护理动作文章视频接口
+		admin.POST("/delbookfile", controllers.DelBookfile)
 
 	}
 	api := router.Group("/api")

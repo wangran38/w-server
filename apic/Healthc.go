@@ -76,7 +76,7 @@ func AddHealth(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"code": 200,
 			"msg":  "数据添加成功！",
-			"data": "",
+			"data": Intodata.Id,
 		})
 	}
 }

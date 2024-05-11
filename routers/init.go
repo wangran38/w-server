@@ -112,6 +112,13 @@ func init() {
 		//删除护理动作文章视频接口
 		admin.POST("/delbookfile", controllers.DelBookfile)
 
+		//添加护理动作接口
+		admin.POST("/addnursing", controllers.AddNursing)
+		//修改护理动作接口
+		admin.POST("/upnursing", controllers.UpNursing)
+		//删除护理动作接口
+		admin.POST("/deletenursing", controllers.DeleteNursing)
+
 	}
 	api := router.Group("/api")
 	{
@@ -127,6 +134,8 @@ func init() {
 		//评估员注册登录
 		api.POST("/assessors_rg", apic.Rsassessors) //
 		api.POST("/assessors_login", apic.Loginassessors)
+
+		api.POST("/selectnursing", apic.SelectNursinglist) //护理动作接口
 	}
 	api.Use(Loginassessorschead())
 	{
@@ -151,6 +160,7 @@ func init() {
 		api.POST("/addhealthrelated", apic.AddHealthrelated) //健康相关信息
 		api.POST("/myhealthrelated", apic.MyHealthrelated)   //健康相关问题接口
 		api.POST("/uphealthrelated", apic.UpHealthrelated)   //修改健康相关问题接口
+
 	}
 
 	// //开启TCP服务结束

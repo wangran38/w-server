@@ -154,7 +154,7 @@ func init() {
 	}
 
 	// //开启TCP服务结束
-	router.Run(":8088")
+	router.Run(":8189")
 }
 
 // //// 跨域

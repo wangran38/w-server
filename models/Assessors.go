@@ -40,17 +40,13 @@ type Assessorsjson struct {
 }
 
 func (a *Assessors) TableName() string {
-	return "Assessors"
+	return "assessors"
 }
 
 type AssessorsGroup struct {
 	Assessors  `xorm:"extends"`
 	Authaccess `xorm:"extends"`
 	Authgroup  `xorm:"extends"`
-}
-
-func (AssessorsGroup) TableName() string {
-	return "Assessors"
 }
 
 // users := make([]UserGroup, 0)
@@ -107,7 +103,7 @@ func GetAssessorsList(limit int, pagesize int, search string, order string) []*A
 		byorder = "a.id DESC"
 	}
 	if search != "" {
-		orm.Table("Assessors").Alias("a").
+		orm.Table("assessors").Alias("a").
 			Cols("a.*,ac.*, g.id,g.name").
 			Join("INNER", []string{"auth_group_access", "ac"}, "ac.uid = a.id").
 			Join("INNER", []string{"auth_group", "g"}, "g.id = ac.gid").
@@ -118,7 +114,7 @@ func GetAssessorsList(limit int, pagesize int, search string, order string) []*A
 			Find(&listAssessors)
 		//  orm.Where("username like ?", "%"+search+"%").Limit(limit*pagesize, pagesize).Find(&listAssessors)
 	} else {
-		orm.Table("Assessors").Alias("a").
+		orm.Table("assessors").Alias("a").
 			Cols("a.*,ac.*, g.id,g.name").
 			Join("INNER", []string{"auth_group_access", "ac"}, "a.id = ac.uid").
 			Join("INNER", []string{"auth_group", "g"}, "g.id = ac.gid").

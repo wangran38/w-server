@@ -9,13 +9,13 @@ import (
 
 // 建结构体(定义了数据库中的字段)
 type Nursing struct {
-	Id          int64     `json:"id"`                                   //ID自增长
-	Shift       string    `xorm:"comment('班次')" json:"shiftshift"`      //班次
-	Timeperiod  string    `xorm:"comment('时间段')" json:"timeperiod"`     //时间段
-	Nursingid   int64     `xorm:"comment('编号')" json:"nursingid"`       //护理动作id
-	Nursingname string    `xorm:"comment('护理动作名称')" json:"nursingname"` //护理动作名称
-	Created     time.Time `json:"createtime" xorm:"int"`
-	Updated     time.Time `json:"updatetime" xorm:"int"`
+	Id                int64     `json:"id"`                                         //ID自增长
+	Nursingname       string    `xorm:"comment('护理动作名称')" json:"nursingname"`       //护理动作名称
+	Duration          string    `xorm:"comment('护理时长')" json:"duration"`            //护理时长
+	Durationnumber    int       `xorm:"comment('时长数字')" json:"durationnumber"`      //护理数字
+	Assessorsgroup_id int64     `xorm:"assessorsgroup_id" json:"assessorsgroup_id"` //机构id
+	Created           time.Time `json:"createtime" xorm:"int"`
+	Updated           time.Time `json:"updatetime" xorm:"int"`
 }
 
 // tableName（）方法，返回数据库表的名称
@@ -74,23 +74,19 @@ func SelectNursinglist(limit int, pagesize int, search *Nursing) []*Nursing {
 		session = session.And("id = ?", search.Id)
 	}
 	// fmt.Println(stringid)
-
-	if search.Shift != "" {
-		title := "%" + search.Shift + "%"
-		session = session.And("shift LIKE ?", title)
+	if search.Duration != "" {
+		title := "%" + search.Duration + "%"
+		session = session.And("duration LIKE ?", title)
 		// session = session.And("pid", rules.Title)
+	}
+	if search.Durationnumber > 0 {
+		session = session.And(" durationnumber= ?", search.Durationnumber)
 	}
 
-	if search.Timeperiod != "" {
-		title1 := "%" + search.Timeperiod + "%"
-		session = session.And("timeperiod LIKE ?", title1)
-		// session = session.And("pid", rules.Title)
+	if search.Assessorsgroup_id > 0 {
+		session = session.And(" assessorsgroup_id= ?", search.Assessorsgroup_id)
 	}
-	if search.Nursingid > 0 {
-		// title := "%" + search.Codename + "%"
-		session = session.And("nursingid = ?", search.Nursingid)
-		// session = session.And("pid", rules.Title)
-	}
+
 	if search.Nursingname != "" {
 		title := "%" + search.Nursingname + "%"
 		session = session.And("nursingname  LIKE ?", title)
@@ -113,19 +109,16 @@ func GetNursingtotal(search *Nursing) int64 {
 	if search.Id > 0 {
 		session = session.And("id = ?", search.Id)
 	}
-	if search.Shift != "" {
-		title := "%" + search.Shift + "%"
-		session = session.And("shift LIKE ?", title)
+	if search.Duration != "" {
+		title := "%" + search.Duration + "%"
+		session = session.And("duration LIKE ?", title)
 	}
-	if search.Timeperiod != "" {
-		title1 := "%" + search.Timeperiod + "%"
-		session = session.And("timeperiod LIKE ?", title1)
-		// session = session.And("pid", rules.Title)
+	if search.Durationnumber > 0 {
+		session = session.And(" durationnumber= ?", search.Durationnumber)
 	}
-	if search.Nursingid > 0 {
-		// title := "%" + search.Codename + "%"
-		session = session.And("nursingid = ?", search.Nursingid)
-		// session = session.And("pid", rules.Title)
+
+	if search.Assessorsgroup_id > 0 {
+		session = session.And(" assessorsgroup_id= ?", search.Assessorsgroup_id)
 	}
 	if search.Nursingname != "" {
 		title := "%" + search.Nursingname + "%"

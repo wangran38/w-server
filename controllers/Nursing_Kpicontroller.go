@@ -10,39 +10,37 @@ import (
 )
 
 // type NewsController struct{}
-type Nursing struct {
-	Id                int64     `json:"id"`
-	Nursingname       string    `json:"nursingname"`
-	Duration          string    `json:"duration"`
-	Durationnumber    int       `json:"durationnumber"`
-	Assessorsgroup_id int64     `json:"assessorsgroup_id"`
-	Created           time.Time `json:"createtime"`
-	Updated           time.Time `json:"updatetime"`
-	Limit             int       `json:"limit"`
-	Page              int       `json:"page"`
+type Nursing_Kpi struct {
+	Id         int64     `json:"id"`
+	Nursing_id string    `json:"nursing_id"`
+	Kpi_id     int       `json:"kpi_id"`
+	Created    time.Time `json:"createtime"`
+	Updated    time.Time `json:"updatetime"`
+	P_id       int64     `json:"p_id"`
+	Limit      int       `json:"limit"`
+	Page       int       `json:"page"`
 }
 
 // type Any interface{}
 // 获取当前用户信息
-func GetNursinglist(c *gin.Context) {
+func GetNursing_Kpilist(c *gin.Context) {
 	//从header中获取到token
-	var searchdata Nursing
+	var searchdata Nursing_Kpi
 	c.BindJSON(&searchdata)
 	// //读取数据库
 	result := make(map[string]interface{})
 	// name:=""
 	limit := searchdata.Limit
 	page := searchdata.Page
-	search := &models.Nursing{
-		Id:                searchdata.Id,
-		Nursingname:       searchdata.Nursingname,
-		Duration:          searchdata.Duration,
-		Durationnumber:    searchdata.Durationnumber,
-		Assessorsgroup_id: searchdata.Assessorsgroup_id,
-		Created:           searchdata.Created,
-		Updated:           searchdata.Updated,
+	search := &models.Nursing_Kpi{
+		Id:         searchdata.Id,
+		Nursing_id: searchdata.Nursing_id,
+		Kpi_id:     searchdata.Nursing_id,
+		P_id:       searchdata.P_id,
+		Created:    searchdata.Created,
+		Updated:    searchdata.Updated,
 	}
-	listdata := models.SelectNursinglist(limit, page, search)
+	listdata := models.SelectNursing_Kpilist(limit, page, search)
 	// listnum := models.GetHealthList(search)
 	result["page"] = page
 	// result["totalnum"] = listnum
@@ -66,22 +64,21 @@ func GetNursinglist(c *gin.Context) {
 }
 
 // //添加用户组
-func AddNursing(c *gin.Context) {
-	var formdata models.Nursing
+func AddNursing_Kpi(c *gin.Context) {
+	var formdata models.Nursing_Kpi
 	c.ShouldBind(&formdata)
 	// 	c.JSON(200, gin.H{
 	// 	"code": "201",
 	// 	"msg":  "添加数据出错！",
 	// 	"data": formdata,
 	// })
-	Intodata := new(models.Nursing)
+	Intodata := new(models.Nursing_Kpi)
 	Intodata.Id = formdata.Id
-	Intodata.Duration = formdata.Duration
-	Intodata.Durationnumber = formdata.Durationnumber
-	Intodata.Assessorsgroup_id = formdata.Assessorsgroup_id
-	Intodata.Nursingname = formdata.Nursingname
+	Intodata.Nursing_id = formdata.Nursing_id
+	Intodata.Kpi_id = formdata.Kpi_id
+	Intodata.P_id = formdata.P_id
 	Intodata.Created = time.Now()
-	info, _ := models.SelectNursingid(Intodata.Id) //判断账号是否存在！
+	info, _ := models.SelectNursing_Kpiid(Intodata.Id) //判断账号是否存在！
 	if info != nil {
 		c.JSON(200, gin.H{
 			"code": "201",
@@ -89,7 +86,7 @@ func AddNursing(c *gin.Context) {
 		})
 		return
 	}
-	err := models.AddNursing(Intodata) //判断账号是否存在！
+	err := models.AddNursing_Kpi(Intodata) //判断账号是否存在！
 	if err != nil {
 		c.JSON(201, gin.H{
 			"code": 201,
@@ -109,15 +106,14 @@ func AddNursing(c *gin.Context) {
 }
 
 // //修改用户组
-func UpNursing(c *gin.Context) {
-	var formdata models.Nursing
+func UpNursing_Kpi(c *gin.Context) {
+	var formdata models.Nursing_Kpi
 	c.ShouldBind(&formdata)
-	updata := new(models.Nursing)
+	updata := new(models.Nursing_Kpi)
 	updata.Id = formdata.Id
-	updata.Duration = formdata.Duration
-	updata.Durationnumber = formdata.Durationnumber
-	updata.Assessorsgroup_id = formdata.Assessorsgroup_id
-	updata.Nursingname = formdata.Nursingname
+	updata.Nursing_id = formdata.Nursing_id
+	updata.Kpi_id = formdata.Kpi_id
+	updata.P_id = formdata.P_id
 	updata.Updated = time.Now()
 	if formdata.Id <= 0 {
 		c.JSON(201, gin.H{
@@ -127,7 +123,7 @@ func UpNursing(c *gin.Context) {
 		})
 		return
 	} else {
-		res, err := models.UpNursing(updata) //判断账号是否存在！
+		res, err := models.UpNursing_Kpi(updata) //判断账号是否存在！
 		if err != nil {
 			c.JSON(201, gin.H{
 				"code": 201,
@@ -148,10 +144,10 @@ func UpNursing(c *gin.Context) {
 }
 
 // 删除功能
-func DeleteNursing(c *gin.Context) {
-	var searchdata models.Nursing
+func DeleteNursing_Kpi(c *gin.Context) {
+	var searchdata models.Nursing_Kpi
 	c.BindJSON(&searchdata)
-	delnum := models.DeleteNursing(searchdata.Id)
+	delnum := models.DeleteNursing_Kpi(searchdata.Id)
 	if delnum > 0 {
 		c.JSON(200, gin.H{
 			"code":    200,

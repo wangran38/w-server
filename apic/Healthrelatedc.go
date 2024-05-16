@@ -187,7 +187,7 @@ func MyHealthrelated(c *gin.Context) {
 	if finderr != nil {
 		c.JSON(201, gin.H{
 			"code":    201,
-			"message": "登录已经过期！111",
+			"message": "登录已经过期!111",
 			"data":    "",
 			// "permissions": menu,
 			// "roles":       role,

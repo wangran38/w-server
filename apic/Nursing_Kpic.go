@@ -11,34 +11,30 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type Nursing struct {
-	Id                int64     `json:"id"`                //id
-	Nursingname       string    `json:"nursingname"`       //护理动作名称
-	Duration          string    `json:"duration"`          //护理时长
-	Durationnumber    int       `json:"durationnumber"`    //护理数字
-	Assessorsgroup_id int64     `json:"assessorsgroup_id"` //机构id
-	Created           time.Time `json:"createtime"`
-	Updated           time.Time `json:"updatetime"`
-	Limit             int       `json:"limit"`
-	Page              int       `json:"page"`
+type Nursing_Kpi struct {
+	Id         int64     `json:"id"`          //ID自增长
+	Nursing_id string    ` json:"nursing_id"` //护理动作编号
+	Kpi_id     string    ` json:"kpi_id"`     //题目id
+	Created    time.Time `json:"createtime"`
+	Updated    time.Time `json:"updatetime"`
+	P_id       int64     ` json:"p_id"` //标识符
 }
 
 // 获取信息
-func SelectNursinglist(c *gin.Context) {
+func SelectNursing_Kpilist(c *gin.Context) {
 	//从header中获取到token
-	var searchdata Nursing
+	var searchdata Nursing_Kpi
 	c.ShouldBind(&searchdata)
 	// //读取数据库
 
-	search := &models.Nursing{
-		Id:                searchdata.Id,
-		Nursingname:       searchdata.Nursingname,
-		Duration:          searchdata.Duration,
-		Durationnumber:    searchdata.Durationnumber,
-		Assessorsgroup_id: searchdata.Assessorsgroup_id,
+	search := &models.Nursing_Kpi{
+		Id:         searchdata.Id,
+		Nursing_id: searchdata.Nursing_id,
+		Kpi_id:     searchdata.Kpi_id,
+		P_id:       searchdata.P_id,
 	}
-	listdata := models.SelectNursinglist(10, 1, search)
-	listnum := models.GetNursingtotal(search)
+	listdata := models.SelectNursing_Kpilist(10, 1, search)
+	listnum := models.GetNursing_kpitotal(search)
 	result := make(map[string]interface{})
 	result["totalnum"] = listnum
 	if listdata == nil {
@@ -59,8 +55,8 @@ func SelectNursinglist(c *gin.Context) {
 	}
 }
 
-func GetNursingList(c *gin.Context) {
-	var searchdata Nursing
+func GetNursing_KpiList(c *gin.Context) {
+	var searchdata Nursing_Kpi
 	c.ShouldBind(&searchdata)
 	// fmt.Print(searchinfo.Id)
 	// result := make(map[string]interface{})

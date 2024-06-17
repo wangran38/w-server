@@ -126,7 +126,19 @@ func Deletekpi(id int64) int {
 	return int(outnum)
 
 }
+// 根据
+func SelectkpiById(Id int64) (*Kpi, error) {
+	a := new(Kpi)
+	has, err := orm.Where("Id = ?", Id).Get(a)
+	if err != nil {
+		return nil, err
+	}
+	if !has {
+		return nil, errors.New("未找到！")
+	}
+	return a, nil
 
+}
 // 根据
 func SelectkpiByTitle(Kname string) (*Kpi, error) {
 	a := new(Kpi)

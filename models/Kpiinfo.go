@@ -2,7 +2,7 @@ package models
 
 import (
 	"time"
-
+	"errors"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -27,7 +27,19 @@ func Addkpiinfo(a *Kpiinfo) error {
 	_, err := orm.Insert(a)
 	return err
 }
+// 根据
+func SelectkpiinfoById(Id int64) (*Kpiinfo, error) {
+	a := new(Kpiinfo)
+	has, err := orm.Where("id = ?", Id).Get(a)
+	if err != nil {
+		return nil, err
+	}
+	if !has {
+		return nil, errors.New("未找到！")
+	}
+	return a, nil
 
+}
 // 修改
 func Upkpiinfo(a *Kpiinfo) (int64, error) {
 	affected, err := orm.Id(a.Id).Update(a) //通过添加Cols函数指定需要更新结构体中的哪些值，未指定的将不更新，指定了的即使为0也会更新。

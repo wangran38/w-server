@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"time"
+	"strings"
 )
 
 type Score_record struct {
@@ -12,6 +13,7 @@ type Score_record struct {
 	Number_id    int64     `xorm:"comment('编号id')" json:"number_id"`             //编号id
 	Kpi_id       int64     `xorm:"comment('指标id')" json:"kpi_id"`                //KPI的id
 	Kpiinfo_id   int64     `xorm:"comment('指标分题id')" json:"kpiinfo_id"`          //KPI的id
+	Kpiids      string  `xorm:"-" json:"Kpiids"`  //KPI的id
 	Score        int       ` xorm:"comment('分值')" json:"score"`                  //药物名称
 	Created      time.Time `xorm:"int" json:"createtime"`
 	Updated      time.Time `xorm:"int" json:"updatetime"`
@@ -51,65 +53,81 @@ func AddScore_record_arr(a []*Score_record) error {
 // 	return affected, err
 
 // }
-// func GetHealthList(limit int, pagesize int, search *Health) []*Health {
-// 	var page int
-// 	listdata := []*Health{}
-// 	if pagesize-1 < 1 {
-// 		page = 0
-// 	} else {
-// 		page = pagesize - 1
-// 	}
-// 	if limit <= 6 {
-// 		limit = 6
+func GetScore_recordList(limit int, pagesize int, search *Score_record) []*Score_record {
+	var page int
+	listdata := []*Score_record{}
+	if pagesize-1 < 1 {
+		page = 0
+	} else {
+		page = pagesize - 1
+	}
+	if limit <= 100 {
+		limit = 100
 
-// 	}
-// 	session := orm.Table("Health")
-// 	// stringid := strconv.FormatInt(search.Id, 10)
-// 	if search.Number_id > 0 {
-// 		session = session.And("number_id = ?", search.Number_id)
-// 	}
-// 	if search.Senior_id > 0 {
-// 		session = session.And("senior_id = ?", search.Senior_id)
-// 	}
-// 	if search.Assessors_id > 0 {
-// 		session = session.And("assessors_id = ?", search.Assessors_id)
-// 	}
+	}
+		//拼接搜索分页查询语句
+	var byorder string
+	byorder = "kpi_id DESC"
+	// if order == "-id" {
+	// 	byorder = "id DESC"
+	// }
+	session := orm.Table("score_record")
+	// stringid := strconv.FormatInt(search.Id, 10)
+	if search.Assessors_id > 0 {
+		session = session.And("assessors_id = ?", search.Assessors_id)
+	}
+	if search.Number_id > 0 {
+		session = session.And("number_id = ?", search.Number_id)
+	}
+	if search.Seniorid > 0 {
+		session = session.And("senior_id = ?", search.Seniorid)
+	}
+	// if search.Kpi_id > 0 {
+	// 	session = session.And("kpi_id = ?", search.Kpi_id)
+	// }
 
-// 	// fmt.Println(stringid)
+	if search.Kpiinfo_id > 0 {
+		session = session.And("kpiinfo_id = ?", search.Kpiinfo_id)
+	}
+	if search.Kpiids!="" {
+		ids := strings.Split(search.Kpiids, ",") //转成数组用orm in
+		session = session.In("kpi_id", ids)
+	}
+	session.OrderBy(byorder).Limit(limit, limit*page).Find(&listdata)
+	return listdata
+}
 
-// 	// if search.Title != "" {
-// 	// 	title := "%" + search.Title + "%"
-// 	// 	session = session.And("title LIKE ?", title)
-// 	// 	// session = session.And("pid", rules.Title)
-// 	// }
-// 	// if search.Categoryid > 0 {
-// 	// 	session = session.And("category_id = ?", search.Categoryid)
-// 	// }
+func GetScore_recordtotal(search *Score_record) int64 {
+	var num int64
+	num = 0
+	session := orm.Table("score_record")
+		if search.Assessors_id > 0 {
+		session = session.And("assessors_id = ?", search.Assessors_id)
+	}
+	if search.Number_id > 0 {
+		session = session.And("number_id = ?", search.Number_id)
+	}
+	if search.Seniorid > 0 {
+		session = session.And("senior_id = ?", search.Seniorid)
+	}
+	// if search.Kpi_id > 0 {
+	// 	session = session.And("kpi_id = ?", search.Kpi_id)
+	// }
+	if search.Kpiinfo_id > 0 {
+		session = session.And("kpiinfo_id = ?", search.Kpiinfo_id)
+	}
+	if search.Kpiids!="" {
+		ids := strings.Split(search.Kpiids, ",") //转成数组用orm in
+		session = session.In("kpi_id", ids)
+	}
+	a := new(Score_record)
+	total, err := session.Count(a)
+	if err == nil {
+		num = total
 
-// 	var byorder string
-// 	byorder = "id ASC"
-// 	// if order != "" {
-// 	// 	byorder = "id DESC"
-// 	// }
-// 	session.OrderBy(byorder).Limit(limit, limit*page).Find(&listdata)
-// 	return listdata
-// }
-
-// func GetHealthtotal(search *Health) int64 {
-// 	var num int64
-// 	num = 0
-// 	session := orm.Table("health")
-// 	if search.Senior_id > 0 {
-// 		session = session.And(" Number_id = ?", search.Number_id)
-// 	}
-// 	a := new(Health)
-// 	total, err := session.Count(a)
-// 	if err == nil {
-// 		num = total
-
-// 	}
-// 	return num
-// }
+	}
+	return num
+}
 
 // func DeleteHealth(Number_id int64) int {
 // 	// intid, _ := strconv.ParseInt(id, 10, 64)

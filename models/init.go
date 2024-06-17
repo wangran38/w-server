@@ -20,6 +20,8 @@ import (
 var err error
 var orm *xorm.EngineGroup //数据库组策略
 func init() {
+		// master, err := xorm.NewEngine("mysql", "root:110119@tcp(localhost:3306)/oldpp123?charset=utf8&parseTime=True")
+
 	master, err := xorm.NewEngine("mysql", "oldpp123:De8wnyidCSrW2G6F@tcp(localhost:3306)/oldpp123?charset=utf8&parseTime=True")
 	//CycZdbfwtBeX6DRz
 	//orm, err = xorm.NewEngine("mysql", "linfeng:XZb5ZBFYai6sj3Bn@tcp(localhost:3306)/linfeng?charset=utf8")

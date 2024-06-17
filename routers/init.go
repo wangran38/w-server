@@ -127,6 +127,7 @@ func init() {
 		api.POST("/cglist", apic.Getcategorylist)
 		// api.POST("/getinformation", apic.GetInformationlist) //登录
 
+
 		api.POST("/getbook", apic.Getbooklist)  //企业资源数字化的API前端接口
 		api.POST("/citytree", apic.Treecity)    //
 		api.POST("/newslist", apic.GetNewslist) //
@@ -143,10 +144,15 @@ func init() {
 		api.POST("/add_numbercode", apic.AddNumberc)        //添加编号
 		api.POST("/edit_numbercode", apic.EditNumberc)      //添加编号
 		api.POST("/my_number", apic.MyNumberc)              //添加编号
+		api.POST("/my_numberinfo", apic.MyNumberinfo)              //添加编号
+		
 		api.POST("/add_seniorc", apic.Addseniorc)           //添加老人信息
 		api.POST("/my_seniorc", apic.MySeniorc)             //添加老人信息
 		api.POST("/up_seniorc", apic.Upseniorc)             //修改老人信息
+		//添加选择的量表记录
 		api.POST("/add_score_record", apic.AddScore_record) //添加老人信息
+		api.POST("/my_score_record", apic.Myscorerecord) //添加老人信息
+		api.POST("/my_kpi_record", apic.Mykpirecord) //添加老人信息
 		//api.POST("/gethealth", apic.GetHealthlist)               //健康
 
 		api.POST("/addinformation", apic.AddInformation) //信息提供者及联系人接口

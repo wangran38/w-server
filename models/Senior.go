@@ -45,7 +45,20 @@ func UpSenior(a *Senior) (int64, error) {
 	return affected, err
 
 }
+// //根据
+func SelectSeniorbynumberid(Number_id int64) (*Senior, error) {
+	a := new(Senior)
+	// title := "%" + Idnum + "%"
+	has, err := orm.Where("number_id = ?", Number_id).Get(a)
+	if err != nil {
+		return nil, err
+	}
+	if !has {
 
+		return nil, errors.New("未找到！")
+	}
+	return a, nil
+}
 // //根据
 func SelectSeniorbyidnum(Idnum string) (*Senior, error) {
 	a := new(Senior)

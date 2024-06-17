@@ -46,7 +46,19 @@ func SelectHealthrelatedid(id int64) (*Healthrelated, error) {
 	return a, nil
 
 }
+// 根据用户id找用户返回数据
+func SelectHealthrelatednumberid(id int64) (*Healthrelated, error) {
+	a := new(Healthrelated)
+	has, err := orm.Where("number_id = ?", id).Get(a)
+	if err != nil {
+		return nil, err
+	}
+	if !has {
+		return nil, errors.New("数据出错！")
+	}
+	return a, nil
 
+}
 // 添加（用于向数据库中插入数据）
 func AddHealthrelated(a *Healthrelated) error {
 	_, err := orm.Insert(a)

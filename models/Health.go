@@ -38,7 +38,19 @@ func SelectHealthid(id int64) (*Health, error) {
 	return a, nil
 
 }
+// 根据用户id找用户返回数据
+func SelectHealthnumberid(id int64) (*Health, error) {
+	a := new(Health)
+	has, err := orm.Where(" number_id = ?", id).Get(a)
+	if err != nil {
+		return nil, err
+	}
+	if !has {
+		return nil, errors.New("数据出错！")
+	}
+	return a, nil
 
+}
 // 添加
 func AddHealth(a *Health) error {
 	_, err := orm.Insert(a)

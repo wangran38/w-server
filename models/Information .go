@@ -50,7 +50,19 @@ func SelectInformationId(id int64) (*Information, error) {
 	return a, nil
 
 }
+// 根据评估员id返回数据
+func SelectInformationNumberId(id int64) (*Information, error) {
+	a := new(Information)
+	has, err := orm.Where("number_id = ?", id).Get(a)
+	if err != nil {
+		return nil, err
+	}
+	if !has {
+		return nil, errors.New("数据出错！")
+	}
+	return a, nil
 
+}
 // 添加
 func AddInformation(a *Information) error {
 	_, err := orm.Insert(a)

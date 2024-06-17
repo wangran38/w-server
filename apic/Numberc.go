@@ -222,3 +222,114 @@ func EditNumberc(c *gin.Context) {
 	}
 
 }
+// 我的编号
+func MyNumberinfo(c *gin.Context) {
+		//如若是models则为models结构体的名称
+	token := c.Request.Header.Get("Authorization")
+	if token == "" || len(token) == 0 {
+		c.JSON(201, gin.H{
+			"code":    201,
+			"message": "你没有权限,去远处玩！",
+			"data":    "",
+			// "permissions": menu,
+			// "roles":       role,
+		})
+		return
+	}
+	var searchdata Numberc
+	c.BindJSON(&searchdata)
+	user, _ := utils.GetLoginAssessorsc(token)
+	// if finderr != nil {
+	// 	c.JSON(201, gin.H{
+	// 		"code":    201,
+	// 		"message": "登录已经过期！111",
+	// 		"data":    "",
+	// 		// "permissions": menu,
+	// 		// "roles":       role,
+	// 	})
+	// 	return
+	// }
+	Number_id := searchdata.Id
+	result := make(map[string]interface{})
+	//获取对应评估信息的编号信息
+	numberdata,err:= models.SelectNumberId(Number_id)
+	if err!= nil {
+		result["numberdata"]= ""
+	} else {
+		result["numberdata"]=numberdata
+	}
+		//获取对应老人的基本资料
+	senior,err:= models.SelectSeniorbynumberid(Number_id)
+	if err!=nil {
+		result["senior"]=""
+	} else {
+		result["senior"]=senior
+	}
+	//获取信息和联系人的infomation基本资料
+	infomation,err:= models.SelectInformationNumberId(Number_id)
+	if err!=nil {
+		result["infomation"]=""
+	} else {
+		result["infomation"]=infomation
+	}
+		//获取信息和联系人的health健康基本资料
+	health,err:= models.SelectHealthnumberid(Number_id)
+	if err!=nil {
+		result["health"]=""
+	} else {
+		result["health"]=health
+	}
+	//获取信息和联系人的healthrelate健康相关问题
+	healthrelate,err:= models.SelectHealthrelatednumberid(Number_id)
+	if err!=nil {
+		result["healthrelate"]=""
+	} else {
+		result["healthrelate"]=healthrelate
+	}
+	//获取获取量表分题目的答案
+		search := &models.Score_record{
+		Number_id:    Number_id,
+		Seniorid:   senior.Id,
+		Assessors_id: user.Id,
+	}
+	treelist := []*Score_recordjson{}
+	record := models.GetScore_recordList(1000,1,search)
+	if record!=nil {
+		var kname,kpiinfotitle string
+		for _, v := range record {
+			kpidata,_ := models.SelectkpiById(v.Kpi_id)
+			if kpidata!=nil {
+				kname= kpidata.Kname
+			} else {
+				kname = ""
+			}
+			kpiinfodata,_ := models.SelectkpiinfoById(v.Kpiinfo_id)
+			if kpiinfodata!=nil {
+				kpiinfotitle= kpiinfodata.Title
+			} else {
+				kpiinfotitle= ""
+			}
+			node := &Score_recordjson{
+			Id:       v.Id,
+			Seniorid:      v.Seniorid,
+			Assessorsid:      v.Assessors_id,
+			Numberid:      v.Number_id,
+			Kpiid: v.Kpi_id,
+			Kname:    kname,
+			Kpiinfoid:    v.Kpiinfo_id,
+			Kpiinfotitle:   kpiinfotitle,
+			Score:   v.Score,
+		}
+		// node.Children = infolistdata
+		treelist = append(treelist, node)
+
+		}
+		result["kpiarr"]=treelist
+	}
+			c.JSON(200, gin.H{
+			"code": 200,
+			"msg":  "数据返回成功！",
+			"data": result,
+		})
+
+}

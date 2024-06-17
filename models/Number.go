@@ -47,7 +47,19 @@ func SelectNumberCode(code string) (*Number, error) {
 	return a, nil
 
 }
+// 根据用户id找用户返回数据
+func SelectNumberId(Id int64) (*Number, error) {
+	a := new(Number)
+	has, err := orm.Where("id = ?", Id).Get(a)
+	if err != nil {
+		return nil, err
+	}
+	if !has {
+		return nil, errors.New("数据出错！")
+	}
+	return a, nil
 
+}
 func GetnumberList(limit int, pagesize int, search *Number) []*Number {
 	var page int
 	listdata := []*Number{}
